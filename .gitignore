@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+.env
+finledger_data.json
