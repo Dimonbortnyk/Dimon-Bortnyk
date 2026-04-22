@@ -2,21 +2,15 @@
 """
 FinLedger - Professional Accounting System
 ==========================================
-Railway web deployment version.
-Listens on the PORT environment variable assigned by Railway.
-Data is persisted per-user via localStorage (client-side).
-Server-side /save and /load use an in-memory store for the session.
+Railway web deployment + Supabase auth version.
 """
 
 import http.server
 import socketserver
-import threading
 import os
 import json as _json
 
-# Railway injects PORT as an environment variable
 PORT = int(os.environ.get("PORT", 8765))
-
 
 HTML = r"""<!DOCTYPE html>
 <html lang="en">
@@ -571,14 +565,14 @@ textarea{resize:vertical;min-height:72px;}
 
   <!-- USER CARD -->
   <div class="sidebar-foot">
-    <div class="user-card" onclick="openSettings('user')" title="Open Settings">
+    <div class="user-card" title="Open Settings" style="position:relative;">
       <div class="user-avatar" id="sideAvatarBg"><span id="sideAvatarInitials">PK</span></div>
       <div class="user-info">
         <div class="user-name" id="sideUserName">Previt Ketsia</div>
         <div class="user-role" id="sideUserRole">Chief Accountant</div>
         <div class="user-co" id="sideUserCo">My Company Ltd.</div>
       </div>
-      <div class="user-gear">⚙</div>
+      <div class="user-gear" title="Sign out — click gear to open settings">⚙</div>
     </div>
   </div>
 </nav>
@@ -7729,16 +7723,210 @@ function showToast(msg) {
       </div>
     </div>
 
+
+<!-- ══ SUPABASE AUTH OVERLAY ══ -->
+<style>
+#auth-overlay{position:fixed;inset:0;background:#0f0f11;z-index:9999;display:flex;align-items:center;justify-content:center;}
+#auth-overlay.hidden{display:none;}
+.auth-box{background:#16161a;border:1px solid #2e2e38;border-radius:16px;padding:40px;width:min(420px,94vw);box-shadow:0 8px 50px rgba(0,0,0,.6);}
+.auth-logo{font-family:'DM Serif Display',serif;font-size:32px;color:#c8ff00;margin-bottom:4px;}
+.auth-sub{font-size:12px;color:#5a5a72;font-family:monospace;text-transform:uppercase;letter-spacing:2px;margin-bottom:32px;}
+.auth-title{font-size:18px;font-weight:700;color:#f0f0f4;margin-bottom:20px;}
+.auth-field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.auth-field label{font-size:11px;color:#5a5a72;font-family:monospace;text-transform:uppercase;letter-spacing:1px;}
+.auth-field input{background:#1e1e24;border:1px solid #2e2e38;border-radius:8px;padding:10px 14px;color:#f0f0f4;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border .15s;}
+.auth-field input:focus{border-color:#c8ff00;}
+.auth-btn{width:100%;padding:12px;background:#c8ff00;color:#0f0f11;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;font-family:'DM Sans',sans-serif;transition:background .15s;}
+.auth-btn:hover{background:#d4ff26;}
+.auth-btn.secondary{background:transparent;color:#9090a8;border:1px solid #2e2e38;margin-top:6px;}
+.auth-btn.secondary:hover{color:#f0f0f4;border-color:#5a5a72;}
+.auth-err{color:#f87171;font-size:12px;margin-top:8px;min-height:16px;text-align:center;}
+.auth-ok{color:#4ade80;font-size:12px;margin-top:8px;min-height:16px;text-align:center;}
+.auth-sep{display:flex;align-items:center;gap:10px;margin:16px 0;color:#5a5a72;font-size:12px;}
+.auth-sep::before,.auth-sep::after{content:'';flex:1;height:1px;background:#2e2e38;}
+body.light-mode #auth-overlay{background:#f4f5f7;}
+body.light-mode .auth-box{background:#fff;border-color:#dde0e4;}
+body.light-mode .auth-field input{background:#f4f5f7;color:#1a1d23;}
+body.light-mode .auth-title{color:#1a1d23;}
+</style>
+
+<div id="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-logo">FinLedger</div>
+    <div class="auth-sub">Accounting System</div>
+
+    <!-- LOGIN PANEL -->
+    <div id="auth-login">
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-field"><label>Email</label><input type="email" id="auth-email" placeholder="you@company.com" onkeydown="if(event.key==='Enter')authLogin()"></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="auth-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')authLogin()"></div>
+      <div class="auth-err" id="auth-err-login"></div>
+      <button class="auth-btn" onclick="authLogin()">Sign In</button>
+      <div class="auth-sep">or</div>
+      <button class="auth-btn secondary" onclick="showAuthPanel('register')">Create an account</button>
+      <button class="auth-btn secondary" onclick="showAuthPanel('reset')" style="margin-top:4px;font-size:12px;border:none;color:#5a5a72;">Forgot password?</button>
+    </div>
+
+    <!-- REGISTER PANEL -->
+    <div id="auth-register" style="display:none;">
+      <div class="auth-title">Create account</div>
+      <div class="auth-field"><label>Email</label><input type="email" id="reg-email" placeholder="you@company.com"></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="reg-pass" placeholder="Min 6 characters"></div>
+      <div class="auth-field"><label>Confirm Password</label><input type="password" id="reg-pass2" placeholder="Repeat password" onkeydown="if(event.key==='Enter')authRegister()"></div>
+      <div class="auth-err" id="auth-err-register"></div>
+      <button class="auth-btn" onclick="authRegister()">Create Account</button>
+      <div class="auth-sep">or</div>
+      <button class="auth-btn secondary" onclick="showAuthPanel('login')">Already have an account? Sign in</button>
+    </div>
+
+    <!-- RESET PANEL -->
+    <div id="auth-reset" style="display:none;">
+      <div class="auth-title">Reset password</div>
+      <div class="auth-field"><label>Email</label><input type="email" id="reset-email" placeholder="you@company.com"></div>
+      <div class="auth-err" id="auth-err-reset"></div>
+      <div class="auth-ok" id="auth-ok-reset"></div>
+      <button class="auth-btn" onclick="authReset()">Send Reset Email</button>
+      <div class="auth-sep">or</div>
+      <button class="auth-btn secondary" onclick="showAuthPanel('login')">Back to sign in</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ── SUPABASE CONFIG ──────────────────────────────────────────────
+const SUPA_URL = 'https://xoaujnyamjsexybjswwj.supabase.co';
+const SUPA_KEY = 'sb_publishable_BcWxOGS-mTzTimjQZvFSIw_f0kyY1ka';
+const _supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+var _currentUser = null;
+
+// ── AUTH HELPERS ─────────────────────────────────────────────────
+function showAuthPanel(panel) {
+  ['login','register','reset'].forEach(function(p){
+    document.getElementById('auth-'+p).style.display = p===panel ? '' : 'none';
+  });
+  ['auth-err-login','auth-err-register','auth-err-reset','auth-ok-reset'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.textContent='';
+  });
+}
+
+async function authLogin() {
+  var email = document.getElementById('auth-email').value.trim();
+  var pass  = document.getElementById('auth-pass').value;
+  var errEl = document.getElementById('auth-err-login');
+  errEl.textContent = 'Signing in...';
+  var { data, error } = await _supa.auth.signInWithPassword({ email, password: pass });
+  if (error) { errEl.textContent = error.message; return; }
+  _currentUser = data.user;
+  onAuthSuccess();
+}
+
+async function authRegister() {
+  var email = document.getElementById('reg-email').value.trim();
+  var pass  = document.getElementById('reg-pass').value;
+  var pass2 = document.getElementById('reg-pass2').value;
+  var errEl = document.getElementById('auth-err-register');
+  if (!email || !pass) { errEl.textContent = 'Email and password are required.'; return; }
+  if (pass !== pass2)  { errEl.textContent = 'Passwords do not match.'; return; }
+  if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+  errEl.textContent = 'Creating account...';
+  var { data, error } = await _supa.auth.signUp({ email, password: pass });
+  if (error) { errEl.textContent = error.message; return; }
+  _currentUser = data.user;
+  // Try to sign in immediately (if email confirmation not required)
+  var { data: d2, error: e2 } = await _supa.auth.signInWithPassword({ email, password: pass });
+  if (!e2 && d2.user) { _currentUser = d2.user; onAuthSuccess(); }
+  else { errEl.style.color='#4ade80'; errEl.textContent = 'Account created! Check your email to confirm, then sign in.'; showAuthPanel('login'); }
+}
+
+async function authReset() {
+  var email = document.getElementById('reset-email').value.trim();
+  var errEl = document.getElementById('auth-err-reset');
+  var okEl  = document.getElementById('auth-ok-reset');
+  if (!email) { errEl.textContent = 'Enter your email address.'; return; }
+  var { error } = await _supa.auth.resetPasswordForEmail(email);
+  if (error) { errEl.textContent = error.message; return; }
+  okEl.textContent = 'Reset email sent! Check your inbox.';
+}
+
+function onAuthSuccess() {
+  document.getElementById('auth-overlay').classList.add('hidden');
+  // Update greeting with user email
+  var emailShort = (_currentUser.email||'').split('@')[0];
+  var greetEl = document.getElementById('topGreeting');
+  if(greetEl) greetEl.textContent = emailShort;
+  loadFromSupabase();
+}
+
+// ── SUPABASE SAVE/LOAD ───────────────────────────────────────────
+async function saveToSupabase(dbObj) {
+  if (!_currentUser) return;
+  await _supa.from('user_data').upsert({
+    user_id: _currentUser.id,
+    data: dbObj,
+    updated_at: new Date().toISOString()
+  }, { onConflict: 'user_id' });
+}
+
+async function loadFromSupabase() {
+  if (!_currentUser) return;
+  var { data, error } = await _supa.from('user_data')
+    .select('data').eq('user_id', _currentUser.id).single();
+  if (!error && data && data.data && data.data.ids) {
+    DB = data.data;
+    refreshCOA();
+    if(!DB.wires)   DB.wires   = [];
+    if(!DB.ids.wt)  DB.ids.wt  = 1;
+    if(!DB.contacts)  DB.contacts  = [];
+    if(!DB.recurring) DB.recurring = [];
+    if(!DB.assets)    DB.assets    = [];
+    if(!DB.deprPlans) DB.deprPlans = [];
+  }
+  updateUserUI();
+  renderAll();
+  initJE();
+}
+
+// ── PATCH sv() to save to Supabase ──────────────────────────────
+var _origSv = sv;
+sv = function() {
+  _origSv();             // keep localStorage fallback
+  saveToSupabase(DB);    // also save to Supabase
+};
+
+// ── SIGN OUT ─────────────────────────────────────────────────────
+async function signOut() {
+  await _supa.auth.signOut();
+  _currentUser = null;
+  document.getElementById('auth-overlay').classList.remove('hidden');
+  showAuthPanel('login');
+}
+
+// ── CHECK EXISTING SESSION ON LOAD ──────────────────────────────
+(async function() {
+  var { data: { session } } = await _supa.auth.getSession();
+  if (session && session.user) {
+    _currentUser = session.user;
+    onAuthSuccess();
+  }
+  // listen for auth state changes (e.g. email confirmation)
+  _supa.auth.onAuthStateChange(function(event, session) {
+    if (event === 'SIGNED_IN' && session) {
+      _currentUser = session.user;
+      onAuthSuccess();
+    }
+    if (event === 'SIGNED_OUT') {
+      _currentUser = null;
+      document.getElementById('auth-overlay').classList.remove('hidden');
+    }
+  });
+})();
+</script>
 </body>
 </html>"""
 
-
 import json as _json2
-
-# In-memory data store (per-process). For a real multi-user SaaS
-# replace this with Supabase or Postgres per-user rows.
-_data_store = {}
-
 
 class Handler(http.server.BaseHTTPRequestHandler):
 
@@ -7785,39 +7973,19 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(HTML.encode("utf-8"))
 
     def _load_data(self):
-        # Return stored data (empty if none)
-        session_key = self.headers.get("X-Session-Id", "default")
-        data = _data_store.get(session_key)
-        if data:
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self._cors()
-            self.end_headers()
-            self.wfile.write(_json2.dumps(data).encode("utf-8"))
-        else:
-            self.send_response(204)
-            self._cors()
-            self.end_headers()
+        # localStorage fallback — Supabase handles real persistence
+        self.send_response(204)
+        self._cors()
+        self.end_headers()
 
     def _save_data(self):
-        try:
-            length = int(self.headers.get("Content-Length", 0))
-            body   = self.rfile.read(length)
-            data   = _json2.loads(body)
-            session_key = self.headers.get("X-Session-Id", "default")
-            _data_store[session_key] = data
-            self.send_response(200)
-            self._cors()
-            self.end_headers()
-            self.wfile.write(b"ok")
-        except Exception as e:
-            self.send_response(500)
-            self._cors()
-            self.end_headers()
-            self.wfile.write(str(e).encode())
+        # localStorage fallback — Supabase handles real persistence  
+        self.send_response(200)
+        self._cors()
+        self.end_headers()
+        self.wfile.write(b"ok")
 
     def _export_file(self):
-        """On web we can't write to Desktop — return the content for browser download."""
         try:
             length  = int(self.headers.get("Content-Length", 0))
             body    = self.rfile.read(length)
@@ -7837,13 +8005,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.wfile.write(str(e).encode())
 
     def log_message(self, format, *args):
-        pass  # Keep Railway logs clean
+        pass
 
 
 def main():
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("0.0.0.0", PORT), Handler) as httpd:
-        print(f"FinLedger running on port {PORT}")
+        print(f"FinLedger + Supabase running on port {PORT}")
         httpd.serve_forever()
 
 
