@@ -450,6 +450,53 @@ textarea{resize:vertical;min-height:72px;}
 .wt-badge-in{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.3);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;font-family:monospace;}
 .wt-badge-pend{background:rgba(255,217,61,.12);color:var(--yellow);border:1px solid rgba(255,217,61,.3);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;font-family:monospace;}
 
+/* ── BANK ACCOUNTS MODULE ────────────────────────────────────── */
+.ba-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:20px;}
+.ba-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px;position:relative;cursor:pointer;transition:all .15s;}
+.ba-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.2);}
+.ba-card-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.ba-bank-icon{width:42px;height:42px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ba-bank-name{font-weight:700;font-size:14px;color:var(--text);}
+.ba-bank-iban{font-size:11px;color:var(--text3);font-family:monospace;margin-top:2px;}
+.ba-balance{font-family:'DM Serif Display',serif;font-size:26px;color:var(--text);margin-bottom:4px;}
+.ba-balance.neg{color:var(--red);}
+.ba-stats{display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.ba-stat label{display:block;font-size:9px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;}
+.ba-stat span{font-size:12px;font-weight:600;font-family:monospace;}
+.ba-card-actions{position:absolute;top:14px;right:14px;display:flex;gap:6px;opacity:0;transition:opacity .15s;}
+.ba-card:hover .ba-card-actions{opacity:1;}
+.ba-action-btn{width:28px;height:28px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3);transition:all .15s;}
+.ba-action-btn:hover{color:var(--text);border-color:var(--accent);}
+.ba-add-card{background:transparent;border:2px dashed var(--border);border-radius:14px;padding:20px 22px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:140px;transition:all .15s;color:var(--text3);}
+.ba-add-card:hover{border-color:var(--accent);color:var(--accent);background:rgba(200,255,0,.03);}
+.ba-add-icon{font-size:28px;}
+.ba-add-label{font-size:13px;font-weight:600;}
+.ba-chart-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:20px;}
+.ba-chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.ba-chart-kpis{display:flex;gap:32px;}
+.ba-kpi-item label{display:block;font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+.ba-kpi-item span{font-family:'DM Serif Display',serif;font-size:22px;}
+.ba-mov-row{display:flex;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(46,46,56,.4);gap:12px;cursor:pointer;transition:background .12s;}
+.ba-mov-row:hover{background:var(--surface2);}
+.ba-mov-row:last-child{border-bottom:none;}
+.ba-mov-sign{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ba-mov-sign.in{background:rgba(74,222,128,.12);color:var(--green);}
+.ba-mov-sign.out{background:rgba(248,113,113,.12);color:var(--red);}
+.ba-mov-desc{flex:1;min-width:0;}
+.ba-mov-concept{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ba-mov-date{font-size:11px;color:var(--text3);font-family:monospace;margin-top:2px;}
+.ba-mov-amount{font-family:monospace;font-size:14px;font-weight:700;flex-shrink:0;}
+.ba-mov-amount.pos{color:var(--green);}
+.ba-mov-amount.neg{color:var(--red);}
+.ba-reconcile-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;font-family:monospace;}
+.ba-reconcile-badge.done{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.3);}
+.ba-reconcile-badge.pending{background:rgba(255,217,61,.1);color:var(--yellow);border:1px solid rgba(255,217,61,.3);}
+.ba-import-zone{border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;transition:all .2s;cursor:pointer;background:var(--surface2);}
+.ba-import-zone:hover,.ba-import-zone.drag-over{border-color:var(--accent);background:rgba(200,255,0,.04);}
+.ba-import-zone-icon{font-size:36px;margin-bottom:8px;}
+.ba-import-zone-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.ba-import-zone-sub{font-size:12px;color:var(--text3);}
+/* ── CFO MODULE ─────────────────────────────────────────── */
 .cfo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
 .cfo-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
 .cfo-grid-3{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:24px;}
@@ -539,10 +586,11 @@ textarea{resize:vertical;min-height:72px;}
     <div class="nav-item" onclick="nav('purchases')"><span class="nav-icon">↓</span>Purchases</div>
     <!-- TESORERÍA GROUP -->
     <div class="nav-item nav-group-toggle" id="nav-tesoreria" onclick="toggleTesoreriaNav()" style="justify-content:space-between;">
-      <div style="display:flex;align-items:center;gap:10px;"><span class="nav-icon">🏦</span><span>Tesorería</span></div>
+      <div style="display:flex;align-items:center;gap:10px;"><span class="nav-icon">🏦</span><span>Treasury</span></div>
       <span id="nav-tesoreria-arrow" style="font-size:10px;color:var(--text3);transition:transform .2s;">▶</span>
     </div>
     <div id="nav-tesoreria-sub" style="display:none;padding-left:14px;">
+      <div class="nav-item nav-subitem" onclick="navTesoreria('bankaccounts')"><span class="nav-icon" style="font-size:11px;">🏛</span>Bank Accounts</div>
       <div class="nav-item nav-subitem" onclick="navTesoreria('collections')"><span class="nav-icon" style="font-size:11px;">◎</span>Collections</div>
       <div class="nav-item nav-subitem" onclick="navTesoreria('payments')"><span class="nav-icon" style="font-size:11px;">◉</span>Payments</div>
       <div class="nav-item nav-subitem" onclick="openWireTransfers()"><span class="nav-icon" style="font-size:11px;">⇄</span>Wire Transfers</div>
@@ -1664,6 +1712,10 @@ function ld(){
   if(!DB.ids.ser) DB.ids.ser = 4;
   if(!DB.wires)   DB.wires   = [];
   if(!DB.ids.wt)  DB.ids.wt  = 1;
+  if(!DB.bankAccounts)  DB.bankAccounts  = [];
+  if(!DB.bankMovements) DB.bankMovements = [];
+  if(!DB.ids.ba)  DB.ids.ba  = 1;
+  if(!DB.ids.bm)  DB.ids.bm  = 1;
 }
 
 // ── FORMAT ─────────────────────────────────────────────────────────────────
@@ -1774,9 +1826,9 @@ function livePreviewUser(){
 }
 
 // ── NAVIGATION ─────────────────────────────────────────────────────────────
-var titles={dashboard:'Dashboard',contacts:'Contacts',sales:'Sales Invoices',purchases:'Purchase Invoices',collections:'Collections',payments:'Payments',journal:'Journal Entries',pl:'P&L Statement',bs:'Balance Sheet',cf:'Cash Flow Statement', cfo:'CFO Intelligence', tesoreria:'Tesorería'};
+var titles={dashboard:'Dashboard',contacts:'Contacts',sales:'Sales Invoices',purchases:'Purchase Invoices',collections:'Collections',payments:'Payments',journal:'Journal Entries',pl:'P&L Statement',bs:'Balance Sheet',cf:'Cash Flow Statement', cfo:'CFO Intelligence', tesoreria:'Tesorería', bankaccounts:'Bank Accounts', badetail:'Account Detail'};
 var crumbs={dashboard:'FinLedger / Overview',contacts:'FinLedger / Operations / Contacts',sales:'FinLedger / Operations / Sales',purchases:'FinLedger / Operations / Purchases',collections:'FinLedger / Tesorería / Collections',payments:'FinLedger / Tesorería / Payments',journal:'FinLedger / Operations / Journal',pl:'FinLedger / Reports / P&L',bs:'FinLedger / Reports / Balance Sheet',cf:'FinLedger / Reports / Cash Flow',
-    cfo:'FinLedger / CFO Module', tesoreria:'FinLedger / Tesorería'};
+    cfo:'FinLedger / CFO Module', tesoreria:'FinLedger / Tesorería', bankaccounts:'FinLedger / Tesorería / Bank Accounts', badetail:'FinLedger / Tesorería / Bank Accounts / Detail'};
 function nav(p){
   document.querySelectorAll('.page').forEach(function(e){e.classList.remove('active');});
   document.querySelectorAll('.nav-item').forEach(function(e){e.classList.remove('active');});
@@ -1886,7 +1938,8 @@ function clearAll(){
   if(!confirm('Delete ALL data?\n\nThis will delete ALL transactions, contacts, journal entries, assets and recurring invoices.\n\nYour company settings and preferences will be preserved.\n\nThis cannot be undone.'))return;
   DB.sales=[];DB.purch=[];DB.coll=[];DB.pay=[];DB.je=[];
   DB.contacts=[];DB.recurring=[];DB.assets=[];DB.deprPlans=[];DB.series=DB.series||[];DB.wires=[];
-  DB.ids={s:1,p:1,c:1,py:1,j:1,ct:1,rc:1,ast:1,dp:1,wt:1,
+  DB.bankAccounts=[];DB.bankMovements=[];
+  DB.ids={s:1,p:1,c:1,py:1,j:1,ct:1,rc:1,ast:1,dp:1,wt:1,ba:1,bm:1,
           sub_430:1,sub_431:1,sub_400:1,sub_410:1,sub_1100:1,sub_2000:1};
   sv();closeOverlay('ov-settings');renderAll();
   showToast('✅ All data cleared. Settings preserved.');
@@ -6591,7 +6644,753 @@ function downloadWireHTML(dir, wireOrId) {
 
 
 
-// ── USER CARD DROPDOWN ─────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════
+// BANK ACCOUNTS MODULE
+// ══════════════════════════════════════════════════════════════════
+
+var _currentAccountId = null;
+var _baImportData     = null;
+var _baEditId         = null;
+var _bankRecMovIdx    = null;
+var _bankRecType      = 'sales';
+
+// Bank icon map
+var BANK_ICONS = {
+  'santander':'🏦','sabadell':'🟠','bbva':'💙','caixabank':'⭐','cajamar':'🌾',
+  'ruralvia':'🌿','ing':'🧡','unicaja':'🦁','ibercaja':'🔵','bankinter':'🔴',
+  'abanca':'🔷','kutxabank':'⬜','liberbank':'🟦','openbank':'⚡','revolut':'🔲',
+  'wise':'💚','stripe':'🟣','paypal':'🔵','n26':'⬛','holded':'🟤'
+};
+
+function getBankIcon(name) {
+  if (!name) return '🏦';
+  var lower = name.toLowerCase();
+  for (var key in BANK_ICONS) {
+    if (lower.indexOf(key) !== -1) return BANK_ICONS[key];
+  }
+  return '🏦';
+}
+
+function updateBankIcon() {
+  var name = document.getElementById('acc-bank-name').value;
+  var icon = document.getElementById('acc-bank-icon-preview');
+  if (icon) icon.textContent = getBankIcon(name);
+}
+
+// ── Init DB.bankAccounts ──────────────────────────────────────────
+function ensureBADB() {
+  if (!DB.bankAccounts)  DB.bankAccounts  = [];
+  if (!DB.bankMovements) DB.bankMovements = [];
+  if (!DB.ids.ba)        DB.ids.ba        = 1;
+  if (!DB.ids.bm)        DB.ids.bm        = 1;
+}
+
+// ── Open Add Account ─────────────────────────────────────────────
+function openAddAccount() {
+  _baEditId = null;
+  document.getElementById('add-acc-title').textContent = 'Add Bank Account';
+  ['acc-bank-name','acc-name','acc-iban','acc-bic','acc-opening-balance'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.value = id === 'acc-opening-balance' ? '0' : '';
+  });
+  document.getElementById('acc-currency').value = 'EUR';
+  document.getElementById('acc-bank-icon-preview').textContent = '🏦';
+  openOverlay('ov-add-account');
+}
+
+function openEditAccount() {
+  ensureBADB();
+  var acc = DB.bankAccounts.find(function(a){ return a.id === _currentAccountId; });
+  if (!acc) return;
+  _baEditId = acc.id;
+  document.getElementById('add-acc-title').textContent = 'Edit Account';
+  document.getElementById('acc-bank-name').value = acc.bankName || '';
+  document.getElementById('acc-name').value      = acc.name || '';
+  document.getElementById('acc-iban').value      = acc.iban || '';
+  document.getElementById('acc-bic').value       = acc.bic  || '';
+  document.getElementById('acc-currency').value  = acc.currency || 'EUR';
+  document.getElementById('acc-opening-balance').value = acc.openingBalance || 0;
+  document.getElementById('acc-bank-icon-preview').textContent = getBankIcon(acc.bankName);
+  openOverlay('ov-add-account');
+}
+
+function saveAccount() {
+  ensureBADB();
+  var bankName = document.getElementById('acc-bank-name').value.trim();
+  var name     = document.getElementById('acc-name').value.trim() || bankName;
+  if (!bankName) { alert('Please enter a bank name.'); return; }
+
+  if (_baEditId) {
+    var acc = DB.bankAccounts.find(function(a){ return a.id === _baEditId; });
+    if (acc) {
+      acc.bankName = bankName; acc.name = name;
+      acc.iban = document.getElementById('acc-iban').value.trim();
+      acc.bic  = document.getElementById('acc-bic').value.trim();
+      acc.currency = document.getElementById('acc-currency').value;
+      acc.openingBalance = parseFloat(document.getElementById('acc-opening-balance').value)||0;
+    }
+  } else {
+    DB.bankAccounts.push({
+      id: DB.ids.ba++,
+      bankName: bankName,
+      name: name,
+      iban: document.getElementById('acc-iban').value.trim(),
+      bic:  document.getElementById('acc-bic').value.trim(),
+      currency: document.getElementById('acc-currency').value,
+      openingBalance: parseFloat(document.getElementById('acc-opening-balance').value)||0,
+      createdAt: td()
+    });
+  }
+  sv(); closeOverlay('ov-add-account'); rBankAccounts();
+  showToast('✅ Account saved: ' + name);
+}
+
+// ── Render Bank Accounts list page ───────────────────────────────
+function rBankAccounts() {
+  ensureBADB();
+  var grid = document.getElementById('ba-accounts-grid');
+  if (!grid) return;
+
+  // Compute totals per account
+  var cards = DB.bankAccounts.map(function(acc) {
+    var movs = DB.bankMovements.filter(function(m){ return m.accountId === acc.id; });
+    var inflows  = movs.filter(function(m){ return m.amount > 0; }).reduce(function(a,m){ return a+m.amount; }, 0);
+    var outflows = movs.filter(function(m){ return m.amount < 0; }).reduce(function(a,m){ return a+m.amount; }, 0);
+    var balance  = (acc.openingBalance||0) + inflows + outflows;
+    var pending  = movs.filter(function(m){ return !m.reconciled; }).length;
+    return { acc, inflows, outflows, balance, pending, count: movs.length };
+  });
+
+  // KPI chart data
+  renderBAChart(cards);
+
+  // KPIs
+  var totalIn  = cards.reduce(function(a,c){ return a+c.inflows;  }, 0);
+  var totalOut = cards.reduce(function(a,c){ return a+Math.abs(c.outflows); }, 0);
+  var totalBal = cards.reduce(function(a,c){ return a+c.balance;  }, 0);
+  var kIn  = document.getElementById('ba-kpi-in');
+  var kOut = document.getElementById('ba-kpi-out');
+  var kBal = document.getElementById('ba-kpi-bal');
+  if(kIn)  kIn.textContent  = f(totalIn);
+  if(kOut) kOut.textContent = f(totalOut);
+  if(kBal) { kBal.textContent = f(totalBal); kBal.style.color = totalBal >= 0 ? 'var(--green)' : 'var(--red)'; }
+
+  // Cards
+  grid.innerHTML = cards.map(function(c) {
+    var icon = getBankIcon(c.acc.bankName);
+    var balColor = c.balance >= 0 ? '' : ' neg';
+    return '<div class="ba-card" onclick="openBADetail('+c.acc.id+')">' +
+      '<div class="ba-card-actions">' +
+        '<div class="ba-action-btn" onclick="event.stopPropagation();_currentAccountId='+c.acc.id+';openEditAccount()" title="Edit">✏️</div>' +
+        '<div class="ba-action-btn" onclick="event.stopPropagation();_currentAccountId='+c.acc.id+';openImportMovements()" title="Import">⬆</div>' +
+        '<div class="ba-action-btn" onclick="event.stopPropagation();deleteAccount('+c.acc.id+')" title="Delete" style="color:var(--red);">🗑</div>' +
+      '</div>' +
+      '<div class="ba-card-header">' +
+        '<div class="ba-bank-icon">'+icon+'</div>' +
+        '<div><div class="ba-bank-name">'+c.acc.name+'</div><div class="ba-bank-iban">'+(c.acc.iban||'No IBAN')+'</div></div>' +
+      '</div>' +
+      '<div class="ba-balance'+balColor+'">'+f(c.balance)+'</div>' +
+      '<div class="ba-stats">' +
+        '<div class="ba-stat"><label>Inflows</label><span style="color:var(--green);">'+f(c.inflows)+'</span></div>' +
+        '<div class="ba-stat"><label>Outflows</label><span style="color:var(--red);">'+f(Math.abs(c.outflows))+'</span></div>' +
+        '<div class="ba-stat"><label>Movements</label><span>'+c.count+'</span></div>' +
+        (c.pending > 0 ? '<div class="ba-stat"><label>Pending</label><span style="color:var(--yellow);">'+c.pending+'</span></div>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('') +
+  '<div class="ba-add-card" onclick="openAddAccount()"><div class="ba-add-icon">+</div><div class="ba-add-label">Add Account</div></div>';
+}
+
+// ── Treasury cash flow chart (SVG) ───────────────────────────────
+function renderBAChart(cards) {
+  var el = document.getElementById('ba-chart-svg');
+  if (!el) return;
+
+  // Group movements by month (last 12 months)
+  var months = [];
+  var now = new Date();
+  for (var i = 11; i >= 0; i--) {
+    var d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    months.push({ key: d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'), label: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()] });
+  }
+
+  var allMovs = DB.bankMovements || [];
+  var monthData = months.map(function(m) {
+    var movs = allMovs.filter(function(mv){ return (mv.date||'').startsWith(m.key); });
+    var inflow  = movs.filter(function(mv){ return mv.amount > 0; }).reduce(function(a,mv){ return a+mv.amount; }, 0);
+    var outflow = movs.filter(function(mv){ return mv.amount < 0; }).reduce(function(a,mv){ return a+Math.abs(mv.amount); }, 0);
+    return { label: m.label, inflow, outflow };
+  });
+
+  // Running balance
+  var totalOpeningBal = (DB.bankAccounts||[]).reduce(function(a,acc){ return a+(acc.openingBalance||0); }, 0);
+  var runBal = totalOpeningBal;
+  var balData = monthData.map(function(d) {
+    runBal += d.inflow - d.outflow;
+    return runBal;
+  });
+
+  var maxV = Math.max.apply(null, monthData.map(function(d){ return Math.max(d.inflow, d.outflow, 1); }));
+  var maxBal = Math.max.apply(null, balData.map(function(v){ return Math.abs(v); })) || 1;
+  var W=700, H=140, pad=40, barW=16, gap=12;
+  var scaleBar = function(v){ return H - (v/maxV)*H*0.85; };
+  var scaleBal = function(v){ return H/2 - (v/maxBal)*(H/2)*0.85; };
+
+  var svg = '<svg viewBox="0 0 '+W+' '+(H+30)+'" style="width:100%;overflow:visible;" xmlns="http://www.w3.org/2000/svg">';
+  // Baseline
+  svg += '<line x1="'+pad+'" y1="'+H+'" x2="'+(W-10)+'" y2="'+H+'" stroke="var(--border)" stroke-width="1"/>';
+  // Gridlines
+  [0.25,0.5,0.75].forEach(function(t){
+    var y = H*(1-t*0.85);
+    svg += '<line x1="'+pad+'" y1="'+y+'" x2="'+(W-10)+'" y2="'+y+'" stroke="var(--border)" stroke-dasharray="3,3" stroke-width="0.5"/>';
+  });
+
+  // Bars
+  monthData.forEach(function(d, i) {
+    var x = pad + i*(barW*2+gap+4);
+    var inH  = Math.max(2, (d.inflow/maxV)*H*0.85);
+    var outH = Math.max(2, (d.outflow/maxV)*H*0.85);
+    svg += '<rect x="'+x+'" y="'+(H-inH)+'" width="'+barW+'" height="'+inH+'" fill="var(--green)" opacity="0.75" rx="3" title="Inflow: '+d.inflow+'"/>';
+    svg += '<rect x="'+(x+barW+2)+'" y="'+(H-outH)+'" width="'+barW+'" height="'+outH+'" fill="var(--red)" opacity="0.75" rx="3" title="Outflow: '+d.outflow+'"/>';
+    svg += '<text x="'+(x+barW)+'" y="'+(H+14)+'" fill="var(--text3)" font-size="9" text-anchor="middle">'+d.label+'</text>';
+  });
+
+  // Balance line
+  var balPoints = balData.map(function(v, i) {
+    var x = pad + i*(barW*2+gap+4) + barW;
+    var y = H/2 + (v >= 0 ? -(v/maxBal)*(H/2)*0.85 : (Math.abs(v)/maxBal)*(H/2)*0.85);
+    return x+','+y;
+  });
+  if (balPoints.length > 1) {
+    svg += '<polyline points="'+balPoints.join(' ')+'" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>';
+    balData.forEach(function(v, i) {
+      var x = pad + i*(barW*2+gap+4) + barW;
+      var y = H/2 + (v >= 0 ? -(v/maxBal)*(H/2)*0.85 : (Math.abs(v)/maxBal)*(H/2)*0.85);
+      svg += '<circle cx="'+x+'" cy="'+y+'" r="3" fill="var(--accent)"/>';
+    });
+  }
+  svg += '</svg>';
+  el.innerHTML = svg;
+}
+
+// ── Open account detail page ──────────────────────────────────────
+function openBADetail(accId) {
+  ensureBADB();
+  _currentAccountId = accId;
+  var acc = DB.bankAccounts.find(function(a){ return a.id === accId; });
+  if (!acc) return;
+  document.getElementById('bad-title').textContent = acc.name;
+  document.getElementById('bad-sub').textContent   = (acc.iban||'') + (acc.bic ? ' · '+acc.bic : '');
+  nav('badetail');
+  rBADetail();
+}
+
+function rBADetail() {
+  ensureBADB();
+  if (!_currentAccountId) return;
+  var acc  = DB.bankAccounts.find(function(a){ return a.id === _currentAccountId; });
+  if (!acc) return;
+  var filter = (document.getElementById('bad-reconcile-filter')||{value:'all'}).value;
+  var movs = DB.bankMovements.filter(function(m){ return m.accountId === _currentAccountId; });
+  if (filter === 'pending')    movs = movs.filter(function(m){ return !m.reconciled; });
+  if (filter === 'reconciled') movs = movs.filter(function(m){ return m.reconciled; });
+  movs = movs.slice().sort(function(a,b){ return b.date > a.date ? 1 : -1; });
+
+  var allMovs  = DB.bankMovements.filter(function(m){ return m.accountId === _currentAccountId; });
+  var inflows  = allMovs.filter(function(m){ return m.amount > 0; }).reduce(function(a,m){ return a+m.amount; }, 0);
+  var outflows = allMovs.filter(function(m){ return m.amount < 0; }).reduce(function(a,m){ return a+m.amount; }, 0);
+  var balance  = (acc.openingBalance||0) + inflows + outflows;
+  var pending  = allMovs.filter(function(m){ return !m.reconciled; }).length;
+
+  var bd = document.getElementById('bad-balance'); if(bd){ bd.textContent=f(balance); bd.style.color=balance>=0?'var(--accent)':'var(--red)'; }
+  var bi = document.getElementById('bad-in');      if(bi) bi.textContent=f(inflows);
+  var bo = document.getElementById('bad-out');     if(bo) bo.textContent=f(Math.abs(outflows));
+  var bc = document.getElementById('bad-count');   if(bc) bc.textContent=allMovs.length;
+  var bp = document.getElementById('bad-pending-count'); if(bp){ bp.textContent=pending; bp.style.color=pending>0?'var(--yellow)':'var(--green)'; }
+
+  var list = document.getElementById('bad-movements-list');
+  if (!list) return;
+  if (!movs.length) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px;">No movements yet. Import your bank statement.</div>';
+    return;
+  }
+
+  list.innerHTML = movs.map(function(m, i) {
+    var isIn  = m.amount >= 0;
+    var badge = m.reconciled
+      ? '<span class="ba-reconcile-badge done">✓ Reconciled</span>'
+      : '<span class="ba-reconcile-badge pending">⏳ Pending</span>';
+    return '<div class="ba-mov-row" onclick="openBankReconcile('+m.id+')">' +
+      '<div class="ba-mov-sign '+(isIn?'in':'out')+'">'+(isIn?'↑':'↓')+'</div>' +
+      '<div class="ba-mov-desc">' +
+        '<div class="ba-mov-concept">'+m.concept+'</div>' +
+        '<div class="ba-mov-date">'+m.date+(m.valueDate&&m.valueDate!==m.date?' · Val: '+m.valueDate:'')+'</div>' +
+      '</div>' +
+      badge +
+      '<div class="ba-mov-amount '+(isIn?'pos':'neg')+'">'+f(m.amount)+'</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ── Delete account ────────────────────────────────────────────────
+function deleteAccount(accId) {
+  if (!confirm('Delete this account and all its movements?')) return;
+  DB.bankAccounts  = DB.bankAccounts.filter(function(a){ return a.id !== accId; });
+  DB.bankMovements = DB.bankMovements.filter(function(m){ return m.accountId !== accId; });
+  sv(); rBankAccounts(); showToast('Account deleted.');
+}
+
+// ── Import movements ─────────────────────────────────────────────
+function openImportMovements() {
+  _baImportData = null;
+  document.getElementById('ba-import-preview').innerHTML = '';
+  document.getElementById('ba-import-result').innerHTML  = '';
+  document.getElementById('ba-import-confirm').disabled  = true;
+  document.getElementById('ba-file-input').value = '';
+  openOverlay('ov-import-movements');
+}
+
+function handleBADrop(e) {
+  e.preventDefault();
+  document.getElementById('ba-drop-zone').classList.remove('drag-over');
+  var file = e.dataTransfer.files[0];
+  if (file) processBAFile(file);
+}
+
+function handleBAFileInput(e) {
+  var file = e.target.files[0];
+  if (file) processBAFile(file);
+}
+
+function processBAFile(file) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var data = new Uint8Array(e.target.result);
+      // Parse XLSX using SheetJS (loaded from CDN if needed)
+      parseBAXLSX(data, file.name);
+    } catch(err) {
+      document.getElementById('ba-import-result').innerHTML =
+        '<div style="color:var(--red);padding:10px;background:rgba(248,113,113,.1);border-radius:8px;">Error reading file: '+err.message+'</div>';
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function parseBAXLSX(data, filename) {
+  // Load SheetJS dynamically if not present
+  if (typeof XLSX === 'undefined') {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+    s.onload = function(){ doParseBAXLSX(data, filename); };
+    document.head.appendChild(s);
+  } else {
+    doParseBAXLSX(data, filename);
+  }
+}
+
+function doParseBAXLSX(data, filename) {
+  try {
+    var wb = XLSX.read(data, { type: 'array' });
+    var ws = wb.Sheets[wb.SheetNames[0]];
+    var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+
+    // Find header row (contains "Fecha" and "Importe")
+    var headerIdx = -1;
+    var headers   = [];
+    for (var i = 0; i < Math.min(rows.length, 15); i++) {
+      var row = rows[i].map(function(v){ return String(v||'').toLowerCase(); });
+      if (row.some(function(v){ return v.indexOf('fecha') !== -1; }) &&
+          row.some(function(v){ return v.indexOf('importe') !== -1 || v.indexOf('amount') !== -1; })) {
+        headerIdx = i;
+        headers   = rows[i].map(function(v){ return String(v||'').toLowerCase(); });
+        break;
+      }
+    }
+
+    if (headerIdx === -1) {
+      document.getElementById('ba-import-result').innerHTML =
+        '<div style="color:var(--red);padding:10px;background:rgba(248,113,113,.1);border-radius:8px;">Could not find header row. File must have columns: Fecha Operación, Concepto, Importe, Saldo.</div>';
+      return;
+    }
+
+    // Column map
+    function colIdx(keywords) {
+      for (var k = 0; k < keywords.length; k++) {
+        for (var h = 0; h < headers.length; h++) {
+          if (headers[h].indexOf(keywords[k]) !== -1) return h;
+        }
+      }
+      return -1;
+    }
+
+    var iDate    = colIdx(['fecha operac','fecha op','operation date','date']);
+    var iValDate = colIdx(['fecha valor','value date']);
+    var iConcept = colIdx(['concepto','concept','description','descripción']);
+    var iAmount  = colIdx(['importe','amount','cantidad']);
+    var iBalance = colIdx(['saldo','balance']);
+    var iRef1    = colIdx(['referencia 1','ref1','reference']);
+
+    // Parse data rows
+    var parsed = [];
+    for (var r = headerIdx + 1; r < rows.length; r++) {
+      var row = rows[r];
+      if (!row || !row[iDate]) continue;
+
+      var rawDate = String(row[iDate] || '');
+      var dateStr = '';
+      // Handle DD/MM/YYYY format
+      var dm = rawDate.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})/);
+      if (dm) dateStr = dm[3]+'-'+String(dm[2]).padStart(2,'0')+'-'+String(dm[1]).padStart(2,'0');
+      else dateStr = rawDate.slice(0,10);
+
+      var rawAmount = String(row[iAmount] || '0').replace(/\./g,'').replace(',','.');
+      var amount = parseFloat(rawAmount) || 0;
+      if (!amount && amount !== 0) continue;
+
+      var rawBalance = iBalance >= 0 ? String(row[iBalance]||'0').replace(/\./g,'').replace(',','.') : '';
+      var balance    = parseFloat(rawBalance) || 0;
+
+      var concept  = String(iConcept >= 0 ? row[iConcept]||'' : '').trim();
+      var valDate  = '';
+      if (iValDate >= 0) {
+        var vd = String(row[iValDate]||'');
+        var vm = vd.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})/);
+        if (vm) valDate = vm[3]+'-'+String(vm[2]).padStart(2,'0')+'-'+String(vm[1]).padStart(2,'0');
+      }
+
+      if (dateStr && concept) {
+        parsed.push({ date: dateStr, valueDate: valDate, concept, amount, balance,
+          ref: iRef1>=0?String(row[iRef1]||''):'', raw: row });
+      }
+    }
+
+    if (!parsed.length) {
+      document.getElementById('ba-import-result').innerHTML =
+        '<div style="color:var(--yellow);padding:10px;background:rgba(255,217,61,.1);border-radius:8px;">No movements found in file.</div>';
+      return;
+    }
+
+    _baImportData = parsed;
+    document.getElementById('ba-import-confirm').disabled = false;
+
+    // Preview
+    var previewRows = parsed.slice(0,8).map(function(m) {
+      var isIn = m.amount >= 0;
+      return '<tr>' +
+        '<td style="padding:5px 8px;font-size:11px;font-family:monospace;">'+m.date+'</td>' +
+        '<td style="padding:5px 8px;font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+m.concept+'</td>' +
+        '<td style="padding:5px 8px;font-size:11px;font-family:monospace;color:'+(isIn?'var(--green)':'var(--red)')+';">'+f(m.amount)+'</td>' +
+        '<td style="padding:5px 8px;font-size:11px;font-family:monospace;color:var(--text3);">'+f(m.balance)+'</td>' +
+      '</tr>';
+    }).join('');
+
+    document.getElementById('ba-import-preview').innerHTML =
+      '<div style="font-size:11px;color:var(--text3);margin-bottom:8px;">Preview (first 8 of '+parsed.length+' movements)</div>' +
+      '<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:11px;">' +
+      '<thead><tr style="background:var(--surface3);">' +
+        '<th style="padding:5px 8px;text-align:left;font-size:10px;font-family:monospace;text-transform:uppercase;">Date</th>' +
+        '<th style="padding:5px 8px;text-align:left;font-size:10px;font-family:monospace;text-transform:uppercase;">Concept</th>' +
+        '<th style="padding:5px 8px;text-align:right;font-size:10px;font-family:monospace;text-transform:uppercase;">Amount</th>' +
+        '<th style="padding:5px 8px;text-align:right;font-size:10px;font-family:monospace;text-transform:uppercase;">Balance</th>' +
+      '</tr></thead><tbody>'+previewRows+'</tbody></table></div>';
+
+    document.getElementById('ba-import-result').innerHTML =
+      '<div style="color:var(--green);padding:8px 12px;background:rgba(74,222,128,.1);border-radius:8px;font-size:12px;">✅ '+parsed.length+' movements ready to import</div>';
+
+  } catch(err) {
+    document.getElementById('ba-import-result').innerHTML =
+      '<div style="color:var(--red);padding:10px;background:rgba(248,113,113,.1);border-radius:8px;">Parse error: '+err.message+'</div>';
+  }
+}
+
+function confirmImportMovements() {
+  ensureBADB();
+  if (!_baImportData || !_currentAccountId) return;
+  var plan = getActivePlan();
+  var cashAcc = plan.cashAccts ? plan.cashAccts[0] : (plan.id==='pgc'?'572':'1000');
+  var added = 0, skipped = 0;
+
+  _baImportData.forEach(function(m) {
+    // Skip duplicates (same date + concept + amount)
+    var dup = DB.bankMovements.some(function(existing){
+      return existing.accountId === _currentAccountId &&
+             existing.date === m.date &&
+             Math.abs(existing.amount - m.amount) < 0.01 &&
+             existing.concept === m.concept;
+    });
+    if (dup) { skipped++; return; }
+
+    var mov = {
+      id: DB.ids.bm++,
+      accountId: _currentAccountId,
+      date:      m.date,
+      valueDate: m.valueDate || m.date,
+      concept:   m.concept,
+      amount:    m.amount,
+      balance:   m.balance,
+      ref:       m.ref || '',
+      reconciled: false,
+      jeId: null
+    };
+    DB.bankMovements.push(mov);
+    added++;
+  });
+
+  sv();
+  _baImportData = null;
+  document.getElementById('ba-import-confirm').disabled = true;
+  closeOverlay('ov-import-movements');
+  rBADetail();
+  showToast('✅ Imported '+added+' movements'+(skipped>0?' · '+skipped+' duplicates skipped':''));
+}
+
+// ── Download sample XLSX ──────────────────────────────────────────
+function downloadSampleXLSX() {
+  var csv = 'Fecha Operación\tFecha Valor\tConcepto\tImporte\tDivisa\tSaldo\n' +
+    '22/04/2026\t22/04/2026\tTransferencia De Cliente SL, Concepto Factura INV-001\t1500.00\tEUR\t5500.00\n' +
+    '21/04/2026\t21/04/2026\tPago Proveedor ACME - Factura PINV-001\t-800.00\tEUR\t4000.00\n' +
+    '20/04/2026\t20/04/2026\tDomiciliacion Impuesto: IVA Trimestral\t-1200.00\tEUR\t4800.00\n' +
+    '18/04/2026\t18/04/2026\tTransferencia De Empresa XYZ, Cobro Servicios\t2200.00\tEUR\t6000.00\n' +
+    '15/04/2026\t15/04/2026\tNomina Empleado 1\t-1500.00\tEUR\t3800.00\n';
+  var blob = new Blob(['\uFEFF'+csv], {type:'text/tab-separated-values;charset=utf-8'});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href = url; a.download = 'MovimientosCuenta_Sample.xls';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+// ── Bank Reconcile ────────────────────────────────────────────────
+var _bankRecMovId = null;
+
+function openBankReconcile(movId) {
+  ensureBADB();
+  var mov = DB.bankMovements.find(function(m){ return m.id === movId; });
+  if (!mov) return;
+  if (mov.reconciled) {
+    if (!confirm('This movement is already reconciled. Un-reconcile it?')) return;
+    // Un-reconcile
+    if (mov.jeId) {
+      DB.je = DB.je.filter(function(je){ return je.id !== mov.jeId; });
+      mov.jeId = null;
+    }
+    mov.reconciled = false;
+    sv(); rBADetail(); renderAll();
+    showToast('Movement un-reconciled.');
+    return;
+  }
+  _bankRecMovId = movId;
+  _bankRecType  = mov.amount >= 0 ? 'sales' : 'purchases';
+  var isIn = mov.amount >= 0;
+  document.getElementById('rec-bank-mov-info').innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+      '<div>' +
+        '<div style="font-weight:700;color:var(--text);font-size:14px;">'+mov.concept+'</div>' +
+        '<div style="font-size:11px;color:var(--text3);font-family:monospace;margin-top:2px;">'+mov.date+(mov.valueDate?' · Val: '+mov.valueDate:'')+'</div>' +
+      '</div>' +
+      '<div style="font-family:\'DM Serif Display\',serif;font-size:22px;color:'+(isIn?'var(--green)':'var(--red)')+';">'+f(mov.amount)+'</div>' +
+    '</div>';
+  setBankRecType(_bankRecType);
+  // Initialize diff panel (starts at €0 allocated — button disabled)
+  var movAmt = Math.abs(mov.amount);
+  var elTotal = document.getElementById('rec-diff-total');
+  if (elTotal) elTotal.textContent = f(movAmt);
+  var elAlloc = document.getElementById('rec-diff-allocated');
+  if (elAlloc) elAlloc.textContent = f(0);
+  var elPendWrap = document.getElementById('rec-diff-pending-wrap');
+  if (elPendWrap) elPendWrap.style.display = 'none';
+  var elOkWrap = document.getElementById('rec-diff-ok-wrap');
+  if (elOkWrap) elOkWrap.style.display = 'none';
+  var confirmBtn = document.getElementById('rec-confirm-btn');
+  if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.style.opacity = '0.4'; confirmBtn.style.cursor = 'not-allowed'; }
+  openOverlay('ov-reconcile-bank');
+}
+
+function setBankRecType(type) {
+  _bankRecType = type;
+  ['sales','purchases','manual'].forEach(function(t) {
+    var btn = document.getElementById('rec-type-'+t);
+    if (btn) {
+      btn.style.background  = t === type ? 'var(--accent)' : '';
+      btn.style.color       = t === type ? '#0f0f11' : '';
+      btn.style.borderColor = t === type ? 'var(--accent)' : '';
+    }
+  });
+  var listEl = document.getElementById('rec-bank-invoice-list');
+  var manEl  = document.getElementById('rec-bank-manual-acc');
+  listEl.style.display = type === 'manual' ? 'none' : 'block';
+  manEl.style.display  = type === 'manual' ? 'block' : 'none';
+
+  if (type === 'manual') {
+    var sel = document.getElementById('rec-bank-acc-sel');
+    sel.innerHTML = '<option value="">-- Select account --</option>' + coaOpts();
+    var mov2 = DB.bankMovements.find(function(m){ return m.id === _bankRecMovId; });
+    if (mov2) document.getElementById('rec-bank-manual-amt').value = Math.abs(mov2.amount).toFixed(2);
+    updateRecDiff();
+    return;
+  }
+
+  var mov = DB.bankMovements.find(function(m){ return m.id === _bankRecMovId; });
+  var amt = mov ? Math.abs(mov.amount) : 0;
+
+  // Build invoice rows with onchange to update diff
+  function makeInvRow(id, num, party, date, rem, isMatch) {
+    return '<label style="display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--border);cursor:pointer;'+(isMatch?'background:rgba(200,255,0,.05);':'')+'">' +
+      '<input type="checkbox" name="rec-inv" value="'+id+'" '+(isMatch?'checked':'')+' onchange="updateRecDiff()" style="cursor:pointer;width:16px;height:16px;">' +
+      '<div style="flex:1;">' +
+        '<div style="font-size:13px;font-weight:600;color:var(--text);">'+num+' — '+party+'</div>' +
+        '<div style="font-size:11px;color:var(--text3);">'+date+' · Pending: <strong style="color:var(--yellow);">'+f(rem)+'</strong></div>' +
+      '</div>' +
+      (isMatch ? '<span style="font-size:10px;background:rgba(200,255,0,.15);color:var(--accent);padding:2px 6px;border-radius:6px;font-weight:700;">MATCH</span>' : '') +
+    '</label>';
+  }
+
+  if (type === 'sales') {
+    var pending = DB.sales.filter(function(s){
+      var c = DB.coll.filter(function(x){ return x.ref===s.num; }).reduce(function(a,x){ return a+x.amount; }, 0);
+      return c < s.total - 0.01;
+    });
+    listEl.innerHTML = pending.length
+      ? pending.slice().sort(function(a,b){ return b.id-a.id; }).map(function(s){
+          var c   = DB.coll.filter(function(x){ return x.ref===s.num; }).reduce(function(a,x){ return a+x.amount; }, 0);
+          var rem = s.total - c;
+          return makeInvRow(s.id, s.num, s.customer, s.date, rem, Math.abs(rem - amt) < 0.01);
+        }).join('')
+      : '<div style="color:var(--text3);padding:20px;text-align:center;font-size:12px;">No pending sales invoices.</div>';
+  } else {
+    var pendingP = DB.purch.filter(function(p){
+      var pd = DB.pay.filter(function(x){ return x.ref===p.num; }).reduce(function(a,x){ return a+x.amount; }, 0);
+      return pd < p.total - 0.01;
+    });
+    listEl.innerHTML = pendingP.length
+      ? pendingP.slice().sort(function(a,b){ return b.id-a.id; }).map(function(p){
+          var pd  = DB.pay.filter(function(x){ return x.ref===p.num; }).reduce(function(a,x){ return a+x.amount; }, 0);
+          var rem = p.total - pd;
+          return makeInvRow(p.id, p.num, p.supplier, p.date, rem, Math.abs(rem - amt) < 0.01);
+        }).join('')
+      : '<div style="color:var(--text3);padding:20px;text-align:center;font-size:12px;">No pending purchase invoices.</div>';
+  }
+  updateRecDiff();
+}
+
+// Live-update difference panel whenever checkboxes or manual amount changes
+function updateRecDiff() {
+  var mov = DB.bankMovements.find(function(m){ return m.id === _bankRecMovId; });
+  if (!mov) return;
+  var movAmt   = Math.abs(mov.amount);
+  var allocated = 0;
+
+  if (_bankRecType === 'manual') {
+    var manAmt = parseFloat(document.getElementById('rec-bank-manual-amt').value) || 0;
+    allocated  = manAmt;
+  } else {
+    document.querySelectorAll('input[name="rec-inv"]:checked').forEach(function(cb) {
+      var id = parseInt(cb.value);
+      if (_bankRecType === 'sales') {
+        var s = DB.sales.find(function(x){ return x.id===id; });
+        if (s) {
+          var c = DB.coll.filter(function(x){ return x.ref===s.num; }).reduce(function(a,x){ return a+x.amount; }, 0);
+          allocated += Math.min(movAmt, s.total - c);
+        }
+      } else {
+        var p = DB.purch.find(function(x){ return x.id===id; });
+        if (p) {
+          var pd = DB.pay.filter(function(x){ return x.ref===p.num; }).reduce(function(a,x){ return a+x.amount; }, 0);
+          allocated += Math.min(movAmt, p.total - pd);
+        }
+      }
+    });
+  }
+
+  var diff = movAmt - allocated;
+  var isBalanced = Math.abs(diff) < 0.01;
+
+  // Update display
+  var elAlloc   = document.getElementById('rec-diff-allocated');
+  var elTotal   = document.getElementById('rec-diff-total');
+  var elPending = document.getElementById('rec-diff-pending');
+  var elPendWrap= document.getElementById('rec-diff-pending-wrap');
+  var elOkWrap  = document.getElementById('rec-diff-ok-wrap');
+  var confirmBtn= document.getElementById('rec-confirm-btn');
+
+  if (elAlloc)   elAlloc.textContent  = f(allocated);
+  if (elTotal)   elTotal.textContent  = f(movAmt);
+  if (elPending) elPending.textContent = f(diff);
+  if (elPendWrap) elPendWrap.style.display = (!isBalanced && allocated > 0) ? 'block' : 'none';
+  if (elOkWrap)   elOkWrap.style.display   = isBalanced ? 'block' : 'none';
+
+  // Enable/disable reconcile button
+  if (confirmBtn) {
+    var canReconcile = isBalanced && allocated > 0;
+    confirmBtn.disabled = !canReconcile;
+    confirmBtn.style.opacity = canReconcile ? '1' : '0.4';
+    confirmBtn.style.cursor  = canReconcile ? 'pointer' : 'not-allowed';
+  }
+}
+
+function confirmBankReconcile() {
+  ensureBADB();
+  var mov = DB.bankMovements.find(function(m){ return m.id === _bankRecMovId; });
+  if (!mov) return;
+  var plan    = getActivePlan();
+  var cashAcc = plan.cashAccts ? plan.cashAccts[0] : (plan.id==='pgc'?'572':'1000');
+  var isIn    = mov.amount >= 0;
+  var amt     = Math.abs(mov.amount);
+
+  if (_bankRecType === 'manual') {
+    var counterAcc = document.getElementById('rec-bank-acc-sel').value;
+    var manAmt     = parseFloat(document.getElementById('rec-bank-manual-amt').value) || amt;
+    var desc       = document.getElementById('rec-bank-acc-desc').value || mov.concept;
+    if (!counterAcc) { alert('Select a counterpart account.'); return; }
+    var lines = isIn
+      ? [{account:cashAcc, debit:manAmt, credit:0},{account:counterAcc, debit:0, credit:manAmt}]
+      : [{account:counterAcc, debit:manAmt, credit:0},{account:cashAcc, debit:0, credit:manAmt}];
+    var je = {id:DB.ids.j++, date:mov.date, desc:desc, lines:lines, amount:manAmt, auto:true, sourceType:'bank_reconcile'};
+    DB.je.push(je);
+    mov.reconciled = true; mov.jeId = je.id;
+
+  } else {
+    var checked = Array.from(document.querySelectorAll('input[name="rec-inv"]:checked'));
+    if (!checked.length) { alert('Select at least one invoice.'); return; }
+
+    var lastJeId = null;
+    checked.forEach(function(cb) {
+      var id = parseInt(cb.value);
+      if (_bankRecType === 'sales') {
+        var s = DB.sales.find(function(x){ return x.id===id; });
+        if (!s) return;
+        var coll = DB.coll.filter(function(c){ return c.ref===s.num; }).reduce(function(a,c){ return a+c.amount; }, 0);
+        var rem  = Math.min(amt, s.total - coll);
+        if (rem <= 0.001) return;
+        DB.coll.push({id:DB.ids.c++, date:mov.date, customer:s.customer, ref:s.num, method:'bank_transfer', amount:rem, notes:'Bank reconcile: '+mov.concept});
+        var arAcc = plan.arAccts ? plan.arAccts[0] : (plan.id==='pgc'?'430':'1100');
+        var je2 = {id:DB.ids.j++, date:mov.date, desc:'Bank Collection — '+s.customer+' / '+s.num, lines:[{account:cashAcc,debit:rem,credit:0},{account:arAcc,debit:0,credit:rem}], amount:rem, auto:true, sourceType:'collection'};
+        DB.je.push(je2); lastJeId = je2.id;
+        var totColl = DB.coll.filter(function(c){ return c.ref===s.num; }).reduce(function(a,c){ return a+c.amount; }, 0);
+        if (totColl >= s.total - 0.01) s.status = 'paid';
+      } else {
+        var p = DB.purch.find(function(x){ return x.id===id; });
+        if (!p) return;
+        var paid2 = DB.pay.filter(function(py){ return py.ref===p.num; }).reduce(function(a,py){ return a+py.amount; }, 0);
+        var rem2  = Math.min(amt, p.total - paid2);
+        if (rem2 <= 0.001) return;
+        DB.pay.push({id:DB.ids.py++, date:mov.date, supplier:p.supplier, ref:p.num, method:'bank_transfer', amount:rem2, notes:'Bank reconcile: '+mov.concept});
+        var apAcc = plan.apAccts ? plan.apAccts[0] : (plan.id==='pgc'?'400':'2000');
+        var je3 = {id:DB.ids.j++, date:mov.date, desc:'Bank Payment — '+p.supplier+' / '+p.num, lines:[{account:apAcc,debit:rem2,credit:0},{account:cashAcc,debit:0,credit:rem2}], amount:rem2, auto:true, sourceType:'payment'};
+        DB.je.push(je3); lastJeId = je3.id;
+        var totPaid = DB.pay.filter(function(py){ return py.ref===p.num; }).reduce(function(a,py){ return a+py.amount; }, 0);
+        if (totPaid >= p.total - 0.01) p.status = 'paid';
+      }
+    });
+    mov.reconciled = true; mov.jeId = lastJeId;
+  }
+
+  sv(); closeOverlay('ov-reconcile-bank'); rBADetail(); renderAll();
+  showToast('✅ Movement reconciled — Journal Entry created.');
+}
+
+
 function toggleUserDropdown(e) {
   e.stopPropagation();
   var dd = document.getElementById('user-dropdown');
@@ -6616,7 +7415,7 @@ if(typeof signOut === 'undefined') {
   }
 }
 
-function renderAll(){rDash();rContacts();rSales();rRecurring();rPurch();rColl();rPay();rJE();rPL();rBS();rCF();rCFO();}
+function renderAll(){rDash();rContacts();rSales();rRecurring();rPurch();rColl();rPay();rJE();rPL();rBS();rCF();rCFO();rBankAccounts();}
 
 init();
 
@@ -7542,6 +8341,241 @@ function showToast(msg) {
   </div>
 </div>
 
+    <!-- ══ BANK ACCOUNTS ══ -->
+    <div class="page" id="page-bankaccounts">
+      <div class="sec-hdr">
+        <div>
+          <div class="sec-title">Bank Accounts</div>
+          <div class="sec-sub">Treasury overview · Import bank movements · Reconcile</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <select id="ba-period" onchange="rBankAccounts()" class="period-select" style="min-width:160px;">
+            <option value="12">Last 12 months</option>
+            <option value="6">Last 6 months</option>
+            <option value="3">Last 3 months</option>
+            <option value="1">This month</option>
+          </select>
+          <button class="btn btn-primary" onclick="openAddAccount()">+ Add Account</button>
+        </div>
+      </div>
+
+      <!-- Treasury chart -->
+      <div class="ba-chart-wrap">
+        <div class="ba-chart-header">
+          <div class="ba-chart-kpis">
+            <div class="ba-kpi-item"><label>Inflows</label><span id="ba-kpi-in" style="color:var(--green);">€0.00</span></div>
+            <div class="ba-kpi-item"><label>Outflows</label><span id="ba-kpi-out" style="color:var(--red);">€0.00</span></div>
+            <div class="ba-kpi-item"><label>Net Balance</label><span id="ba-kpi-bal">€0.00</span></div>
+          </div>
+          <div style="display:flex;gap:16px;font-size:12px;color:var(--text3);">
+            <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--green);margin-right:4px;"></span>Inflows</span>
+            <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--red);margin-right:4px;"></span>Outflows</span>
+            <span><span style="display:inline-block;width:2px;height:10px;border-radius:1px;background:var(--accent);margin-right:4px;display:inline-block;vertical-align:middle;"></span>Balance</span>
+          </div>
+        </div>
+        <div id="ba-chart-svg" style="width:100%;overflow:hidden;"></div>
+      </div>
+
+      <!-- Account cards -->
+      <div id="ba-accounts-grid" class="ba-grid"></div>
+    </div>
+
+    <!-- ══ BANK ACCOUNT DETAIL ══ -->
+    <div class="page" id="page-badetail">
+      <div class="sec-hdr">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="btn btn-ghost btn-sm" onclick="navTesoreria('bankaccounts')" style="padding:6px 10px;">← Back</button>
+          <div>
+            <div class="sec-title" id="bad-title">Account Name</div>
+            <div class="sec-sub" id="bad-sub">IBAN · BIC</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="btn btn-ghost btn-sm" onclick="openEditAccount()">✏️ Edit</button>
+          <button class="btn btn-ghost btn-sm" onclick="openImportMovements()">⬆ Import Movements</button>
+          <select id="bad-reconcile-filter" onchange="rBADetail()" class="period-select" style="min-width:160px;">
+            <option value="all">All movements</option>
+            <option value="pending">Pending only</option>
+            <option value="reconciled">Reconciled only</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Balance summary -->
+      <div class="totbar" style="margin-bottom:20px;">
+        <div class="tot-item"><label>Current Balance</label><span id="bad-balance" style="color:var(--accent);font-family:'DM Serif Display',serif;font-size:20px;">€0.00</span></div>
+        <div class="tot-item"><label>Total Inflows</label><span id="bad-in" style="color:var(--green);">€0.00</span></div>
+        <div class="tot-item"><label>Total Outflows</label><span id="bad-out" style="color:var(--red);">€0.00</span></div>
+        <div class="tot-item"><label>Movements</label><span id="bad-count" style="color:var(--text2);">0</span></div>
+        <div class="tot-item"><label>Pending</label><span id="bad-pending-count" style="color:var(--yellow);">0</span></div>
+      </div>
+
+      <!-- Movements list -->
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div id="bad-movements-list" style="max-height:600px;overflow-y:auto;"></div>
+      </div>
+    </div>
+
+    <!-- ══ RECONCILE OVERLAY ══ -->
+    <div class="overlay" id="ov-reconcile-bank">
+      <div class="modal wide">
+        <div class="mhdr">
+          <div class="mtitle">Reconcile Movement</div>
+          <div class="mclose" onclick="closeOverlay('ov-reconcile-bank')">✕</div>
+        </div>
+        <div class="mbody">
+          <!-- Movement info -->
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:20px;">
+            <div id="rec-bank-mov-info" style="font-size:13px;color:var(--text2);"></div>
+          </div>
+          <!-- Counterpart type -->
+          <div class="fg" style="margin-bottom:16px;">
+            <label>Match with</label>
+            <div style="display:flex;gap:8px;margin-top:6px;">
+              <button id="rec-type-sales" class="btn btn-ghost btn-sm" onclick="setBankRecType('sales')" style="flex:1;">📊 Sales Invoices</button>
+              <button id="rec-type-purchases" class="btn btn-ghost btn-sm" onclick="setBankRecType('purchases')" style="flex:1;">📋 Purchase Invoices</button>
+              <button id="rec-type-manual" class="btn btn-ghost btn-sm" onclick="setBankRecType('manual')" style="flex:1;">✏️ Manual Account</button>
+            </div>
+          </div>
+          <!-- Invoice list or manual account -->
+          <div id="rec-bank-invoice-list" style="max-height:260px;overflow-y:auto;"></div>
+          <div id="rec-bank-manual-acc" style="display:none;">
+            <div class="fgrid">
+              <div class="fg">
+                <label>Counterpart Account</label>
+                <select id="rec-bank-acc-sel" onchange="updateRecDiff()"></select>
+              </div>
+              <div class="fg">
+                <label>Amount (€)</label>
+                <input type="number" id="rec-bank-manual-amt" step="0.01" placeholder="0.00" oninput="updateRecDiff()">
+              </div>
+            </div>
+            <div class="fg" style="margin-top:10px;">
+              <label>Description</label>
+              <input type="text" id="rec-bank-acc-desc" placeholder="e.g. Tax payment, Salary, etc.">
+            </div>
+          </div>
+        </div>
+        <!-- Difference bar + Reconcile button -->
+        <div style="padding:14px 26px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          <!-- Left: difference indicator -->
+          <div id="rec-diff-panel" style="flex:1;">
+            <div style="display:flex;align-items:center;gap:20px;">
+              <div>
+                <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Allocated</div>
+                <div id="rec-diff-allocated" style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--accent);">€0.00</div>
+              </div>
+              <div style="font-size:18px;color:var(--text3);">/</div>
+              <div>
+                <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Movement</div>
+                <div id="rec-diff-total" style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);">€0.00</div>
+              </div>
+              <div id="rec-diff-pending-wrap" style="background:rgba(255,217,61,.12);border:1px solid rgba(255,217,61,.3);border-radius:8px;padding:6px 14px;display:none;">
+                <div style="font-size:10px;color:var(--yellow);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Pending to reconcile</div>
+                <div id="rec-diff-pending" style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--yellow);">€0.00</div>
+              </div>
+              <div id="rec-diff-ok-wrap" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);border-radius:8px;padding:6px 14px;display:none;">
+                <div style="font-size:11px;color:var(--green);font-weight:700;">✓ Fully reconciled</div>
+              </div>
+            </div>
+          </div>
+          <!-- Right: buttons -->
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost" onclick="closeOverlay('ov-reconcile-bank')">Cancel</button>
+            <button class="btn btn-primary" id="rec-confirm-btn" onclick="confirmBankReconcile()" disabled style="opacity:.4;cursor:not-allowed;">✅ Reconcile</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADD / EDIT ACCOUNT OVERLAY ══ -->
+    <div class="overlay" id="ov-add-account">
+      <div class="modal">
+        <div class="mhdr">
+          <div class="mtitle" id="add-acc-title">Add Bank Account</div>
+          <div class="mclose" onclick="closeOverlay('ov-add-account')">✕</div>
+        </div>
+        <div class="mbody">
+          <div class="fgrid">
+            <div class="fg full">
+              <label>Bank Name</label>
+              <input type="text" id="acc-bank-name" placeholder="e.g. Banco Santander, BBVA, Caixabank..." oninput="updateBankIcon()">
+            </div>
+            <div class="fg full" style="text-align:center;padding:10px 0;">
+              <div id="acc-bank-icon-preview" style="font-size:36px;margin-bottom:4px;">🏦</div>
+              <div style="font-size:11px;color:var(--text3);">Icon auto-detected from bank name</div>
+            </div>
+            <div class="fg full">
+              <label>Account Name / Alias</label>
+              <input type="text" id="acc-name" placeholder="e.g. Cuenta Principal, BBVA Empresas...">
+            </div>
+            <div class="fg full">
+              <label>IBAN</label>
+              <input type="text" id="acc-iban" placeholder="ES90 0049 1883 3226 1037 7710" style="font-family:monospace;">
+            </div>
+            <div class="fg">
+              <label>BIC / SWIFT</label>
+              <input type="text" id="acc-bic" placeholder="BSCHESMM" style="font-family:monospace;">
+            </div>
+            <div class="fg">
+              <label>Currency</label>
+              <select id="acc-currency">
+                <option value="EUR">Euro (EUR)</option>
+                <option value="USD">US Dollar (USD)</option>
+                <option value="GBP">British Pound (GBP)</option>
+              </select>
+            </div>
+            <div class="fg full">
+              <label>Opening Balance (€)</label>
+              <input type="number" id="acc-opening-balance" value="0" step="0.01" placeholder="0.00">
+            </div>
+          </div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-ghost" onclick="closeOverlay('ov-add-account')">Cancel</button>
+          <button class="btn btn-primary" onclick="saveAccount()">Save Account</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ IMPORT MOVEMENTS OVERLAY ══ -->
+    <div class="overlay" id="ov-import-movements">
+      <div class="modal wide">
+        <div class="mhdr">
+          <div class="mtitle">Import Bank Movements</div>
+          <div class="mclose" onclick="closeOverlay('ov-import-movements')">✕</div>
+        </div>
+        <div class="mbody">
+          <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">
+            Upload your bank statement in Excel format. The file must have columns:
+            <strong style="color:var(--text);">Fecha Operación, Concepto, Importe, Saldo</strong>.
+          </p>
+          <!-- Download sample -->
+          <button class="btn btn-ghost btn-sm" onclick="downloadSampleXLSX()" style="margin-bottom:16px;">
+            ⬇ Download sample .xlsx file
+          </button>
+          <!-- Drop zone -->
+          <div class="ba-import-zone" id="ba-drop-zone"
+               ondragover="event.preventDefault();this.classList.add('drag-over')"
+               ondragleave="this.classList.remove('drag-over')"
+               ondrop="handleBADrop(event)"
+               onclick="document.getElementById('ba-file-input').click()">
+            <div class="ba-import-zone-icon">📂</div>
+            <div class="ba-import-zone-title">Click or drag & drop your file here</div>
+            <div class="ba-import-zone-sub">Supports .xlsx and .xls files from any Spanish bank</div>
+          </div>
+          <input type="file" id="ba-file-input" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleBAFileInput(event)">
+          <!-- Preview -->
+          <div id="ba-import-preview" style="margin-top:16px;"></div>
+          <div id="ba-import-result" style="margin-top:10px;"></div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-ghost" onclick="closeOverlay('ov-import-movements')">Cancel</button>
+          <button class="btn btn-primary" id="ba-import-confirm" onclick="confirmImportMovements()" disabled>Import Movements</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ CFO MODULE ══ -->
     <div class="page" id="page-cfo">
       <div class="sec-hdr">
@@ -7894,12 +8928,16 @@ async function loadFromSupabase() {
   if (!error && data && data.data && data.data.ids) {
     DB = data.data;
     refreshCOA();
-    if(!DB.wires)    DB.wires    = [];
-    if(!DB.ids.wt)   DB.ids.wt   = 1;
-    if(!DB.contacts)  DB.contacts  = [];
-    if(!DB.recurring) DB.recurring = [];
-    if(!DB.assets)    DB.assets    = [];
-    if(!DB.deprPlans) DB.deprPlans = [];
+    if(!DB.wires)        DB.wires        = [];
+    if(!DB.ids.wt)       DB.ids.wt       = 1;
+    if(!DB.contacts)     DB.contacts     = [];
+    if(!DB.recurring)    DB.recurring    = [];
+    if(!DB.assets)       DB.assets       = [];
+    if(!DB.deprPlans)    DB.deprPlans    = [];
+    if(!DB.bankAccounts)  DB.bankAccounts  = [];
+    if(!DB.bankMovements) DB.bankMovements = [];
+    if(!DB.ids.ba)       DB.ids.ba       = 1;
+    if(!DB.ids.bm)       DB.ids.bm       = 1;
   }
   updateUserUI();
   renderAll();
