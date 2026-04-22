@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
-"""
-FinLedger - Professional Accounting System
-==========================================
-Railway web deployment + Supabase auth version.
-"""
-
-import http.server
-import socketserver
-import os
+"""FinLedger — Railway + Supabase auth deployment."""
+import http.server, socketserver, os
 import json as _json
 
 PORT = int(os.environ.get("PORT", 8765))
@@ -565,14 +558,27 @@ textarea{resize:vertical;min-height:72px;}
 
   <!-- USER CARD -->
   <div class="sidebar-foot">
-    <div class="user-card" title="Open Settings" style="position:relative;">
-      <div class="user-avatar" id="sideAvatarBg"><span id="sideAvatarInitials">PK</span></div>
-      <div class="user-info">
-        <div class="user-name" id="sideUserName">Previt Ketsia</div>
-        <div class="user-role" id="sideUserRole">Chief Accountant</div>
-        <div class="user-co" id="sideUserCo">My Company Ltd.</div>
+    <div style="position:relative;">
+      <!-- Dropdown menu -->
+      <div id="user-dropdown" style="display:none;position:absolute;bottom:calc(100% + 6px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,.4);overflow:hidden;z-index:500;">
+        <div onclick="openSettings('user');closeUserDropdown()" style="display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;color:var(--text2);font-size:13px;font-weight:500;transition:background .12s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">
+          <span style="font-size:15px;">⚙</span> Settings
+        </div>
+        <div style="height:1px;background:var(--border);margin:0 10px;"></div>
+        <div onclick="signOut()" style="display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;color:var(--red);font-size:13px;font-weight:500;transition:background .12s;" onmouseover="this.style.background='rgba(248,113,113,.08)'" onmouseout="this.style.background=''">
+          <span style="font-size:15px;">→</span> Sign Out
+        </div>
       </div>
-      <div class="user-gear" title="Sign out — click gear to open settings">⚙</div>
+      <!-- User card -->
+      <div class="user-card" onclick="toggleUserDropdown(event)" title="Account options">
+        <div class="user-avatar" id="sideAvatarBg"><span id="sideAvatarInitials">PK</span></div>
+        <div class="user-info">
+          <div class="user-name" id="sideUserName">Previt Ketsia</div>
+          <div class="user-role" id="sideUserRole">Chief Accountant</div>
+          <div class="user-co" id="sideUserCo">My Company Ltd.</div>
+        </div>
+        <div class="user-gear" style="font-size:16px;">⋯</div>
+      </div>
     </div>
   </div>
 </nav>
@@ -6585,6 +6591,31 @@ function downloadWireHTML(dir, wireOrId) {
 
 
 
+// ── USER CARD DROPDOWN ─────────────────────────────────────────────────────
+function toggleUserDropdown(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('user-dropdown');
+  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+function closeUserDropdown() {
+  var dd = document.getElementById('user-dropdown');
+  if(dd) dd.style.display = 'none';
+}
+// Close dropdown when clicking anywhere else
+document.addEventListener('click', function(e) {
+  var dd = document.getElementById('user-dropdown');
+  if(dd && !dd.contains(e.target)) dd.style.display = 'none';
+});
+
+// Fallback signOut for desktop version (no Supabase)
+if(typeof signOut === 'undefined') {
+  function signOut() {
+    if(confirm('Sign out of FinLedger?')) {
+      window.location.reload();
+    }
+  }
+}
+
 function renderAll(){rDash();rContacts();rSales();rRecurring();rPurch();rColl();rPay();rJE();rPL();rBS();rCF();rCFO();}
 
 init();
@@ -7724,7 +7755,6 @@ function showToast(msg) {
     </div>
 
 
-<!-- ══ SUPABASE AUTH OVERLAY ══ -->
 <style>
 #auth-overlay{position:fixed;inset:0;background:#0f0f11;z-index:9999;display:flex;align-items:center;justify-content:center;}
 #auth-overlay.hidden{display:none;}
@@ -7754,8 +7784,6 @@ body.light-mode .auth-title{color:#1a1d23;}
   <div class="auth-box">
     <div class="auth-logo">FinLedger</div>
     <div class="auth-sub">Accounting System</div>
-
-    <!-- LOGIN PANEL -->
     <div id="auth-login">
       <div class="auth-title">Welcome back</div>
       <div class="auth-field"><label>Email</label><input type="email" id="auth-email" placeholder="you@company.com" onkeydown="if(event.key==='Enter')authLogin()"></div>
@@ -7766,8 +7794,6 @@ body.light-mode .auth-title{color:#1a1d23;}
       <button class="auth-btn secondary" onclick="showAuthPanel('register')">Create an account</button>
       <button class="auth-btn secondary" onclick="showAuthPanel('reset')" style="margin-top:4px;font-size:12px;border:none;color:#5a5a72;">Forgot password?</button>
     </div>
-
-    <!-- REGISTER PANEL -->
     <div id="auth-register" style="display:none;">
       <div class="auth-title">Create account</div>
       <div class="auth-field"><label>Email</label><input type="email" id="reg-email" placeholder="you@company.com"></div>
@@ -7778,8 +7804,6 @@ body.light-mode .auth-title{color:#1a1d23;}
       <div class="auth-sep">or</div>
       <button class="auth-btn secondary" onclick="showAuthPanel('login')">Already have an account? Sign in</button>
     </div>
-
-    <!-- RESET PANEL -->
     <div id="auth-reset" style="display:none;">
       <div class="auth-title">Reset password</div>
       <div class="auth-field"><label>Email</label><input type="email" id="reset-email" placeholder="you@company.com"></div>
@@ -7794,14 +7818,11 @@ body.light-mode .auth-title{color:#1a1d23;}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ── SUPABASE CONFIG ──────────────────────────────────────────────
 const SUPA_URL = 'https://xoaujnyamjsexybjswwj.supabase.co';
 const SUPA_KEY = 'sb_publishable_BcWxOGS-mTzTimjQZvFSIw_f0kyY1ka';
 const _supa = supabase.createClient(SUPA_URL, SUPA_KEY);
-
 var _currentUser = null;
 
-// ── AUTH HELPERS ─────────────────────────────────────────────────
 function showAuthPanel(panel) {
   ['login','register','reset'].forEach(function(p){
     document.getElementById('auth-'+p).style.display = p===panel ? '' : 'none';
@@ -7834,7 +7855,6 @@ async function authRegister() {
   var { data, error } = await _supa.auth.signUp({ email, password: pass });
   if (error) { errEl.textContent = error.message; return; }
   _currentUser = data.user;
-  // Try to sign in immediately (if email confirmation not required)
   var { data: d2, error: e2 } = await _supa.auth.signInWithPassword({ email, password: pass });
   if (!e2 && d2.user) { _currentUser = d2.user; onAuthSuccess(); }
   else { errEl.style.color='#4ade80'; errEl.textContent = 'Account created! Check your email to confirm, then sign in.'; showAuthPanel('login'); }
@@ -7852,14 +7872,12 @@ async function authReset() {
 
 function onAuthSuccess() {
   document.getElementById('auth-overlay').classList.add('hidden');
-  // Update greeting with user email
   var emailShort = (_currentUser.email||'').split('@')[0];
   var greetEl = document.getElementById('topGreeting');
   if(greetEl) greetEl.textContent = emailShort;
   loadFromSupabase();
 }
 
-// ── SUPABASE SAVE/LOAD ───────────────────────────────────────────
 async function saveToSupabase(dbObj) {
   if (!_currentUser) return;
   await _supa.from('user_data').upsert({
@@ -7876,8 +7894,8 @@ async function loadFromSupabase() {
   if (!error && data && data.data && data.data.ids) {
     DB = data.data;
     refreshCOA();
-    if(!DB.wires)   DB.wires   = [];
-    if(!DB.ids.wt)  DB.ids.wt  = 1;
+    if(!DB.wires)    DB.wires    = [];
+    if(!DB.ids.wt)   DB.ids.wt   = 1;
     if(!DB.contacts)  DB.contacts  = [];
     if(!DB.recurring) DB.recurring = [];
     if(!DB.assets)    DB.assets    = [];
@@ -7888,38 +7906,29 @@ async function loadFromSupabase() {
   initJE();
 }
 
-// ── PATCH sv() to save to Supabase ──────────────────────────────
 var _origSv = sv;
 sv = function() {
-  _origSv();             // keep localStorage fallback
-  saveToSupabase(DB);    // also save to Supabase
+  _origSv();
+  saveToSupabase(DB);
 };
 
-// ── SIGN OUT ─────────────────────────────────────────────────────
 async function signOut() {
+  closeUserDropdown();
   await _supa.auth.signOut();
   _currentUser = null;
   document.getElementById('auth-overlay').classList.remove('hidden');
   showAuthPanel('login');
 }
 
-// ── CHECK EXISTING SESSION ON LOAD ──────────────────────────────
 (async function() {
   var { data: { session } } = await _supa.auth.getSession();
   if (session && session.user) {
     _currentUser = session.user;
     onAuthSuccess();
   }
-  // listen for auth state changes (e.g. email confirmation)
   _supa.auth.onAuthStateChange(function(event, session) {
-    if (event === 'SIGNED_IN' && session) {
-      _currentUser = session.user;
-      onAuthSuccess();
-    }
-    if (event === 'SIGNED_OUT') {
-      _currentUser = null;
-      document.getElementById('auth-overlay').classList.remove('hidden');
-    }
+    if (event === 'SIGNED_IN' && session) { _currentUser = session.user; onAuthSuccess(); }
+    if (event === 'SIGNED_OUT') { _currentUser = null; document.getElementById('auth-overlay').classList.remove('hidden'); }
   });
 })();
 </script>
@@ -7929,91 +7938,39 @@ async function signOut() {
 import json as _json2
 
 class Handler(http.server.BaseHTTPRequestHandler):
-
     def do_GET(self):
-        if self.path == "/load":
-            self._load_data()
-        elif self.path == "/health":
-            self._health()
-        else:
-            self._serve_app()
-
+        if self.path=="/health": self._health()
+        else: self._serve_app()
     def do_POST(self):
-        if self.path == "/save":
-            self._save_data()
-        elif self.path == "/export":
-            self._export_file()
-        else:
-            self.send_response(404)
-            self.end_headers()
-
+        if self.path=="/export": self._export()
+        else: self.send_response(200); self._cors(); self.end_headers(); self.wfile.write(b"ok")
     def do_OPTIONS(self):
-        self.send_response(200)
-        self._cors()
-        self.end_headers()
-
+        self.send_response(200); self._cors(); self.end_headers()
     def _cors(self):
-        self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
-
+        self.send_header("Access-Control-Allow-Origin","*")
+        self.send_header("Access-Control-Allow-Methods","GET,POST,OPTIONS")
+        self.send_header("Access-Control-Allow-Headers","Content-Type")
     def _health(self):
-        self.send_response(200)
-        self.send_header("Content-Type", "application/json")
-        self._cors()
-        self.end_headers()
-        self.wfile.write(b'{"status":"ok","app":"FinLedger"}')
-
+        self.send_response(200); self.send_header("Content-Type","application/json"); self._cors(); self.end_headers()
+        self.wfile.write(b'{"status":"ok"}')
     def _serve_app(self):
-        self.send_response(200)
-        self.send_header("Content-type", "text/html; charset=utf-8")
-        self.send_header("Cache-Control", "no-cache")
-        self._cors()
-        self.end_headers()
+        self.send_response(200); self.send_header("Content-type","text/html; charset=utf-8")
+        self.send_header("Cache-Control","no-cache"); self._cors(); self.end_headers()
         self.wfile.write(HTML.encode("utf-8"))
-
-    def _load_data(self):
-        # localStorage fallback — Supabase handles real persistence
-        self.send_response(204)
-        self._cors()
-        self.end_headers()
-
-    def _save_data(self):
-        # localStorage fallback — Supabase handles real persistence  
-        self.send_response(200)
-        self._cors()
-        self.end_headers()
-        self.wfile.write(b"ok")
-
-    def _export_file(self):
+    def _export(self):
         try:
-            length  = int(self.headers.get("Content-Length", 0))
-            body    = self.rfile.read(length)
-            payload = _json2.loads(body)
-            content = payload.get("content", "")
-            fname   = payload.get("filename", "export.csv")
-            self.send_response(200)
-            self.send_header("Content-Type", "text/csv; charset=utf-8-sig")
-            self.send_header("Content-Disposition", f'attachment; filename="{fname}"')
-            self._cors()
-            self.end_headers()
+            length=int(self.headers.get("Content-Length",0)); body=self.rfile.read(length)
+            payload=_json2.loads(body); content=payload.get("content",""); fname=payload.get("filename","export.csv")
+            self.send_response(200); self.send_header("Content-Type","text/csv; charset=utf-8-sig")
+            self.send_header("Content-Disposition",f'attachment; filename="{fname}"'); self._cors(); self.end_headers()
             self.wfile.write(content.encode("utf-8-sig"))
         except Exception as e:
-            self.send_response(500)
-            self._cors()
-            self.end_headers()
-            self.wfile.write(str(e).encode())
-
-    def log_message(self, format, *args):
-        pass
-
+            self.send_response(500); self._cors(); self.end_headers(); self.wfile.write(str(e).encode())
+    def log_message(self,f,*a): pass
 
 def main():
-    socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("0.0.0.0", PORT), Handler) as httpd:
-        print(f"FinLedger + Supabase running on port {PORT}")
-        httpd.serve_forever()
+    socketserver.TCPServer.allow_reuse_address=True
+    with socketserver.TCPServer(("0.0.0.0",PORT),Handler) as h:
+        print(f"FinLedger running on port {PORT}"); h.serve_forever()
 
-
-if __name__ == "__main__":
-    main()
+if __name__=="__main__": main()
