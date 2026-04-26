@@ -496,6 +496,67 @@ textarea{resize:vertical;min-height:72px;}
 .ba-import-zone-icon{font-size:36px;margin-bottom:8px;}
 .ba-import-zone-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;}
 .ba-import-zone-sub{font-size:12px;color:var(--text3);}
+/* ── TIME TRACKING MODULE ────────────────────────────────────── */
+.tt-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:12px;}
+.tt-cal-hdr{text-align:center;font-size:10px;font-family:monospace;color:var(--text3);text-transform:uppercase;padding:4px 0;letter-spacing:1px;}
+.tt-cal-day{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 4px;min-height:64px;cursor:pointer;transition:all .15s;position:relative;}
+.tt-cal-day:hover{border-color:var(--accent);background:rgba(200,255,0,.04);}
+.tt-cal-day.today{border-color:var(--accent);background:rgba(200,255,0,.06);}
+.tt-cal-day.other-month{opacity:.35;}
+.tt-cal-day.has-entries{border-color:var(--green);}
+.tt-cal-day.has-absence{border-color:var(--yellow);}
+.tt-day-num{font-size:11px;font-weight:700;color:var(--text2);margin-bottom:3px;}
+.tt-day-hours{font-size:10px;font-family:monospace;color:var(--green);font-weight:700;}
+.tt-day-absence{font-size:9px;color:var(--yellow);font-family:monospace;margin-top:2px;}
+.tt-entry-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+.tt-entry-row:last-child{border-bottom:none;}
+.tt-punch-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 24px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;border:none;transition:all .2s;width:100%;}
+.tt-punch-in{background:rgba(74,222,128,.15);color:var(--green);border:2px solid var(--green);}
+.tt-punch-in:hover{background:rgba(74,222,128,.3);}
+.tt-punch-out{background:rgba(248,113,113,.12);color:var(--red);border:2px solid var(--red);}
+.tt-punch-out:hover{background:rgba(248,113,113,.25);}
+.tt-week-bar{display:flex;gap:6px;margin-bottom:16px;}
+.tt-week-stat{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
+.tt-week-stat label{display:block;font-size:9px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+.tt-week-stat span{font-family:'DM Serif Display',serif;font-size:18px;}
+/* Absences */
+.absence-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:10px;transition:all .15s;}
+.absence-card:hover{border-color:var(--accent);}
+.absence-type-badge{padding:3px 10px;border-radius:8px;font-size:11px;font-weight:700;font-family:monospace;white-space:nowrap;}
+.abs-vacation{background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3);}
+.abs-sick{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.3);}
+.abs-personal{background:rgba(129,140,248,.15);color:#818cf8;border:1px solid rgba(129,140,248,.3);}
+.abs-maternity{background:rgba(244,114,182,.15);color:#f472b6;border:1px solid rgba(244,114,182,.3);}
+.abs-other{background:rgba(156,163,175,.15);color:#9ca3af;border:1px solid rgba(156,163,175,.3);}
+.abs-status-pending{background:rgba(255,217,61,.1);color:var(--yellow);border:1px solid rgba(255,217,61,.3);padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;font-family:monospace;}
+.abs-status-approved{background:rgba(74,222,128,.1);color:var(--green);border:1px solid rgba(74,222,128,.3);padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;font-family:monospace;}
+.abs-status-rejected{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.3);padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;font-family:monospace;}
+.emp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:16px;}
+.emp-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;cursor:pointer;transition:all .15s;position:relative;}
+.emp-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.2);}
+.emp-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#0f0f11;margin-bottom:12px;flex-shrink:0;}
+.emp-name{font-weight:700;font-size:15px;color:var(--text);margin-bottom:2px;}
+.emp-pos{font-size:12px;color:var(--accent);font-family:monospace;margin-bottom:6px;}
+.emp-dept{font-size:11px;color:var(--text3);margin-bottom:10px;}
+.emp-footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--text3);}
+.emp-status{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;font-family:monospace;}
+.emp-status.active{background:rgba(74,222,128,.15);color:var(--green);border:1px solid rgba(74,222,128,.3);}
+.emp-status.inactive{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.3);}
+/* Org Chart */
+.org-node{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-align:center;min-width:120px;}
+.org-node.manager{border-color:var(--accent);background:rgba(200,255,0,.06);}
+.org-branch{display:flex;gap:16px;justify-content:center;position:relative;margin-top:20px;}
+.org-branch::before{content:'';position:absolute;top:-10px;left:50%;border-left:1px solid var(--border);height:10px;}
+.org-branch > *{position:relative;}
+.org-branch > *::before{content:'';position:absolute;top:-10px;left:50%;border-left:1px solid var(--border);height:10px;}
+/* Payroll */
+.payroll-form{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.payroll-summary{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-top:16px;}
+.payroll-summary-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(46,46,56,.3);font-size:13px;}
+.payroll-summary-row:last-child{border-bottom:none;font-weight:700;font-size:15px;}
+.payroll-summary-row.total{padding-top:10px;margin-top:4px;border-top:2px solid var(--border);}
+.payroll-list-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;}
+.payroll-list-row:hover{background:var(--surface2);}
 /* ── CFO MODULE ─────────────────────────────────────────── */
 .cfo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
 .cfo-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
@@ -591,11 +652,21 @@ textarea{resize:vertical;min-height:72px;}
     </div>
     <div id="nav-tesoreria-sub" style="display:none;padding-left:14px;">
       <div class="nav-item nav-subitem" onclick="navTesoreria('bankaccounts')"><span class="nav-icon" style="font-size:11px;">🏛</span>Bank Accounts</div>
-      <div class="nav-item nav-subitem" onclick="navTesoreria('collections')"><span class="nav-icon" style="font-size:11px;">◎</span>Collections</div>
-      <div class="nav-item nav-subitem" onclick="navTesoreria('payments')"><span class="nav-icon" style="font-size:11px;">◉</span>Payments</div>
       <div class="nav-item nav-subitem" onclick="openWireTransfers()"><span class="nav-icon" style="font-size:11px;">⇄</span>Wire Transfers</div>
     </div>
     <div class="nav-item" onclick="nav('journal')"><span class="nav-icon">≡</span>Journal Entries</div>
+
+    <!-- HR MODULE -->
+    <div class="nav-item nav-group-toggle" id="nav-hr" onclick="toggleHRNav()" style="justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;"><span class="nav-icon">👤</span><span>Human Resources</span></div>
+      <span id="nav-hr-arrow" style="font-size:10px;color:var(--text3);transition:transform .2s;">▶</span>
+    </div>
+    <div id="nav-hr-sub" style="display:none;padding-left:14px;">
+      <div class="nav-item nav-subitem" onclick="navHR('employees')"><span class="nav-icon" style="font-size:11px;">👥</span>Employees</div>
+      <div class="nav-item nav-subitem" onclick="navHR('payrolls')"><span class="nav-icon" style="font-size:11px;">💰</span>Payrolls</div>
+      <div class="nav-item nav-subitem" onclick="navHR('timetracking')"><span class="nav-icon" style="font-size:11px;">⏱</span>Time Tracking</div>
+      <div class="nav-item nav-subitem" onclick="navHR('absences')"><span class="nav-icon" style="font-size:11px;">🏖</span>Absences & Holidays</div>
+    </div>
 
     <div class="nav-sec">Reports</div>
     <div class="nav-item" onclick="nav('pl')"><span class="nav-icon">◈</span>P&amp;L Statement</div>
@@ -655,16 +726,19 @@ textarea{resize:vertical;min-height:72px;}
 
     <!-- ══ DASHBOARD ══ -->
     <div class="page active" id="page-dashboard">
-      <div class="kpi-grid">
+      <!-- KPI Row -->
+      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px;">
         <div class="kpi-card g"><div class="card-title">Total Revenue</div><div class="card-value" id="kpi-rev">€0</div><div class="card-delta">From journal entries</div></div>
         <div class="kpi-card r"><div class="card-title">Total Expenses</div><div class="card-value" id="kpi-exp">€0</div><div class="card-delta" id="kpi-exp-delta">COGS + OpEx + Financial</div></div>
         <div class="kpi-card a"><div class="card-title">Net Income</div><div class="card-value" id="kpi-ni">€0</div><div class="card-delta">Revenue − Expenses</div></div>
-        <div class="kpi-card b"><div class="card-title">Cash Position</div><div class="card-value" id="kpi-cash">€0</div><div class="card-delta">Net cash from JE movements</div></div>
+        <div class="kpi-card b"><div class="card-title">Total Cash (JE)</div><div class="card-value" id="kpi-cash">€0</div><div class="card-delta">All bank accounts · from JE</div></div>
       </div>
-      <div class="row">
+
+      <!-- Main content row -->
+      <div class="row" style="margin-bottom:16px;">
         <div class="col2">
           <div class="chart-area">
-            <div class="sec-hdr"><div><div class="sec-title">Revenue vs Expenses</div><div class="sec-sub">Monthly overview</div></div></div>
+            <div class="sec-hdr"><div><div class="sec-title">Revenue vs Expenses</div><div class="sec-sub">Monthly overview · from JE</div></div></div>
             <div class="chart-bars" id="chartBars"><div style="color:var(--text3);font-size:12px;align-self:center;margin:auto;font-family:monospace;">Add transactions to see chart</div></div>
             <div style="display:flex;gap:16px;margin-top:12px;">
               <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3);"><span style="width:10px;height:10px;background:var(--green);border-radius:2px;display:inline-block;"></span>Revenue</div>
@@ -674,24 +748,35 @@ textarea{resize:vertical;min-height:72px;}
         </div>
         <div class="col">
           <div class="chart-area" style="height:100%;">
-            <div class="card-title">Quick Stats</div>
-            <div style="margin-top:16px;display:flex;flex-direction:column;gap:14px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);">Accounts Receivable</span><span class="badge bb" id="qs-ar">€0</span></div>
-              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);">Accounts Payable</span><span class="badge by" id="qs-ap">€0</span></div>
-              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);">Sales Invoices</span><span class="badge bg" id="qs-sc">0</span></div>
-              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);">Purchase Invoices</span><span class="badge br" id="qs-pc">0</span></div>
-              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);">Journal Entries</span><span class="badge ba" id="qs-jec">0</span></div>
+            <div class="card-title" style="margin-bottom:14px;">Quick Stats</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);font-size:13px;">Accounts Receivable</span><span class="badge bb" id="qs-ar">€0</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);font-size:13px;">Accounts Payable</span><span class="badge by" id="qs-ap">€0</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);font-size:13px;">Sales Invoices</span><span class="badge bg" id="qs-sc">0</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);font-size:13px;">Purchase Invoices</span><span class="badge br" id="qs-pc">0</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);font-size:13px;">Journal Entries</span><span class="badge ba" id="qs-jec">0</span></div>
               <div style="height:1px;background:var(--border);"></div>
-              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);">Net Margin</span><span style="font-family:monospace;" id="qs-mg">—</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);font-size:13px;">Net Margin</span><span style="font-family:monospace;" id="qs-mg">—</span></div>
             </div>
           </div>
         </div>
       </div>
-      <div style="margin-top:16px;">
-        <div class="chart-area">
-          <div class="sec-hdr"><div class="sec-title">Recent Transactions</div><div class="sec-sub">Last 10 entries</div></div>
-          <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Party</th><th>Amount</th><th>Status</th></tr></thead><tbody id="recentTx"><tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px;">No transactions yet.</td></tr></tbody></table></div>
+
+      <!-- Bank Accounts Treasury Panel -->
+      <div class="chart-area" style="margin-bottom:16px;">
+        <div class="sec-hdr" style="margin-bottom:16px;">
+          <div><div class="sec-title">Treasury · Bank Accounts</div><div class="sec-sub">Balances from Journal Entries · each account tracks its own cash flow</div></div>
+          <button class="btn btn-ghost btn-sm" onclick="navTesoreria('bankaccounts')">View all →</button>
         </div>
+        <div id="dash-bank-accounts" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+          <div style="color:var(--text3);font-size:12px;padding:16px;text-align:center;grid-column:1/-1;font-family:monospace;">No bank accounts yet. Add one in Treasury → Bank Accounts.</div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="chart-area">
+        <div class="sec-hdr"><div class="sec-title">Recent Transactions</div><div class="sec-sub">Last 10 entries</div></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Party</th><th>Amount</th><th>Status</th></tr></thead><tbody id="recentTx"><tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px;">No transactions yet.</td></tr></tbody></table></div>
       </div>
     </div>
 
@@ -969,6 +1054,18 @@ textarea{resize:vertical;min-height:72px;}
     <!-- ══ JOURNAL ══ -->
     <div class="page" id="page-journal">
       <div class="sec-hdr"><div><div class="sec-title">Journal Entries</div><div class="sec-sub">Double-entry bookkeeping</div></div><div style="display:flex;align-items:center;gap:8px;"><button class="btn-xls" onclick="exportExcel('journal')" title="Export Excel">📊</button><button class="btn-pdf2" onclick="exportPDF('journal','Journal Entries')" title="Export PDF">📄</button><button class="btn btn-primary" onclick="openNewJE()">+ New Entry</button></div></div>
+      <!-- Date filter bar -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);">
+          <span>From</span>
+          <input type="date" id="je-date-from" onchange="rJE()" style="padding:5px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;">
+          <span>To</span>
+          <input type="date" id="je-date-to" onchange="rJE()" style="padding:5px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;">
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('je-date-from').value='';document.getElementById('je-date-to').value='';rJE();" style="font-size:11px;">✕ Clear</button>
+        </div>
+        <input type="text" id="je-search" oninput="rJE()" placeholder="🔍 Search description, account..." style="padding:5px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;width:220px;">
+        <span id="je-count-label" style="font-size:11px;color:var(--text3);font-family:monospace;margin-left:auto;"></span>
+      </div>
       <div id="je-filter-bar" class="je-filter-bar" style="display:none;">
         <span class="filter-label">Filtered by:</span>
         <span class="filter-val" id="je-filter-label"></span>
@@ -976,16 +1073,20 @@ textarea{resize:vertical;min-height:72px;}
         <span style="font-size:11px;color:var(--text3);" id="je-filter-count"></span>
         <button class="btn btn-ghost btn-sm" onclick="clearJEFilter()" style="margin-left:auto;">✕ Clear filter</button>
       </div>
-      <div class="card"><div class="tbl-wrap"><table><thead><tr>
-  <th style="width:90px;">Entry #</th>
-  <th style="width:100px;">Date</th>
-  <th style="width:70px;">Type</th>
-  <th>Description / Account</th>
-  <th style="width:80px;">Acc. Code</th>
-  <th style="width:130px;text-align:right;">Debit (€)</th>
-  <th style="width:130px;text-align:right;">Credit (€)</th>
-  <th style="width:80px;"></th>
-</tr></thead><tbody id="jeTbl"><tr><td colspan="7" style="text-align:center;color:var(--text3);padding:24px;">No journal entries yet.</td></tr></tbody></table></div></div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="tbl-wrap" style="max-height:calc(100vh - 280px);overflow-y:auto;">
+          <table><thead style="position:sticky;top:0;z-index:2;background:var(--surface);"><tr>
+            <th style="width:90px;">Entry #</th>
+            <th style="width:100px;">Date</th>
+            <th style="width:70px;">Type</th>
+            <th>Description / Account</th>
+            <th style="width:80px;">Acc. Code</th>
+            <th style="width:130px;text-align:right;">Debit (€)</th>
+            <th style="width:130px;text-align:right;">Credit (€)</th>
+            <th style="width:80px;"></th>
+          </tr></thead><tbody id="jeTbl"><tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px;">No journal entries yet.</td></tr></tbody></table>
+        </div>
+      </div>
     </div>
 
     <!-- ══ P&L ══ -->
@@ -1716,6 +1817,16 @@ function ld(){
   if(!DB.bankMovements) DB.bankMovements = [];
   if(!DB.ids.ba)  DB.ids.ba  = 1;
   if(!DB.ids.bm)  DB.ids.bm  = 1;
+  if(!DB.employees)    DB.employees    = [];
+  if(!DB.payrolls)     DB.payrolls     = [];
+  if(!DB.timeEntries)  DB.timeEntries  = [];
+  if(!DB.absences)     DB.absences     = [];
+  if(!DB.holidays)     DB.holidays     = _defaultHolidays();
+  if(!DB.clockSessions) DB.clockSessions = {};
+  if(!DB.ids.em)  DB.ids.em  = 1;
+  if(!DB.ids.pr)  DB.ids.pr  = 1;
+  if(!DB.ids.te)  DB.ids.te  = 1;
+  if(!DB.ids.ab)  DB.ids.ab  = 1;
 }
 
 // ── FORMAT ─────────────────────────────────────────────────────────────────
@@ -1826,9 +1937,11 @@ function livePreviewUser(){
 }
 
 // ── NAVIGATION ─────────────────────────────────────────────────────────────
-var titles={dashboard:'Dashboard',contacts:'Contacts',sales:'Sales Invoices',purchases:'Purchase Invoices',collections:'Collections',payments:'Payments',journal:'Journal Entries',pl:'P&L Statement',bs:'Balance Sheet',cf:'Cash Flow Statement', cfo:'CFO Intelligence', tesoreria:'Tesorería', bankaccounts:'Bank Accounts', badetail:'Account Detail'};
+var titles={dashboard:'Dashboard',contacts:'Contacts',sales:'Sales Invoices',purchases:'Purchase Invoices',collections:'Collections',payments:'Payments',journal:'Journal Entries',pl:'P&L Statement',bs:'Balance Sheet',cf:'Cash Flow Statement', cfo:'CFO Intelligence', tesoreria:'Tesorería', bankaccounts:'Bank Accounts', badetail:'Account Detail', employees:'Employees', payrolls:'Payrolls', orgchart:'Organisation Chart', timetracking:'Time Tracking', absences:'Absences & Holidays'};
 var crumbs={dashboard:'FinLedger / Overview',contacts:'FinLedger / Operations / Contacts',sales:'FinLedger / Operations / Sales',purchases:'FinLedger / Operations / Purchases',collections:'FinLedger / Tesorería / Collections',payments:'FinLedger / Tesorería / Payments',journal:'FinLedger / Operations / Journal',pl:'FinLedger / Reports / P&L',bs:'FinLedger / Reports / Balance Sheet',cf:'FinLedger / Reports / Cash Flow',
-    cfo:'FinLedger / CFO Module', tesoreria:'FinLedger / Tesorería', bankaccounts:'FinLedger / Tesorería / Bank Accounts', badetail:'FinLedger / Tesorería / Bank Accounts / Detail'};
+    cfo:'FinLedger / CFO Module', tesoreria:'FinLedger / Tesorería', bankaccounts:'FinLedger / Tesorería / Bank Accounts', badetail:'FinLedger / Tesorería / Bank Accounts / Detail',
+    employees:'FinLedger / HR / Employees', payrolls:'FinLedger / HR / Payrolls', orgchart:'FinLedger / HR / Organisation Chart',
+    timetracking:'FinLedger / HR / Time Tracking', absences:'FinLedger / HR / Absences & Holidays'};
 function nav(p){
   document.querySelectorAll('.page').forEach(function(e){e.classList.remove('active');});
   document.querySelectorAll('.nav-item').forEach(function(e){e.classList.remove('active');});
@@ -1938,8 +2051,8 @@ function clearAll(){
   if(!confirm('Delete ALL data?\n\nThis will delete ALL transactions, contacts, journal entries, assets and recurring invoices.\n\nYour company settings and preferences will be preserved.\n\nThis cannot be undone.'))return;
   DB.sales=[];DB.purch=[];DB.coll=[];DB.pay=[];DB.je=[];
   DB.contacts=[];DB.recurring=[];DB.assets=[];DB.deprPlans=[];DB.series=DB.series||[];DB.wires=[];
-  DB.bankAccounts=[];DB.bankMovements=[];
-  DB.ids={s:1,p:1,c:1,py:1,j:1,ct:1,rc:1,ast:1,dp:1,wt:1,ba:1,bm:1,
+  DB.bankAccounts=[];DB.bankMovements=[];DB.employees=[];DB.payrolls=[];
+  DB.ids={s:1,p:1,c:1,py:1,j:1,ct:1,rc:1,ast:1,dp:1,wt:1,ba:1,bm:1,em:1,pr:1,
           sub_430:1,sub_431:1,sub_400:1,sub_410:1,sub_1100:1,sub_2000:1};
   sv();closeOverlay('ov-settings');renderAll();
   showToast('✅ All data cleared. Settings preserved.');
@@ -2339,7 +2452,9 @@ function cF(){
 
   // Account classification — from active plan
   var _plan = getActivePlan();
-  var CASH_ACCTS    = _plan.cashAccts;
+  // Include bank-specific JE accounts (572001, 100001, etc.) in cash accounts
+  var bankJEAccts = (DB.bankAccounts||[]).filter(function(a){return a.jeAccount;}).map(function(a){return a.jeAccount;});
+  var CASH_ACCTS    = _plan.cashAccts.concat(bankJEAccts);
   var AR_ACCTS      = _plan.arAccts;
   var AP_ACCTS      = _plan.apAccts;
   var INVEST_ACCTS  = _plan.investAccts;
@@ -2492,8 +2607,9 @@ function cF(){
   var jeAccrued      = _cfp2.id==='pgc' ? 0 : jeBal('2200');
   // Use active plan account codes for BS balances
   var _cfPlan = getActivePlan();
-  // Cash
-  var bsCash = _cfPlan.cashAccts.reduce(function(a,acc){return a+jeBal(acc);}, 0);
+  // Cash — include bank-specific JE accounts (572001, 100001, etc.)
+  var _bsCashAccts = _cfPlan.cashAccts.concat(bankJEAccts);
+  var bsCash = _bsCashAccts.reduce(function(a,acc){return a+jeBal(acc);}, 0);
   // AR (clients)
   var bsAR   = _cfPlan.arAccts.reduce(function(a,acc){return a+jeBal(acc);}, 0);
   // AP (suppliers)
@@ -2523,55 +2639,157 @@ function cF(){
 
 // ── RENDERERS ──────────────────────────────────────────────────────────────
 function rDash(){
-  var F=cF();
+  var F   = cF();
   var _dp = getActivePlan();
-  // Total expenses = COGS + OpEx + Financial — all from JE account balances
   var totExp = F.cogs + F.toOpEx + (F.finExp||0);
-  document.getElementById('kpi-rev').textContent=f(F.rev);
-  document.getElementById('kpi-exp').textContent=f(totExp);
-  // Delta shows breakdown
+
+  // ── Compute per-bank cash from JE (using each bank's jeAccount) ───────────
+  ensureBADB();
+  var bankAccounts = DB.bankAccounts || [];
+  var perBankBalances = {};
+  var totalBankJE = 0;
+
+  // Build JE balances per account code
+  var jeAccBalances = {};
+  DB.je.forEach(function(je){
+    je.lines.forEach(function(l){
+      if(!jeAccBalances[l.account]) jeAccBalances[l.account]={dr:0,cr:0};
+      jeAccBalances[l.account].dr += (l.debit||0);
+      jeAccBalances[l.account].cr += (l.credit||0);
+    });
+  });
+  function jeAccBal(acc){
+    var b = jeAccBalances[acc]; if(!b) return 0;
+    return b.dr - b.cr; // cash accounts: Dr increases balance
+  }
+
+  bankAccounts.forEach(function(acc){
+    var bal = acc.openingBalance || 0;
+    if (acc.jeAccount) {
+      bal += jeAccBal(acc.jeAccount);
+    }
+    perBankBalances[acc.id] = bal;
+    totalBankJE += bal;
+  });
+
+  // If no bank accounts defined, fall back to plan cash accounts
+  var cashDisplay = bankAccounts.length > 0 ? totalBankJE : F.cash;
+
+  // ── KPIs ─────────────────────────────────────────────────────────────────
+  document.getElementById('kpi-rev').textContent  = f(F.rev);
+  document.getElementById('kpi-exp').textContent  = f(totExp);
   var expDelta = document.getElementById('kpi-exp-delta');
-  if(expDelta) {
-    var parts = [];
-    if(F.cogs>0)   parts.push('COGS: '+f(F.cogs));
-    if(F.toOpEx>0) parts.push('OpEx: '+f(F.toOpEx));
+  if(expDelta){
+    var parts=[];
+    if(F.cogs>0)      parts.push('COGS: '+f(F.cogs));
+    if(F.toOpEx>0)    parts.push('OpEx: '+f(F.toOpEx));
     if((F.finExp||0)>0) parts.push('Financial: '+f(F.finExp));
     expDelta.textContent = parts.length ? parts.join(' · ') : (_dp.id==='pgc'?'Compras + Gastos':'COGS + OpEx');
   }
-  var ni=document.getElementById('kpi-ni');
-  ni.textContent=f(F.ni);
-  ni.style.color=F.ni>=0?'var(--green)':'var(--red)';
-  document.getElementById('kpi-cash').textContent=f(F.cash);
-  document.getElementById('qs-ar').textContent=f(F.ar);
-  document.getElementById('qs-ap').textContent=f(F.ap);
-  document.getElementById('qs-sc').textContent=DB.sales.length;
-  document.getElementById('qs-pc').textContent=DB.purch.length;
-  document.getElementById('qs-jec').textContent=DB.je.length;
+  var ni = document.getElementById('kpi-ni');
+  ni.textContent = f(F.ni);
+  ni.style.color = F.ni>=0?'var(--green)':'var(--red)';
+  var cashEl = document.getElementById('kpi-cash');
+  cashEl.textContent = f(cashDisplay);
+  cashEl.style.color = cashDisplay>=0?'var(--green)':'var(--red)';
+
+  document.getElementById('qs-ar').textContent  = f(F.ar);
+  document.getElementById('qs-ap').textContent  = f(F.ap);
+  document.getElementById('qs-sc').textContent  = DB.sales.length;
+  document.getElementById('qs-pc').textContent  = DB.purch.length;
+  document.getElementById('qs-jec').textContent = DB.je.length;
   var mg=document.getElementById('qs-mg');
   if(F.totRev){var p=(F.ni/F.totRev*100).toFixed(1);mg.textContent=p+'%';mg.style.color=p>=0?'var(--green)':'var(--red)';}
   else mg.textContent='—';
-  // Chart: use JE-derived monthly rev/exp for accuracy
-  if(DB.sales.length||DB.purch.length){
-    var mo={};
-    DB.sales.forEach(function(x){var m=x.date?x.date.substring(0,7):'?';mo[m]=mo[m]||{r:0,e:0};mo[m].r+=x.net;});
-    DB.purch.forEach(function(x){var m=x.date?x.date.substring(0,7):'?';mo[m]=mo[m]||{r:0,e:0};mo[m].e+=x.net;});
-    var ks=Object.keys(mo).sort().slice(-8),mv=Math.max.apply(null,ks.map(function(k){return Math.max(mo[k].r,mo[k].e);}));mv=Math.max(mv,1);
-    var MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    document.getElementById('chartBars').innerHTML=ks.map(function(k){var d=mo[k],rh=Math.max(4,d.r/mv*140),eh=Math.max(4,d.e/mv*140),ml=k.substring(5,7),mn=MN[parseInt(ml)-1]||ml;return '<div class="bar-wrap"><div style="display:flex;gap:3px;align-items:flex-end;height:140px;"><div class="bar" style="background:var(--green);height:'+rh+'px;width:14px;" title="'+f(d.r)+'"></div><div class="bar" style="background:var(--red);height:'+eh+'px;width:14px;" title="'+f(d.e)+'"></div></div><div class="bar-lbl">'+mn+'</div></div>';}).join('');
+
+  // ── Treasury bank accounts panel ──────────────────────────────────────────
+  var dashBA = document.getElementById('dash-bank-accounts');
+  if(dashBA){
+    if(!bankAccounts.length){
+      dashBA.innerHTML='<div style="color:var(--text3);font-size:12px;padding:16px;text-align:center;grid-column:1/-1;font-family:monospace;">No bank accounts yet. Add one in Treasury → Bank Accounts.</div>';
+    } else {
+      dashBA.innerHTML = bankAccounts.map(function(acc){
+        var bal = perBankBalances[acc.id] || 0;
+        var balColor = bal >= 0 ? 'var(--green)' : 'var(--red)';
+        var icon = getBankIcon(acc.bankName);
+        // Movements this month
+        var thisMonth = (new Date()).toISOString().slice(0,7);
+        var movs = (DB.bankMovements||[]).filter(function(m){ return m.accountId===acc.id; });
+        var pendingCount = movs.filter(function(m){ return !m.reconciled; }).length;
+        return '<div class="ba-card" onclick="openBADetail('+acc.id+')" style="padding:14px 16px;min-height:auto;">' +
+          '<div class="ba-card-header" style="margin-bottom:10px;">' +
+            '<div class="ba-bank-icon" style="width:34px;height:34px;font-size:16px;">'+icon+'</div>' +
+            '<div><div class="ba-bank-name" style="font-size:13px;">'+acc.name+'</div>' +
+            '<div style="font-size:10px;color:var(--text3);font-family:monospace;">'+(acc.jeAccount||'—')+'</div></div>' +
+          '</div>' +
+          '<div style="font-family:\'DM Serif Display\',serif;font-size:22px;color:'+balColor+';">'+f(bal)+'</div>' +
+          '<div style="display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">' +
+            '<span style="font-size:11px;color:var(--text3);">'+(acc.iban?acc.iban.slice(0,12)+'…':'No IBAN')+'</span>' +
+            (pendingCount>0?'<span style="font-size:10px;background:rgba(255,217,61,.15);color:var(--yellow);padding:2px 7px;border-radius:8px;font-weight:700;">'+pendingCount+' pending</span>':'<span style="font-size:10px;color:var(--green);">✓ All clear</span>') +
+          '</div>' +
+        '</div>';
+      }).join('') +
+      '<div class="ba-add-card" onclick="navTesoreria(\'bankaccounts\');openAddAccount()" style="min-height:120px;padding:14px;">' +
+        '<div style="font-size:22px;">+</div>' +
+        '<div style="font-size:12px;font-weight:600;">Add Account</div>' +
+      '</div>';
+    }
+  }
+
+  // ── Revenue vs Expenses chart ─────────────────────────────────────────────
+  // Read from JE for accuracy
+  var mo={};
+  var MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  DB.je.forEach(function(je){
+    var m = (je.date||'').slice(0,7); if(!m) return;
+    if(!mo[m]) mo[m]={r:0,e:0};
+    je.lines.forEach(function(l){
+      if(_dp.revAccts.indexOf(l.account)!==-1)  mo[m].r += (l.credit||0)-(l.debit||0);
+      if(_dp.cogsAccts.indexOf(l.account)!==-1 || _dp.opexAccts.indexOf(l.account)!==-1) mo[m].e += (l.debit||0)-(l.credit||0);
+    });
+  });
+  var ks=Object.keys(mo).sort().slice(-8);
+  if(ks.length){
+    var mv=Math.max.apply(null,ks.map(function(k){return Math.max(mo[k].r,mo[k].e,1);}));
+    document.getElementById('chartBars').innerHTML=ks.map(function(k){
+      var d=mo[k],rh=Math.max(4,d.r/mv*140),eh=Math.max(4,d.e/mv*140);
+      var ml=k.slice(5,7),mn=MN[parseInt(ml)-1]||ml;
+      return '<div class="bar-wrap"><div style="display:flex;gap:3px;align-items:flex-end;height:140px;">' +
+        '<div class="bar" style="background:var(--green);height:'+rh+'px;width:14px;" title="Revenue: '+f(d.r)+'"></div>' +
+        '<div class="bar" style="background:var(--red);height:'+eh+'px;width:14px;" title="Expenses: '+f(d.e)+'"></div>' +
+        '</div><div class="bar-lbl">'+mn+'</div></div>';
+    }).join('');
   } else {
     document.getElementById('chartBars').innerHTML='<div style="color:var(--text3);font-size:12px;align-self:center;margin:auto;font-family:\'DM Mono\',monospace;">Add transactions to see chart</div>';
   }
-  var tmap={Sale:'bg',Purchase:'br',Collection:'bb',Payment:'by',Journal:'ba'};
+
+  // ── Recent transactions ───────────────────────────────────────────────────
+  var tmap={Sale:'bg',Purchase:'br',Collection:'bb',Payment:'by',Journal:'ba','Bank Movement':'bb'};
   var all=[].concat(
     DB.sales.map(function(x){return{date:x.date,type:'Sale',desc:x.desc||'Sale',party:x.customer,amount:x.total,status:x.status};}),
     DB.purch.map(function(x){return{date:x.date,type:'Purchase',desc:x.desc||'Purchase',party:x.supplier,amount:x.total,status:x.status};}),
-    DB.coll.map(function(x){return{date:x.date,type:'Collection',desc:'Cash received',party:x.customer,amount:x.amount,status:'received'};}),
-    DB.pay.map(function(x){return{date:x.date,type:'Payment',desc:'Cash paid',party:x.supplier,amount:x.amount,status:'paid'};}),
+    (DB.bankMovements||[]).filter(function(m){ return m.reconciled; }).slice(-20).map(function(m){
+      var acc = (DB.bankAccounts||[]).find(function(a){ return a.id===m.accountId; });
+      return{date:m.date,type:'Bank Movement',desc:m.concept,party:acc?acc.name:'Bank',amount:m.amount,status:'reconciled'};
+    }),
     DB.je.filter(function(x){return !x.auto;}).map(function(x){return{date:x.date,type:'Journal',desc:x.desc,party:'Manual',amount:x.amount,status:'posted'};}))
     .sort(function(a,b){return b.date<a.date?-1:1;}).slice(0,10);
+
   var rb=document.getElementById('recentTx');
-  if(!all.length){rb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px;">No transactions yet. Start by adding a sale or purchase.</td></tr>';return;}
-  rb.innerHTML=all.map(function(t){return '<tr><td style="font-family:\'DM Mono\',monospace;font-size:11px;">'+t.date+'</td><td><span class="badge '+(tmap[t.type]||'bb')+'">'+t.type+'</span></td><td>'+t.desc+'</td><td style="color:var(--text3);">'+t.party+'</td><td class="amt pos">'+f(Math.abs(t.amount))+'</td><td>'+bdg(t.status)+'</td></tr>';}).join('');
+  if(!all.length){
+    rb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px;">No transactions yet. Start by adding a sale or purchase.</td></tr>';
+    return;
+  }
+  rb.innerHTML=all.map(function(t){
+    return '<tr>' +
+      '<td style="font-family:\'DM Mono\',monospace;font-size:11px;">'+t.date+'</td>' +
+      '<td><span class="badge '+(tmap[t.type]||'bb')+'">'+t.type+'</span></td>' +
+      '<td>'+t.desc+'</td>' +
+      '<td style="color:var(--text3);">'+t.party+'</td>' +
+      '<td class="amt '+(t.amount>=0?'pos':'neg')+'">'+f(Math.abs(t.amount))+'</td>' +
+      '<td>'+bdg(t.status)+'</td>' +
+    '</tr>';
+  }).join('');
 }
 function rSales(){
   var tot=DB.sales.reduce(function(a,x){return a+x.total;},0),coll=DB.coll.reduce(function(a,x){return a+x.amount;},0);
@@ -2806,6 +3024,11 @@ function rPay(){
 function rJE(){
   var b = document.getElementById('jeTbl');
 
+  // ── Date & search filters ─────────────────────────────────────────────────
+  var dateFrom = (document.getElementById('je-date-from')||{value:''}).value || '';
+  var dateTo   = (document.getElementById('je-date-to')||{value:''}).value   || '';
+  var search   = ((document.getElementById('je-search')||{value:''}).value||'').toLowerCase();
+
   // ── Apply drill-down filter if active ────────────────────────────────────
   var filterBar = document.getElementById('je-filter-bar');
   var visibleJE = DB.je;
@@ -2817,16 +3040,28 @@ function rJE(){
       filterBar.style.display = 'flex';
       document.getElementById('je-filter-label').textContent = _jeFilter.label;
       document.getElementById('je-filter-acc').textContent   = _jeFilter.account;
-      document.getElementById('je-filter-count').textContent = visibleJE.length + ' entries';
     }
   } else {
     if(filterBar) filterBar.style.display = 'none';
   }
 
+  // Apply date and search filters
+  if(dateFrom) visibleJE = visibleJE.filter(function(je){ return (je.date||'') >= dateFrom; });
+  if(dateTo)   visibleJE = visibleJE.filter(function(je){ return (je.date||'') <= dateTo; });
+  if(search)   visibleJE = visibleJE.filter(function(je){
+    return (je.desc||'').toLowerCase().indexOf(search) !== -1 ||
+           je.lines.some(function(l){ return (l.account||'').indexOf(search) !== -1; });
+  });
+
+  var countEl = document.getElementById('je-count-label');
+  if(countEl) countEl.textContent = visibleJE.length + ' / ' + DB.je.length + ' entries';
+  var filterCountEl = document.getElementById('je-filter-count');
+  if(filterCountEl && _jeFilter) filterCountEl.textContent = visibleJE.length + ' entries';
+
   if(!visibleJE.length){
     b.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:32px;">'+(
-      _jeFilter ? 'No journal entries found for account '+_jeFilter.account+' — '+_jeFilter.label+'.'
-                : 'No journal entries yet.'
+      _jeFilter ? 'No entries for account '+_jeFilter.account
+                : (search||dateFrom||dateTo) ? 'No entries match the filter.' : 'No journal entries yet.'
     )+'</td></tr>';
     return;
   }
@@ -5908,6 +6143,8 @@ function rCFO() {
   renderCFOCohorts(year);
   renderCFOMRR();
   renderCFORunway(F, FA);
+  renderCFOPieChart(FA);
+  renderCFOWaterfall(F);
 }
 
 // cFAll — all-time BS snapshot (no date filter)
@@ -5929,7 +6166,9 @@ function cFAll() {
   }
   function sumBal(accs) { return accs.reduce(function(s,a){return s+bal(a);},0); }
 
-  var cash    = sumBal(_p.cashAccts);
+  // Include bank-specific JE accounts in cash
+  var _bankJEAccts2 = (DB.bankAccounts||[]).filter(function(a){return a.jeAccount;}).map(function(a){return a.jeAccount;});
+  var cash    = sumBal(_p.cashAccts.concat(_bankJEAccts2));
   var ar      = sumBal(_p.arAccts);
   var vatRec  = _p.id==='pgc' ? bal('472') : 0;
   var tca     = cash + ar + vatRec;
@@ -6025,15 +6264,14 @@ function renderCFORevChart(year) {
     return { month:mn, rev:fd.rev, ni:fd.ni };
   });
 
-  var maxV = Math.max.apply(null, data.map(function(d){return Math.max(d.rev, Math.abs(d.ni), 1);}));
   var W=560, H=180, pad=32, barW=18, gap=24;
-  var scale = function(v){ return H - (Math.abs(v)/maxV)*H*0.9; };
-  var baseline = H;
+  var maxV = Math.max.apply(null, data.map(function(d){return Math.max(d.rev, Math.abs(d.ni), 1);}));
 
-  var svg = '<svg viewBox="0 0 '+W+' '+(H+40)+'" class="bar-chart-svg" xmlns="http://www.w3.org/2000/svg">';
-  // Baseline
-  svg += '<line x1="'+pad+'" y1="'+baseline+'" x2="'+(W-10)+'" y2="'+baseline+'" stroke="var(--border)" stroke-width="1"/>';
-  // Grid lines
+  var svg = '<svg viewBox="0 0 '+W+' '+(H+50)+'" class="bar-chart-svg" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">';
+  svg += '<defs><style>.cfo-tt{display:none;}.cfo-bar-g:hover .cfo-tt{display:block;}</style></defs>';
+
+  // Baseline + grid
+  svg += '<line x1="'+pad+'" y1="'+H+'" x2="'+(W-10)+'" y2="'+H+'" stroke="var(--border)" stroke-width="1"/>';
   [0.25,0.5,0.75].forEach(function(t){
     var y = H*(1-t*0.9);
     svg += '<line x1="'+pad+'" y1="'+y+'" x2="'+(W-10)+'" y2="'+y+'" stroke="var(--border)" stroke-dasharray="3,3" stroke-width="0.5"/>';
@@ -6041,17 +6279,34 @@ function renderCFORevChart(year) {
   });
 
   data.forEach(function(d, i){
-    var x = pad + i*(barW*2+gap);
-    // Revenue bar
+    var x    = pad + i*(barW*2+gap);
     var revH = Math.max(2, (d.rev/maxV)*H*0.9);
-    svg += '<rect x="'+x+'" y="'+(H-revH)+'" width="'+barW+'" height="'+revH+'" fill="var(--accent)" opacity="0.85" rx="3"/>';
-    // Net result bar
     var niH  = Math.max(2, (Math.abs(d.ni)/maxV)*H*0.9);
     var niY  = d.ni >= 0 ? H-niH : H;
     var niCol= d.ni >= 0 ? '#0E9AA7' : 'var(--red)';
+    var cx   = x + barW;  // tooltip anchor x
+    var margin = d.rev > 0 ? ((d.ni/d.rev)*100).toFixed(1) : '—';
+
+    // Tooltip box
+    var ttW = 130, ttH = 56, ttX = Math.min(cx - ttW/2, W - ttX - 10);
+    ttX = Math.max(0, cx - ttW/2);
+    var ttY = Math.max(4, H - revH - ttH - 8);
+
+    svg += '<g class="cfo-bar-g">';
+    // Revenue bar
+    svg += '<rect x="'+x+'" y="'+(H-revH)+'" width="'+barW+'" height="'+revH+'" fill="var(--accent)" opacity="0.85" rx="3"/>';
+    // Net result bar
     svg += '<rect x="'+(x+barW+2)+'" y="'+niY+'" width="'+barW+'" height="'+niH+'" fill="'+niCol+'" opacity="0.85" rx="3"/>';
     // Month label
     svg += '<text x="'+(x+barW)+'" y="'+(H+14)+'" fill="var(--text3)" font-size="9" text-anchor="middle">'+d.month+'</text>';
+    // Tooltip (shown on hover via CSS)
+    svg += '<g class="cfo-tt">';
+    svg += '<rect x="'+ttX+'" y="'+ttY+'" width="'+ttW+'" height="'+ttH+'" rx="6" fill="var(--surface)" stroke="var(--border)" stroke-width="1" filter="drop-shadow(0 2px 8px rgba(0,0,0,.3))"/>';
+    svg += '<text x="'+(ttX+8)+'" y="'+(ttY+14)+'" fill="var(--text)" font-size="9" font-weight="700">'+d.month+'</text>';
+    svg += '<text x="'+(ttX+8)+'" y="'+(ttY+27)+'" fill="var(--accent)" font-size="9">Rev: '+f(d.rev)+'</text>';
+    svg += '<text x="'+(ttX+8)+'" y="'+(ttY+40)+'" fill="'+(d.ni>=0?'#0E9AA7':'var(--red)')+'" font-size="9">Net: '+f(d.ni)+'  ('+margin+'%)</text>';
+    svg += '</g>';
+    svg += '</g>';
   });
 
   // Legend
@@ -6059,7 +6314,6 @@ function renderCFORevChart(year) {
   svg += '<text x="'+(pad+13)+'" y="'+(H+33)+'" fill="var(--text2)" font-size="9">Revenue</text>';
   svg += '<rect x="'+(pad+70)+'" y="'+(H+24)+'" width="10" height="10" fill="#0E9AA7" rx="2"/>';
   svg += '<text x="'+(pad+83)+'" y="'+(H+33)+'" fill="var(--text2)" font-size="9">Net Result</text>';
-
   svg += '</svg>';
   el.innerHTML = svg;
 }
@@ -6077,6 +6331,10 @@ function renderCFORatios(F, FA) {
   var roe = FA.eq > 0 ? (FA.ni/FA.eq)*100 : null;
   // Collection Period = (AR / Revenue) * 365
   var collPeriod = FA.rev > 0 ? (FA.ar/FA.rev)*365 : null;
+  // Indebtedness = Total Liabilities / Equity
+  var indebtedness = FA.eq > 0.01 ? FA.tl/FA.eq : null;
+  // Net Margin = Net Income / Revenue * 100
+  var netMargin = FA.rev > 0.01 ? (FA.ni/FA.rev)*100 : null;
 
   function ratioStatus(val, good, warn, isHighGood) {
     if(val===null) return 'neu';
@@ -6111,6 +6369,18 @@ function renderCFORatios(F, FA) {
       val: collPeriod, fmt: collPeriod !== null ? Math.round(collPeriod)+' days' : '—',
       status: ratioStatus(collPeriod, 30, 60, false),
       tip: collPeriod !== null ? (collPeriod<=30?'Excellent':collPeriod<=60?'Good':'Slow') : '—'
+    },
+    {
+      name:'Indebtedness Ratio', formula:'Total Liabilities / Equity',
+      val: indebtedness, fmt: indebtedness !== null ? indebtedness.toFixed(2)+'x' : '—',
+      status: ratioStatus(indebtedness, 1, 2, false),  // lower is better
+      tip: indebtedness !== null ? (indebtedness<=1?'Low debt':indebtedness<=2?'Moderate':'High leverage') : 'No equity'
+    },
+    {
+      name:'Net Margin', formula:'Net Income / Revenue × 100',
+      val: netMargin, fmt: netMargin !== null ? netMargin.toFixed(1)+'%' : '—',
+      status: ratioStatus(netMargin, 10, 0, true),
+      tip: netMargin !== null ? (netMargin>=20?'Excellent':netMargin>=10?'Good':netMargin>=0?'Low':'Loss') : '—'
     }
   ];
 
@@ -6124,6 +6394,132 @@ function renderCFORatios(F, FA) {
       '<div class="ratio-status" style="background:'+col+'20;color:'+col+';">'+icon+' '+r.tip+'</div>'+
     '</div>';
   }).join('');
+}
+
+// ── Patrimonial Structure Pie Chart ──────────────────────────────
+function renderCFOPieChart(FA) {
+  var el = document.getElementById('cfo-pie-chart');
+  if (!el) return;
+
+  var segments = [
+    { label:'Current Assets',       value:Math.max(0,FA.tca),      color:'#c8ff00' },
+    { label:'Non-current Assets',   value:Math.max(0,FA.fixedNet),  color:'#0E9AA7' },
+    { label:'Current Liabilities',  value:Math.max(0,FA.tcl),       color:'#f87171' },
+    { label:'Non-current Liab.',    value:Math.max(0,FA.tl-FA.tcl), color:'#fb923c' },
+    { label:'Equity',               value:Math.max(0,FA.eq),        color:'#4ade80' },
+  ].filter(function(s){ return s.value > 0.01; });
+
+  var total = segments.reduce(function(a,s){ return a+s.value; }, 0);
+  if (total < 0.01) {
+    el.innerHTML = '<div style="color:var(--text3);font-size:12px;text-align:center;padding:30px;">No balance sheet data yet.</div>';
+    return;
+  }
+
+  // SVG Pie
+  var R = 90, cx = 100, cy = 100, W = 200, H = 200;
+  var svg = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="width:200px;height:200px;flex-shrink:0;">';
+
+  var startAngle = -Math.PI / 2;
+  segments.forEach(function(s, i) {
+    var pct     = s.value / total;
+    var angle   = pct * 2 * Math.PI;
+    var endAngle = startAngle + angle;
+    var x1 = cx + R * Math.cos(startAngle);
+    var y1 = cy + R * Math.sin(startAngle);
+    var x2 = cx + R * Math.cos(endAngle);
+    var y2 = cy + R * Math.sin(endAngle);
+    var large = angle > Math.PI ? 1 : 0;
+    // Inner radius for donut
+    var ri = 52;
+    var xi1 = cx + ri * Math.cos(startAngle);
+    var yi1 = cy + ri * Math.sin(startAngle);
+    var xi2 = cx + ri * Math.cos(endAngle);
+    var yi2 = cy + ri * Math.sin(endAngle);
+
+    var d = 'M '+xi1+' '+yi1+
+            ' L '+x1+' '+y1+
+            ' A '+R+' '+R+' 0 '+large+' 1 '+x2+' '+y2+
+            ' L '+xi2+' '+yi2+
+            ' A '+ri+' '+ri+' 0 '+large+' 0 '+xi1+' '+yi1+' Z';
+
+    // Mid angle for label
+    var mid = startAngle + angle/2;
+    var lx  = cx + (R+12) * Math.cos(mid);
+    var ly  = cy + (R+12) * Math.sin(mid);
+
+    svg += '<path d="'+d+'" fill="'+s.color+'" opacity="0.9" stroke="var(--surface)" stroke-width="1.5">';
+    svg += '<title>'+s.label+': '+f(s.value)+' ('+Math.round(pct*100)+'%)</title>';
+    svg += '</path>';
+
+    // Pct label inside if segment is big enough
+    if (pct > 0.08) {
+      var labR = (R + ri) / 2;
+      var labX = cx + labR * Math.cos(mid);
+      var labY = cy + labR * Math.sin(mid);
+      svg += '<text x="'+labX+'" y="'+labY+'" fill="#0f0f11" font-size="9" font-weight="700" text-anchor="middle" dominant-baseline="middle">'+Math.round(pct*100)+'%</text>';
+    }
+
+    startAngle = endAngle;
+  });
+
+  // Center text
+  svg += '<text x="'+cx+'" y="'+(cy-8)+'" fill="var(--text)" font-size="9" text-anchor="middle" font-family="monospace" text-transform="uppercase">TOTAL</text>';
+  svg += '<text x="'+cx+'" y="'+(cy+8)+'" fill="var(--text)" font-size="11" font-weight="700" text-anchor="middle">'+f(total)+'</text>';
+  svg += '</svg>';
+
+  // Legend
+  var legend = '<div style="display:flex;flex-direction:column;gap:10px;justify-content:center;">';
+  segments.forEach(function(s) {
+    var pct = Math.round(s.value/total*100);
+    legend += '<div style="display:flex;align-items:center;gap:8px;">' +
+      '<div style="width:12px;height:12px;border-radius:3px;background:'+s.color+';flex-shrink:0;"></div>' +
+      '<div>' +
+        '<div style="font-size:12px;font-weight:600;color:var(--text);">'+s.label+'</div>' +
+        '<div style="font-size:11px;color:var(--text3);font-family:monospace;">'+f(s.value)+' · <span style="color:'+s.color+';">'+pct+'%</span></div>' +
+      '</div>' +
+    '</div>';
+  });
+  legend += '</div>';
+
+  el.innerHTML = svg + legend;
+}
+
+// ── Cash Flow Waterfall ───────────────────────────────────────────
+function renderCFOWaterfall(F) {
+  var el = document.getElementById('cfo-waterfall');
+  if (!el) return;
+
+  var ocf = (F.jeOCF !== undefined) ? F.jeOCF : (F.totColl - F.totPay);
+  var icf = F.jeICF || 0;
+  var fcf = F.jeFCF || 0;
+  var net = ocf + icf + fcf;
+
+  var bars = [
+    { label:'Operating', val:ocf, color: ocf>=0?'var(--green)':'var(--red)' },
+    { label:'Investing',  val:icf, color: icf>=0?'var(--green)':'var(--red)' },
+    { label:'Financing',  val:fcf, color: fcf>=0?'var(--green)':'var(--red)' },
+    { label:'Net Change', val:net, color: net>=0?'var(--accent)':'var(--red)', bold:true },
+  ];
+
+  var maxAbs = Math.max.apply(null, bars.map(function(b){ return Math.abs(b.val); })) || 1;
+  var W=300, H=120, pad=10, barW=40, gap=20;
+
+  var svg = '<svg viewBox="0 0 '+W+' '+(H+40)+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;">';
+  svg += '<line x1="'+pad+'" y1="'+H+'" x2="'+(W-pad)+'" y2="'+H+'" stroke="var(--border)" stroke-width="1"/>';
+
+  bars.forEach(function(b, i) {
+    var x   = pad + i*(barW+gap);
+    var bh  = Math.max(4, (Math.abs(b.val)/maxAbs)*H*0.85);
+    var by  = b.val >= 0 ? H-bh : H;
+    svg += '<rect x="'+x+'" y="'+by+'" width="'+barW+'" height="'+bh+'" fill="'+b.color+'" opacity="0.9" rx="4">';
+    svg += '<title>'+b.label+': '+f(b.val)+'</title>';
+    svg += '</rect>';
+    svg += '<text x="'+(x+barW/2)+'" y="'+(H+14)+'" fill="var(--text3)" font-size="9" text-anchor="middle">'+b.label+'</text>';
+    svg += '<text x="'+(x+barW/2)+'" y="'+(by-4)+'" fill="'+b.color+'" font-size="9" font-weight="'+(b.bold?'700':'400')+'" text-anchor="middle">'+f(b.val)+'</text>';
+  });
+  svg += '</svg>';
+
+  el.innerHTML = svg;
 }
 
 // ── Customer Cohort Analysis ──────────────────────────────────────
@@ -6425,75 +6821,67 @@ function wtUpdateTotal(dir) {
   document.getElementById('wt-'+dir+'-count').textContent = count;
 }
 
-// ── Create Wire Transfer → grouped payment/collection ─────────────
+// ── Create Wire Transfer → GROUPING ONLY, no JE until bank reconcile ──────
 function createWireTransfer(dir) {
   var checked = Array.from(document.querySelectorAll('.wt-'+dir+'-chk:checked'));
   if (!checked.length) { alert('Select at least one invoice.'); return; }
 
-  var concept = document.getElementById('wt-'+dir+'-concept').value || (dir==='out'?'PAYMENTS SUPPLIERS':'REMITTANCES');
-  var date    = document.getElementById('wt-'+dir+'-date').value   || td();
-  var bank    = document.getElementById('wt-'+dir+'-bank').value   || '';
-  var due     = document.getElementById('wt-'+dir+'-due').value    || date;
-  var creditor= dir==='in' ? (document.getElementById('wt-in-creditor').value||'') : '';
+  var concept  = document.getElementById('wt-'+dir+'-concept').value || (dir==='out'?'PAYMENTS SUPPLIERS':'REMITTANCES');
+  var date     = document.getElementById('wt-'+dir+'-date').value   || td();
+  var bank     = document.getElementById('wt-'+dir+'-bank').value   || '';
+  var due      = document.getElementById('wt-'+dir+'-due').value    || date;
+  var creditor = dir==='in' ? (document.getElementById('wt-in-creditor').value||'') : '';
 
-  if (!DB.wires) DB.wires = [];
-  if (!DB.ids.wt) DB.ids.wt = 1;
+  if (!DB.wires)   DB.wires   = [];
+  if (!DB.ids.wt)  DB.ids.wt  = 1;
 
-  var docs = [];
+  var docs     = [];
   var totalAmt = 0;
 
+  // ── Just collect the invoice data — NO JEs, NO payments, NO collections ──
   checked.forEach(function(cb){
     var id = parseInt(cb.value);
     if (dir === 'out') {
-      var p = DB.purch.find(function(x){return x.id===id;});
+      var p = DB.purch.find(function(x){ return x.id===id; });
       if (!p) return;
-      var paid = DB.pay.filter(function(x){return x.ref===p.num;}).reduce(function(a,x){return a+x.amount;},0);
+      var paid = DB.pay.filter(function(x){ return x.ref===p.num; }).reduce(function(a,x){ return a+x.amount; }, 0);
       var rem  = p.total - paid;
       if (rem < 0.01) return;
-      docs.push({ num:p.num, party:p.supplier, desc:p.desc||'', amount:rem, date:p.date, due:p.dueDate||p.date });
-      // Create payment record for each invoice
-      var _pp = getActivePlan();
-      DB.pay.push({id:DB.ids.py++, date:date, supplier:p.supplier, ref:p.num, method:'wire', amount:rem, notes:'Wire Transfer — '+concept});
-      DB.je.push({id:DB.ids.j++, date:date, desc:'Wire Payment — '+p.supplier+' / '+p.num, lines:[{account:_pp.apAccts[0], debit:rem, credit:0},{account:_pp.cashAccts[0], debit:0, credit:rem}], amount:rem, auto:true, sourceType:'payment'});
-      var paid2 = DB.pay.filter(function(x){return x.ref===p.num;}).reduce(function(a,x){return a+x.amount;},0);
-      if (paid2 >= p.total - 0.01) p.status = 'paid';
+      docs.push({ invId:p.id, num:p.num, party:p.supplier, desc:p.desc||'', amount:rem, date:p.date, due:p.dueDate||p.date, type:'purch' });
       totalAmt += rem;
     } else {
-      var s = DB.sales.find(function(x){return x.id===id;});
+      var s = DB.sales.find(function(x){ return x.id===id; });
       if (!s) return;
-      var coll2 = DB.coll.filter(function(x){return x.ref===s.num;}).reduce(function(a,x){return a+x.amount;},0);
-      var rem2  = s.total - coll2;
+      var coll = DB.coll.filter(function(x){ return x.ref===s.num; }).reduce(function(a,x){ return a+x.amount; }, 0);
+      var rem2  = s.total - coll;
       if (rem2 < 0.01) return;
-      docs.push({ num:s.num, party:s.customer, desc:s.desc||'', amount:rem2, date:s.date, due:s.dueDate||s.date });
-      // Create collection record for each invoice
-      var _cp = getActivePlan();
-      DB.coll.push({id:DB.ids.c++, date:date, customer:s.customer, ref:s.num, method:'wire', amount:rem2, notes:'Wire Transfer — '+concept});
-      DB.je.push({id:DB.ids.j++, date:date, desc:'Wire Collection — '+s.customer+' / '+s.num, lines:[{account:_cp.cashAccts[0], debit:rem2, credit:0},{account:_cp.arAccts[0], debit:0, credit:rem2}], amount:rem2, auto:true, sourceType:'collection'});
-      var coll3 = DB.coll.filter(function(x){return x.ref===s.num;}).reduce(function(a,x){return a+x.amount;},0);
-      if (coll3 >= s.total - 0.01) s.status = 'paid';
+      docs.push({ invId:s.id, num:s.num, party:s.customer, desc:s.desc||'', amount:rem2, date:s.date, due:s.dueDate||s.date, type:'sale' });
       totalAmt += rem2;
     }
   });
 
-  // Save wire record
+  if (!docs.length) { alert('No valid invoices to include.'); return; }
+
+  // Save wire record — status pending, no accounting entries yet
   var wire = {
-    id: DB.ids.wt++,
-    type: dir,
-    concept: concept,
-    date: date,
-    bank: bank,
-    due: due,
+    id:       DB.ids.wt++,
+    type:     dir,
+    concept:  concept,
+    date:     date,
+    bank:     bank,
+    due:      due,
     creditor: creditor,
-    docs: docs,
-    total: totalAmt,
-    status: 'pending'
+    docs:     docs,
+    total:    totalAmt,
+    status:   'pending',   // JEs created only on bank reconcile
+    reconciledAmt: 0
   };
   DB.wires.push(wire);
   _wtLastCreated = wire;
 
   sv();
   renderAll();
-  showToast('✅ Wire transfer created — ' + docs.length + ' invoices · ' + f(totalAmt));
+  showToast('✅ Wire grouped — ' + docs.length + ' invoices · ' + f(totalAmt) + ' · Pending bank reconciliation');
 
   // Enable download button
   document.getElementById('wt-'+dir+'-dl').disabled = false;
@@ -6719,6 +7107,7 @@ function saveAccount() {
   var bankName = document.getElementById('acc-bank-name').value.trim();
   var name     = document.getElementById('acc-name').value.trim() || bankName;
   if (!bankName) { alert('Please enter a bank name.'); return; }
+  var plan = getActivePlan();
 
   if (_baEditId) {
     var acc = DB.bankAccounts.find(function(a){ return a.id === _baEditId; });
@@ -6730,6 +7119,15 @@ function saveAccount() {
       acc.openingBalance = parseFloat(document.getElementById('acc-opening-balance').value)||0;
     }
   } else {
+    // Auto-assign a JE account code for this bank
+    // PGC: 572x (572001, 572002...) US GAAP: 100x (1001, 1002...)
+    var baseAcc   = plan.id === 'pgc' ? '572' : '100';
+    var existingNums = DB.bankAccounts
+      .filter(function(a){ return a.jeAccount && a.jeAccount.startsWith(baseAcc); })
+      .map(function(a){ return parseInt(a.jeAccount.slice(baseAcc.length))||0; });
+    var nextNum   = existingNums.length ? Math.max.apply(null, existingNums) + 1 : 1;
+    var jeAccount = baseAcc + String(nextNum).padStart(3, '0');
+
     DB.bankAccounts.push({
       id: DB.ids.ba++,
       bankName: bankName,
@@ -6738,6 +7136,7 @@ function saveAccount() {
       bic:  document.getElementById('acc-bic').value.trim(),
       currency: document.getElementById('acc-currency').value,
       openingBalance: parseFloat(document.getElementById('acc-opening-balance').value)||0,
+      jeAccount: jeAccount,   // e.g. "572001" or "1001"
       createdAt: td()
     });
   }
@@ -6751,29 +7150,57 @@ function rBankAccounts() {
   var grid = document.getElementById('ba-accounts-grid');
   if (!grid) return;
 
-  // Compute totals per account
+  // Period filter
+  var periodMonths = parseInt((document.getElementById('ba-period')||{value:'12'}).value) || 12;
+  var now   = new Date();
+  var cutoff = new Date(now.getFullYear(), now.getMonth() - periodMonths + 1, 1);
+  var cutoffStr = cutoff.toISOString().slice(0,7); // YYYY-MM
+
+  // Compute per-account stats
+  // Balance = opening + JE movements on that bank's jeAccount (NOT from imported Excel movements)
+  // Inflows/Outflows shown on card = from imported movements filtered by period (for operations info)
+  // But the €balance shown = from JE for accounting accuracy
+
+  // Build JE account balances
+  var jeAccBals = {};
+  DB.je.forEach(function(je){
+    je.lines.forEach(function(l){
+      if(!jeAccBals[l.account]) jeAccBals[l.account] = {dr:0, cr:0};
+      jeAccBals[l.account].dr += (l.debit||0);
+      jeAccBals[l.account].cr += (l.credit||0);
+    });
+  });
+  function jeNetBal(acc) {
+    var b = jeAccBals[acc]; if(!b) return 0;
+    return b.dr - b.cr; // cash account: Dr = increase
+  }
+
   var cards = DB.bankAccounts.map(function(acc) {
-    var movs = DB.bankMovements.filter(function(m){ return m.accountId === acc.id; });
-    var inflows  = movs.filter(function(m){ return m.amount > 0; }).reduce(function(a,m){ return a+m.amount; }, 0);
-    var outflows = movs.filter(function(m){ return m.amount < 0; }).reduce(function(a,m){ return a+m.amount; }, 0);
-    var balance  = (acc.openingBalance||0) + inflows + outflows;
-    var pending  = movs.filter(function(m){ return !m.reconciled; }).length;
-    return { acc, inflows, outflows, balance, pending, count: movs.length };
+    // JE-based balance (accounting truth)
+    var jeBalance = (acc.openingBalance||0) + (acc.jeAccount ? jeNetBal(acc.jeAccount) : 0);
+
+    // Imported movements (for info stats only, period-filtered)
+    var allMovs  = DB.bankMovements.filter(function(m){ return m.accountId === acc.id; });
+    var filtMovs = allMovs.filter(function(m){ return (m.date||'').slice(0,7) >= cutoffStr; });
+    var inflows  = filtMovs.filter(function(m){ return m.amount > 0; }).reduce(function(a,m){ return a+m.amount; }, 0);
+    var outflows = filtMovs.filter(function(m){ return m.amount < 0; }).reduce(function(a,m){ return a+m.amount; }, 0);
+    var pending  = allMovs.filter(function(m){ return !m.reconciled; }).length;
+    return { acc:acc, balance:jeBalance, inflows:inflows, outflows:outflows, pending:pending, count:filtMovs.length };
   });
 
-  // KPI chart data
-  renderBAChart(cards);
-
-  // KPIs
-  var totalIn  = cards.reduce(function(a,c){ return a+c.inflows;  }, 0);
+  // KPIs (period-filtered)
+  var totalIn  = cards.reduce(function(a,c){ return a+c.inflows;           }, 0);
   var totalOut = cards.reduce(function(a,c){ return a+Math.abs(c.outflows); }, 0);
-  var totalBal = cards.reduce(function(a,c){ return a+c.balance;  }, 0);
+  var totalBal = cards.reduce(function(a,c){ return a+c.balance;           }, 0);
   var kIn  = document.getElementById('ba-kpi-in');
   var kOut = document.getElementById('ba-kpi-out');
   var kBal = document.getElementById('ba-kpi-bal');
   if(kIn)  kIn.textContent  = f(totalIn);
   if(kOut) kOut.textContent = f(totalOut);
   if(kBal) { kBal.textContent = f(totalBal); kBal.style.color = totalBal >= 0 ? 'var(--green)' : 'var(--red)'; }
+
+  // Chart
+  renderBAChart(periodMonths);
 
   // Cards
   grid.innerHTML = cards.map(function(c) {
@@ -6787,7 +7214,8 @@ function rBankAccounts() {
       '</div>' +
       '<div class="ba-card-header">' +
         '<div class="ba-bank-icon">'+icon+'</div>' +
-        '<div><div class="ba-bank-name">'+c.acc.name+'</div><div class="ba-bank-iban">'+(c.acc.iban||'No IBAN')+'</div></div>' +
+        '<div><div class="ba-bank-name">'+c.acc.name+'</div>' +
+        '<div class="ba-bank-iban">'+(c.acc.jeAccount||'')+(c.acc.iban?' · '+c.acc.iban.slice(0,12)+'…':'')+'</div></div>' +
       '</div>' +
       '<div class="ba-balance'+balColor+'">'+f(c.balance)+'</div>' +
       '<div class="ba-stats">' +
@@ -6801,72 +7229,107 @@ function rBankAccounts() {
   '<div class="ba-add-card" onclick="openAddAccount()"><div class="ba-add-icon">+</div><div class="ba-add-label">Add Account</div></div>';
 }
 
-// ── Treasury cash flow chart (SVG) ───────────────────────────────
-function renderBAChart(cards) {
+// ── Treasury cash flow chart — reads from JE for accuracy ────────
+function renderBAChart(periodMonths) {
   var el = document.getElementById('ba-chart-svg');
   if (!el) return;
+  periodMonths = periodMonths || 12;
 
-  // Group movements by month (last 12 months)
+  // Build months array
   var months = [];
-  var now = new Date();
-  for (var i = 11; i >= 0; i--) {
+  var now    = new Date();
+  for (var i = periodMonths - 1; i >= 0; i--) {
     var d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    months.push({ key: d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'), label: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()] });
+    months.push({
+      key:   d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),
+      label: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]
+    });
   }
 
-  var allMovs = DB.bankMovements || [];
-  var monthData = months.map(function(m) {
-    var movs = allMovs.filter(function(mv){ return (mv.date||'').startsWith(m.key); });
-    var inflow  = movs.filter(function(mv){ return mv.amount > 0; }).reduce(function(a,mv){ return a+mv.amount; }, 0);
-    var outflow = movs.filter(function(mv){ return mv.amount < 0; }).reduce(function(a,mv){ return a+Math.abs(mv.amount); }, 0);
-    return { label: m.label, inflow, outflow };
+  var plan     = getActivePlan();
+  // Determine which JE accounts represent cash for each bank
+  var cashAccs = (DB.bankAccounts||[])
+    .filter(function(a){ return a.jeAccount; })
+    .map(function(a){ return a.jeAccount; });
+  // Fallback to plan default if no bank accounts defined
+  if (!cashAccs.length) cashAccs = plan.cashAccts || ['572'];
+
+  // Build monthly inflow/outflow from JE lines touching cash accounts
+  var monthData = {};
+  months.forEach(function(m){ monthData[m.key] = {inflow:0, outflow:0}; });
+
+  DB.je.forEach(function(je) {
+    var month = (je.date||'').slice(0,7);
+    if (!monthData[month]) return;
+    je.lines.forEach(function(l) {
+      if (cashAccs.indexOf(l.account) === -1) return;
+      var dr = l.debit  || 0;
+      var cr = l.credit || 0;
+      if (dr > 0) monthData[month].inflow  += dr;  // Dr cash = inflow
+      if (cr > 0) monthData[month].outflow += cr;  // Cr cash = outflow
+    });
   });
 
-  // Running balance
-  var totalOpeningBal = (DB.bankAccounts||[]).reduce(function(a,acc){ return a+(acc.openingBalance||0); }, 0);
-  var runBal = totalOpeningBal;
-  var balData = monthData.map(function(d) {
-    runBal += d.inflow - d.outflow;
-    return runBal;
+  // Running balance per month from JE
+  var totalOpening = (DB.bankAccounts||[]).reduce(function(a,acc){ return a+(acc.openingBalance||0); }, 0);
+  var cumBal = totalOpening;
+  var balByMonth = {};
+  months.forEach(function(m) {
+    cumBal += (monthData[m.key].inflow - monthData[m.key].outflow);
+    balByMonth[m.key] = cumBal;
   });
 
-  var maxV = Math.max.apply(null, monthData.map(function(d){ return Math.max(d.inflow, d.outflow, 1); }));
-  var maxBal = Math.max.apply(null, balData.map(function(v){ return Math.abs(v); })) || 1;
-  var W=700, H=140, pad=40, barW=16, gap=12;
-  var scaleBar = function(v){ return H - (v/maxV)*H*0.85; };
-  var scaleBal = function(v){ return H/2 - (v/maxBal)*(H/2)*0.85; };
+  // Update KPIs with JE-sourced data for the full period
+  var totalIn  = months.reduce(function(a,m){ return a + monthData[m.key].inflow;  }, 0);
+  var totalOut = months.reduce(function(a,m){ return a + monthData[m.key].outflow; }, 0);
+  var netBal   = totalOpening + totalIn - totalOut;
+  var kIn  = document.getElementById('ba-kpi-in');
+  var kOut = document.getElementById('ba-kpi-out');
+  var kBal = document.getElementById('ba-kpi-bal');
+  if(kIn)  kIn.textContent  = f(totalIn);
+  if(kOut) kOut.textContent = f(totalOut);
+  if(kBal) { kBal.textContent = f(netBal); kBal.style.color = netBal >= 0 ? 'var(--green)' : 'var(--red)'; }
 
-  var svg = '<svg viewBox="0 0 '+W+' '+(H+30)+'" style="width:100%;overflow:visible;" xmlns="http://www.w3.org/2000/svg">';
-  // Baseline
+  // Limit to last 12 visible bars if period > 12
+  var visMonths = months.length > 12 ? months.slice(-12) : months;
+
+  var maxV   = Math.max.apply(null, visMonths.map(function(m){ return Math.max(monthData[m.key].inflow, monthData[m.key].outflow, 1); }));
+  var balVals = visMonths.map(function(m){ return Math.abs(balByMonth[m.key] || 0); });
+  var maxBal = Math.max.apply(null, balVals) || 1;
+
+  var W = 700, H = 160, pad = 40;
+  var n    = visMonths.length;
+  var slot = Math.floor((W - pad - 10) / Math.max(n, 1));
+  var barW = Math.max(8, Math.min(22, slot / 2 - 2));
+
+  var svg = '<svg viewBox="0 0 '+W+' '+(H+24)+'" style="width:100%;height:auto;overflow:visible;" xmlns="http://www.w3.org/2000/svg">';
   svg += '<line x1="'+pad+'" y1="'+H+'" x2="'+(W-10)+'" y2="'+H+'" stroke="var(--border)" stroke-width="1"/>';
-  // Gridlines
   [0.25,0.5,0.75].forEach(function(t){
     var y = H*(1-t*0.85);
-    svg += '<line x1="'+pad+'" y1="'+y+'" x2="'+(W-10)+'" y2="'+y+'" stroke="var(--border)" stroke-dasharray="3,3" stroke-width="0.5"/>';
+    svg += '<line x1="'+pad+'" y1="'+y+'" x2="'+(W-10)+'" y2="'+y+'" stroke="var(--border)" stroke-dasharray="4,3" stroke-width="0.5"/>';
   });
 
-  // Bars
-  monthData.forEach(function(d, i) {
-    var x = pad + i*(barW*2+gap+4);
-    var inH  = Math.max(2, (d.inflow/maxV)*H*0.85);
-    var outH = Math.max(2, (d.outflow/maxV)*H*0.85);
-    svg += '<rect x="'+x+'" y="'+(H-inH)+'" width="'+barW+'" height="'+inH+'" fill="var(--green)" opacity="0.75" rx="3" title="Inflow: '+d.inflow+'"/>';
-    svg += '<rect x="'+(x+barW+2)+'" y="'+(H-outH)+'" width="'+barW+'" height="'+outH+'" fill="var(--red)" opacity="0.75" rx="3" title="Outflow: '+d.outflow+'"/>';
-    svg += '<text x="'+(x+barW)+'" y="'+(H+14)+'" fill="var(--text3)" font-size="9" text-anchor="middle">'+d.label+'</text>';
+  var balPoints = [];
+  visMonths.forEach(function(m, i) {
+    var d   = monthData[m.key];
+    var x   = pad + i * slot + slot/2 - barW;
+    var inH = Math.max(3, (d.inflow /maxV)*H*0.85);
+    var oH  = Math.max(3, (d.outflow/maxV)*H*0.85);
+    svg += '<rect x="'+x+'" y="'+(H-inH)+'" width="'+barW+'" height="'+inH+'" fill="var(--green)" opacity="0.85" rx="3" title="Inflow '+m.key+': '+f(d.inflow)+'"/>';
+    svg += '<rect x="'+(x+barW+2)+'" y="'+(H-oH)+'" width="'+barW+'" height="'+oH+'" fill="var(--red)" opacity="0.85" rx="3" title="Outflow '+m.key+': '+f(d.outflow)+'"/>';
+    svg += '<text x="'+(x+barW)+'" y="'+(H+14)+'" fill="var(--text3)" font-size="9" text-anchor="middle">'+m.label+'</text>';
+
+    var bv = balByMonth[m.key] || 0;
+    var by = H - Math.min(H*0.9, Math.max(4, (Math.abs(bv)/maxBal)*H*0.85)) * (bv >= 0 ? 1 : -1);
+    if (by < 4) by = 4; if (by > H) by = H;
+    balPoints.push((x+barW)+','+by);
   });
 
-  // Balance line
-  var balPoints = balData.map(function(v, i) {
-    var x = pad + i*(barW*2+gap+4) + barW;
-    var y = H/2 + (v >= 0 ? -(v/maxBal)*(H/2)*0.85 : (Math.abs(v)/maxBal)*(H/2)*0.85);
-    return x+','+y;
-  });
   if (balPoints.length > 1) {
-    svg += '<polyline points="'+balPoints.join(' ')+'" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>';
-    balData.forEach(function(v, i) {
-      var x = pad + i*(barW*2+gap+4) + barW;
-      var y = H/2 + (v >= 0 ? -(v/maxBal)*(H/2)*0.85 : (Math.abs(v)/maxBal)*(H/2)*0.85);
-      svg += '<circle cx="'+x+'" cy="'+y+'" r="3" fill="var(--accent)"/>';
+    svg += '<polyline points="'+balPoints.join(' ')+'" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+    balPoints.forEach(function(pt){
+      var xy = pt.split(',');
+      svg += '<circle cx="'+xy[0]+'" cy="'+xy[1]+'" r="3.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="1.5"/>';
     });
   }
   svg += '</svg>';
@@ -6917,14 +7380,21 @@ function rBADetail() {
 
   list.innerHTML = movs.map(function(m, i) {
     var isIn  = m.amount >= 0;
-    var badge = m.reconciled
-      ? '<span class="ba-reconcile-badge done">✓ Reconciled</span>'
-      : '<span class="ba-reconcile-badge pending">⏳ Pending</span>';
+    var badge;
+    if (m.reconciled) {
+      badge = '<span class="ba-reconcile-badge done">✓ Reconciled</span>';
+    } else if (m.partial) {
+      var partialPct = m.reconciledAmt ? Math.round(m.reconciledAmt/Math.abs(m.amount)*100) : 0;
+      badge = '<span class="ba-reconcile-badge" style="background:rgba(255,217,61,.15);color:var(--yellow);border:1px solid rgba(255,217,61,.4);">⚡ Partial '+partialPct+'%</span>';
+    } else {
+      badge = '<span class="ba-reconcile-badge pending">⏳ Pending</span>';
+    }
+    var pendingAmt = m.partial ? ' · Pending: '+f(Math.abs(m.amount)-(m.reconciledAmt||0)) : '';
     return '<div class="ba-mov-row" onclick="openBankReconcile('+m.id+')">' +
       '<div class="ba-mov-sign '+(isIn?'in':'out')+'">'+(isIn?'↑':'↓')+'</div>' +
       '<div class="ba-mov-desc">' +
         '<div class="ba-mov-concept">'+m.concept+'</div>' +
-        '<div class="ba-mov-date">'+m.date+(m.valueDate&&m.valueDate!==m.date?' · Val: '+m.valueDate:'')+'</div>' +
+        '<div class="ba-mov-date">'+m.date+(m.valueDate&&m.valueDate!==m.date?' · Val: '+m.valueDate:'')+pendingAmt+'</div>' +
       '</div>' +
       badge +
       '<div class="ba-mov-amount '+(isIn?'pos':'neg')+'">'+f(m.amount)+'</div>' +
@@ -7162,40 +7632,108 @@ function downloadSampleXLSX() {
 }
 
 // ── Bank Reconcile ────────────────────────────────────────────────
-var _bankRecMovId = null;
+var _bankRecMovId      = null;
+var _recWireRemaining  = 0;
+var _recWireTotal      = 0;
+var _recWireId         = null;
+var _recSessionTotal   = 0;   // accumulated reconciled this session
+var _recSessionItems   = [];  // descriptions of reconciled tranches
+
+function cancelBankReconcile() {
+  // If we've already reconciled some tranches this session, keep them and just close
+  closeOverlay('ov-reconcile-bank');
+  rBADetail();
+  renderAll();
+}
 
 function openBankReconcile(movId) {
   ensureBADB();
   var mov = DB.bankMovements.find(function(m){ return m.id === movId; });
   if (!mov) return;
-  if (mov.reconciled) {
-    if (!confirm('This movement is already reconciled. Un-reconcile it?')) return;
-    // Un-reconcile
-    if (mov.jeId) {
-      DB.je = DB.je.filter(function(je){ return je.id !== mov.jeId; });
-      mov.jeId = null;
+
+  // Un-reconcile if fully done
+  if (mov.reconciled && !mov.partial) {
+    if (!confirm('This movement is fully reconciled. Un-reconcile it?\n\nThis will delete the associated journal entries and reverse all collections/payments linked to this movement.')) return;
+    var movIdRef = mov.id;
+    var wireid   = mov.wireId;
+    DB.je = DB.je.filter(function(je){
+      return !(je.bankMovId === movIdRef);
+    });
+    DB.coll = DB.coll.filter(function(c){ return !(c.method === 'wire_reconcile' && c.wireRef && c.wireRef.endsWith('_'+movIdRef)); });
+    DB.pay  = DB.pay.filter(function(p){  return !(p.method  === 'wire_reconcile' && p.wireRef && p.wireRef.endsWith('_'+movIdRef)); });
+    if (wireid) {
+      var wire = (DB.wires||[]).find(function(w){ return w.id === wireid; });
+      if (wire) {
+        wire.reconciledAmt = Math.max(0, (wire.reconciledAmt||0) - (mov.reconciledAmt||Math.abs(mov.amount)));
+        wire.status = wire.reconciledAmt < 0.01 ? 'pending' : 'partial';
+        wire.bankMovIds = (wire.bankMovIds||[]).filter(function(id){ return id !== movIdRef; });
+        (wire.docs||[]).forEach(function(doc){
+          if (wire.type === 'in') {
+            var s = DB.sales.find(function(x){ return x.num === doc.num || x.id === doc.invId; });
+            if (s && s.status === 'paid') {
+              var coll = DB.coll.filter(function(c){ return c.ref===s.num; }).reduce(function(a,c){ return a+c.amount; }, 0);
+              if (coll < s.total - 0.01) s.status = 'pending';
+            }
+          } else {
+            var p = DB.purch.find(function(x){ return x.num === doc.num || x.id === doc.invId; });
+            if (p && p.status === 'paid') {
+              var paid = DB.pay.filter(function(py){ return py.ref===p.num; }).reduce(function(a,py){ return a+py.amount; }, 0);
+              if (paid < p.total - 0.01) p.status = 'pending';
+            }
+          }
+        });
+      }
     }
-    mov.reconciled = false;
+    mov.reconciled = false; mov.partial = false;
+    mov.reconciledAmt = 0; mov.wireId = null; mov.jeId = null;
     sv(); rBADetail(); renderAll();
-    showToast('Movement un-reconciled.');
+    showToast('✅ Movement un-reconciled — journal entries reversed, dashboard updated.');
     return;
   }
-  _bankRecMovId = movId;
-  _bankRecType  = mov.amount >= 0 ? 'sales' : 'purchases';
+
+  // Initialize session accumulator
+  _bankRecMovId    = movId;
+  _recSessionTotal = mov.reconciledAmt || 0;
+  _recSessionItems = [];
+  _recWireRemaining = 0; _recWireTotal = 0; _recWireId = null;
+
+  _bankRecType = mov.amount >= 0 ? 'remittance' : 'remittance';
+  // Default to remittance if wires exist for this direction, else sales/purchases
   var isIn = mov.amount >= 0;
+  var hasWires = (DB.wires||[]).some(function(w){ return w.type===(isIn?'in':'out') && w.status!=='reconciled'; });
+  _bankRecType = hasWires ? 'remittance' : (isIn ? 'sales' : 'purchases');
+
+  _renderRecSessionUI();
+  _renderRecMovInfo(mov);
+  setBankRecType(_bankRecType);
+  _initRecDiffPanel(mov);
+  openOverlay('ov-reconcile-bank');
+}
+
+function _renderRecMovInfo(mov) {
+  var isIn = mov.amount >= 0;
+  var alreadyDone = mov.reconciledAmt || 0;
+  var movTotal    = Math.abs(mov.amount);
+  var remaining   = movTotal - alreadyDone;
   document.getElementById('rec-bank-mov-info').innerHTML =
     '<div style="display:flex;justify-content:space-between;align-items:center;">' +
       '<div>' +
         '<div style="font-weight:700;color:var(--text);font-size:14px;">'+mov.concept+'</div>' +
         '<div style="font-size:11px;color:var(--text3);font-family:monospace;margin-top:2px;">'+mov.date+(mov.valueDate?' · Val: '+mov.valueDate:'')+'</div>' +
       '</div>' +
-      '<div style="font-family:\'DM Serif Display\',serif;font-size:22px;color:'+(isIn?'var(--green)':'var(--red)')+';">'+f(mov.amount)+'</div>' +
+      '<div style="text-align:right;">' +
+        '<div style="font-family:\'DM Serif Display\',serif;font-size:22px;color:'+(isIn?'var(--green)':'var(--red)')+';">'+f(movTotal)+'</div>' +
+        (alreadyDone > 0.01 ? '<div style="font-size:11px;color:var(--yellow);">Reconciled: '+f(alreadyDone)+' · Pending: '+f(remaining)+'</div>' : '') +
+      '</div>' +
     '</div>';
-  setBankRecType(_bankRecType);
-  // Initialize diff panel (starts at €0 allocated — button disabled)
-  var movAmt = Math.abs(mov.amount);
+}
+
+function _initRecDiffPanel(mov) {
+  var movTotal  = Math.abs(mov.amount);
+  var alreadyDone = mov.reconciledAmt || 0;
+  var remaining = movTotal - alreadyDone;
   var elTotal = document.getElementById('rec-diff-total');
-  if (elTotal) elTotal.textContent = f(movAmt);
+  if (elTotal) elTotal.textContent = f(remaining);
   var elAlloc = document.getElementById('rec-diff-allocated');
   if (elAlloc) elAlloc.textContent = f(0);
   var elPendWrap = document.getElementById('rec-diff-pending-wrap');
@@ -7203,13 +7741,34 @@ function openBankReconcile(movId) {
   var elOkWrap = document.getElementById('rec-diff-ok-wrap');
   if (elOkWrap) elOkWrap.style.display = 'none';
   var confirmBtn = document.getElementById('rec-confirm-btn');
-  if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.style.opacity = '0.4'; confirmBtn.style.cursor = 'not-allowed'; }
-  openOverlay('ov-reconcile-bank');
+  if (confirmBtn) {
+    confirmBtn.disabled = true;
+    confirmBtn.style.opacity = '0.4';
+    confirmBtn.style.background = '';
+    confirmBtn.style.color = '';
+    confirmBtn.textContent = '✅ Reconcile';
+  }
+}
+
+function _renderRecSessionUI() {
+  var tranchesEl = document.getElementById('rec-session-tranches');
+  var listEl     = document.getElementById('rec-session-list');
+  if (!tranchesEl || !listEl) return;
+  if (_recSessionItems.length === 0) {
+    tranchesEl.style.display = 'none';
+  } else {
+    tranchesEl.style.display = 'block';
+    listEl.innerHTML = _recSessionItems.map(function(item){
+      return '<div style="display:flex;justify-content:space-between;padding:2px 0;"><span>'+item.label+'</span><strong style="color:var(--green);">'+f(item.amt)+'</strong></div>';
+    }).join('');
+  }
 }
 
 function setBankRecType(type) {
   _bankRecType = type;
-  ['sales','purchases','manual'].forEach(function(t) {
+  // Reset wire context when switching tabs
+  _recWireRemaining = 0; _recWireTotal = 0; _recWireId = null;
+  ['sales','purchases','remittance','manual'].forEach(function(t) {
     var btn = document.getElementById('rec-type-'+t);
     if (btn) {
       btn.style.background  = t === type ? 'var(--accent)' : '';
@@ -7227,6 +7786,52 @@ function setBankRecType(type) {
     sel.innerHTML = '<option value="">-- Select account --</option>' + coaOpts();
     var mov2 = DB.bankMovements.find(function(m){ return m.id === _bankRecMovId; });
     if (mov2) document.getElementById('rec-bank-manual-amt').value = Math.abs(mov2.amount).toFixed(2);
+    updateRecDiff();
+    return;
+  }
+
+  if (type === 'remittance') {
+    var mov = DB.bankMovements.find(function(m){ return m.id === _bankRecMovId; });
+    var movAmt = mov ? Math.abs(mov.amount) : 0;
+    var isIn   = mov ? mov.amount >= 0 : true;
+    // Show wires of matching direction (inbound=in for collections, outbound=out for payments)
+    var matchDir = isIn ? 'in' : 'out';
+    var wires = (DB.wires||[]).filter(function(w){ return w.type === matchDir && w.status !== 'reconciled'; });
+
+    if (!wires.length) {
+      listEl.innerHTML = '<div style="color:var(--text3);padding:20px;text-align:center;font-size:12px;">' +
+        'No pending '+(isIn?'inbound':'outbound')+' remittances.<br>' +
+        '<span style="font-size:11px;opacity:.7;">Create one in Treasury → Wire Transfers</span></div>';
+      updateRecDiff();
+      return;
+    }
+
+    listEl.innerHTML = wires.slice().sort(function(a,b){ return b.id-a.id; }).map(function(w) {
+      var remaining   = w.total - (w.reconciledAmt || 0);
+      var isPartialW  = w.status === 'partial';
+      var match       = Math.abs(remaining - movAmt) < 0.01 || Math.abs(w.total - movAmt) < 0.01;
+      var docsCount   = (w.docs||[]).length;
+      var docNames    = (w.docs||[]).slice(0,3).map(function(d){ return d.num; }).join(', ')
+                      + (docsCount > 3 ? ' +' + (docsCount-3) + ' more' : '');
+      var displayAmt  = isPartialW ? remaining : w.total;
+      return '<label style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid '+(match?'var(--accent)':'var(--border)')+';border-radius:10px;margin-bottom:8px;cursor:pointer;background:'+(match?'rgba(200,255,0,.04)':'var(--surface2)')+';transition:all .15s;">' +
+        '<input type="radio" name="rec-wire" value="'+w.id+'" '+(match?'checked':'')+' onchange="updateRecDiff()" style="width:16px;height:16px;cursor:pointer;accent-color:var(--accent);">' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">' +
+            '<span style="font-weight:700;font-size:14px;color:var(--text);">'+w.concept+'</span>' +
+            (match ? '<span style="font-size:10px;background:rgba(200,255,0,.15);color:var(--accent);padding:2px 6px;border-radius:6px;font-weight:700;">MATCH</span>' : '') +
+            (isPartialW ? '<span style="font-size:10px;background:rgba(255,217,61,.15);color:var(--yellow);padding:2px 6px;border-radius:6px;font-weight:700;">PARTIAL</span>' : '') +
+          '</div>' +
+          '<div style="font-size:11px;color:var(--text3);font-family:monospace;">'+w.date+' · '+docsCount+' invoices · '+w.bank+'</div>' +
+          '<div style="font-size:11px;color:var(--text2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+docNames+'</div>' +
+          (isPartialW ? '<div style="font-size:11px;color:var(--yellow);margin-top:4px;">Remaining: '+f(remaining)+' of '+f(w.total)+'</div>' : '') +
+        '</div>' +
+        '<div style="text-align:right;flex-shrink:0;">' +
+          '<div style="font-family:\'DM Serif Display\',serif;font-size:18px;color:'+(isIn?'var(--green)':'var(--red)')+';">'+f(displayAmt)+'</div>' +
+          '<div style="font-size:10px;color:var(--text3);font-family:monospace;">WT-'+String(w.id).padStart(4,'0')+'</div>' +
+        '</div>' +
+      '</label>';
+    }).join('');
     updateRecDiff();
     return;
   }
@@ -7274,16 +7879,34 @@ function setBankRecType(type) {
   updateRecDiff();
 }
 
-// Live-update difference panel whenever checkboxes or manual amount changes
+// Live-update difference panel whenever checkboxes / radio / manual amount changes
 function updateRecDiff() {
   var mov = DB.bankMovements.find(function(m){ return m.id === _bankRecMovId; });
   if (!mov) return;
-  var movAmt   = Math.abs(mov.amount);
-  var allocated = 0;
+  // Remaining = total movement - already reconciled (DB) - this session's tranches
+  var movTotal    = Math.abs(mov.amount);
+  var dbReconciled = mov.reconciledAmt || 0;
+  var sessionDone  = _recSessionTotal - dbReconciled; // what we've done THIS session beyond DB
+  var movAmt       = movTotal - _recSessionTotal;     // what's left to allocate
+  var allocated    = 0;
 
   if (_bankRecType === 'manual') {
-    var manAmt = parseFloat(document.getElementById('rec-bank-manual-amt').value) || 0;
-    allocated  = manAmt;
+    allocated = parseFloat(document.getElementById('rec-bank-manual-amt').value) || 0;
+  } else if (_bankRecType === 'remittance') {
+    var sel = document.querySelector('input[name="rec-wire"]:checked');
+    if (sel) {
+      var wid = parseInt(sel.value);
+      var w   = (DB.wires||[]).find(function(x){ return x.id===wid; });
+      if (w) {
+        var wireRemaining = w.total - (w.reconciledAmt || 0);
+        // Allocated = minimum of: what the bank movement has, what the wire still needs
+        allocated = Math.min(movAmt, wireRemaining > 0.01 ? wireRemaining : w.total);
+        // Store wire context for diff panel
+        _recWireRemaining = wireRemaining;
+        _recWireTotal     = w.total;
+        _recWireId        = wid;
+      }
+    }
   } else {
     document.querySelectorAll('input[name="rec-inv"]:checked').forEach(function(cb) {
       var id = parseInt(cb.value);
@@ -7303,29 +7926,52 @@ function updateRecDiff() {
     });
   }
 
-  var diff = movAmt - allocated;
+  // Compute diff
+  var diff       = movAmt - allocated;
   var isBalanced = Math.abs(diff) < 0.01;
+  var isPartial  = allocated > 0.01 && !isBalanced;
 
-  // Update display
-  var elAlloc   = document.getElementById('rec-diff-allocated');
-  var elTotal   = document.getElementById('rec-diff-total');
-  var elPending = document.getElementById('rec-diff-pending');
-  var elPendWrap= document.getElementById('rec-diff-pending-wrap');
-  var elOkWrap  = document.getElementById('rec-diff-ok-wrap');
-  var confirmBtn= document.getElementById('rec-confirm-btn');
+  var elAlloc    = document.getElementById('rec-diff-allocated');
+  var elTotal    = document.getElementById('rec-diff-total');
+  var elPending  = document.getElementById('rec-diff-pending');
+  var elPendWrap = document.getElementById('rec-diff-pending-wrap');
+  var elOkWrap   = document.getElementById('rec-diff-ok-wrap');
+  var confirmBtn = document.getElementById('rec-confirm-btn');
 
-  if (elAlloc)   elAlloc.textContent  = f(allocated);
-  if (elTotal)   elTotal.textContent  = f(movAmt);
-  if (elPending) elPending.textContent = f(diff);
-  if (elPendWrap) elPendWrap.style.display = (!isBalanced && allocated > 0) ? 'block' : 'none';
+  // Update diff panel display
+  if (elAlloc)    elAlloc.textContent   = f(allocated);
+  if (elTotal)    elTotal.textContent   = f(movAmt);   // "Still pending" = remaining to allocate
+  if (elPending)  elPending.textContent = f(Math.abs(diff));  // "Remaining after this tranche"
+
+  // Show "Remaining after this" only when allocated > 0 and there's a diff
+  if (elPendWrap) elPendWrap.style.display = (allocated > 0.01 && !isBalanced) ? 'block' : 'none';
   if (elOkWrap)   elOkWrap.style.display   = isBalanced ? 'block' : 'none';
 
-  // Enable/disable reconcile button
   if (confirmBtn) {
-    var canReconcile = isBalanced && allocated > 0;
+    // UNIVERSAL RULE: enable Reconcile whenever allocated > 0
+    // Partial is always allowed — modal stays open until movement reaches 0
+    var canReconcile = allocated > 0.01;
+
     confirmBtn.disabled = !canReconcile;
     confirmBtn.style.opacity = canReconcile ? '1' : '0.4';
     confirmBtn.style.cursor  = canReconcile ? 'pointer' : 'not-allowed';
+
+    // Label reflects what will happen
+    if (!canReconcile) {
+      confirmBtn.textContent = '✅ Reconcile';
+      confirmBtn.style.background = '';
+      confirmBtn.style.color = '';
+    } else if (isBalanced) {
+      // This tranche covers the remaining movement exactly
+      confirmBtn.textContent = '✅ Reconcile · Movement done';
+      confirmBtn.style.background = '';
+      confirmBtn.style.color = '';
+    } else {
+      // Partial tranche — modal will stay open for remainder
+      confirmBtn.textContent = '⚡ Reconcile ' + f(allocated) + ' (partial)';
+      confirmBtn.style.background = 'var(--accent)';
+      confirmBtn.style.color = '#0f0f11';
+    }
   }
 }
 
@@ -7334,10 +7980,135 @@ function confirmBankReconcile() {
   var mov = DB.bankMovements.find(function(m){ return m.id === _bankRecMovId; });
   if (!mov) return;
   var plan    = getActivePlan();
-  var cashAcc = plan.cashAccts ? plan.cashAccts[0] : (plan.id==='pgc'?'572':'1000');
+  // Use the specific bank account's JE code if available, fallback to plan default
+  var bankAcc = DB.bankAccounts.find(function(a){ return a.id === _currentAccountId; });
+  var cashAcc = (bankAcc && bankAcc.jeAccount) || (plan.cashAccts ? plan.cashAccts[0] : (plan.id==='pgc'?'572':'1000'));
   var isIn    = mov.amount >= 0;
   var amt     = Math.abs(mov.amount);
 
+  // ── REMITTANCE reconciliation ─────────────────────────────────
+  if (_bankRecType === 'remittance') {
+    var selWire = document.querySelector('input[name="rec-wire"]:checked');
+    if (!selWire) { alert('Select a remittance.'); return; }
+    var wid  = parseInt(selWire.value);
+    var wire = (DB.wires||[]).find(function(x){ return x.id===wid; });
+    if (!wire) return;
+
+    var recDate = mov.date; // use bank movement date for all JEs
+    var remaining = amt;    // how much bank cash to distribute
+    var docsProcessed = 0;
+    var totalApplied  = 0;
+
+    // Distribute the bank amount across wire docs proportionally (sequential)
+    (wire.docs || []).forEach(function(doc) {
+      if (remaining < 0.01) return;
+
+      if (wire.type === 'in') {
+        // INBOUND: Sales invoice → Collection + JE Dr Cash / Cr AR
+        var s = DB.sales.find(function(x){ return x.num === doc.num || x.id === doc.invId; });
+        if (!s) return;
+        var existColl = DB.coll.filter(function(c){ return c.ref===s.num; }).reduce(function(a,c){ return a+c.amount; }, 0);
+        var pendingAmt = s.total - existColl;
+        if (pendingAmt < 0.001) return;
+        var applyAmt = Math.min(remaining, pendingAmt, doc.amount);
+        if (applyAmt < 0.001) return;
+
+        DB.coll.push({
+          id:DB.ids.c++, date:recDate, customer:s.customer, ref:s.num,
+          method:'wire_reconcile', amount:applyAmt,
+          wireRef: wire.id + '_' + mov.id,
+          notes:'Wire Reconcile — '+wire.concept+' WT-'+String(wire.id).padStart(4,'0')
+        });
+        var arAcc = plan.arAccts ? plan.arAccts[0] : (plan.id==='pgc'?'430':'1100');
+        DB.je.push({
+          id:DB.ids.j++, date:recDate,
+          desc:'Wire Collection — '+s.customer+' / '+s.num+' (WT-'+String(wire.id).padStart(4,'0')+')',
+          lines:[{account:cashAcc, debit:applyAmt, credit:0},{account:arAcc, debit:0, credit:applyAmt}],
+          amount:applyAmt, auto:true, sourceType:'wire_collection',
+          wireId:wire.id, bankMovId:mov.id
+        });
+        var totColl = DB.coll.filter(function(c){ return c.ref===s.num; }).reduce(function(a,c){ return a+c.amount; }, 0);
+        if (totColl >= s.total - 0.01) s.status = 'paid';
+        remaining    -= applyAmt;
+        totalApplied += applyAmt;
+        docsProcessed++;
+
+      } else {
+        // OUTBOUND: Purchase invoice → Payment + JE Dr AP / Cr Cash
+        var p = DB.purch.find(function(x){ return x.num === doc.num || x.id === doc.invId; });
+        if (!p) return;
+        var existPaid = DB.pay.filter(function(py){ return py.ref===p.num; }).reduce(function(a,py){ return a+py.amount; }, 0);
+        var pendingAmt2 = p.total - existPaid;
+        if (pendingAmt2 < 0.001) return;
+        var applyAmt2 = Math.min(remaining, pendingAmt2, doc.amount);
+        if (applyAmt2 < 0.001) return;
+
+        DB.pay.push({
+          id:DB.ids.py++, date:recDate, supplier:p.supplier, ref:p.num,
+          method:'wire_reconcile', amount:applyAmt2,
+          wireRef: wire.id + '_' + mov.id,
+          notes:'Wire Reconcile — '+wire.concept+' WT-'+String(wire.id).padStart(4,'0')
+        });
+        var apAcc = plan.apAccts ? plan.apAccts[0] : (plan.id==='pgc'?'400':'2000');
+        DB.je.push({
+          id:DB.ids.j++, date:recDate,
+          desc:'Wire Payment — '+p.supplier+' / '+p.num+' (WT-'+String(wire.id).padStart(4,'0')+')',
+          lines:[{account:apAcc, debit:applyAmt2, credit:0},{account:cashAcc, debit:0, credit:applyAmt2}],
+          amount:applyAmt2, auto:true, sourceType:'wire_payment',
+          wireId:wire.id, bankMovId:mov.id
+        });
+        var totPaid = DB.pay.filter(function(py){ return py.ref===p.num; }).reduce(function(a,py){ return a+py.amount; }, 0);
+        if (totPaid >= p.total - 0.01) p.status = 'paid';
+        remaining    -= applyAmt2;
+        totalApplied += applyAmt2;
+        docsProcessed++;
+      }
+    });
+
+    // Handle excess — bank paid more than wire total
+    // (This case is rare; normal case is blocked by updateRecDiff requiring balance)
+    if (remaining > 0.01) {
+      // Leave a note but don't auto-post — user must handle via Manual Account
+      console.warn('Wire reconcile excess: ' + remaining + ' not posted. Use Manual Account to handle.');
+    }
+
+    // Update wire status
+    wire.reconciledAmt = (wire.reconciledAmt || 0) + totalApplied;
+    wire.status = wire.reconciledAmt >= wire.total - 0.01 ? 'reconciled' : 'partial';
+    wire.bankMovIds = wire.bankMovIds || [];
+    wire.bankMovIds.push(mov.id);
+    wire.reconciledAt = recDate;
+
+    // Update movement session accumulator
+    _recSessionTotal += totalApplied;
+    _recSessionItems.push({ label: 'Wire WT-'+String(wire.id).padStart(4,'0')+' ('+docsProcessed+' invoices)', amt: totalApplied });
+    mov.reconciledAmt = _recSessionTotal;
+    var movFullyDone = _recSessionTotal >= Math.abs(mov.amount) - 0.01;
+    mov.reconciled = movFullyDone;
+    mov.partial    = !movFullyDone;
+    mov.wireId     = wire.id;
+
+    sv();
+
+    if (movFullyDone) {
+      closeOverlay('ov-reconcile-bank');
+      rBADetail(); renderAll();
+      showToast('✅ Movement fully reconciled — ' + _recSessionTotal.toFixed(2) + ' total · ' + docsProcessed + ' invoices');
+    } else {
+      // Stay in modal — update UI to show next state
+      var pendingLeft = Math.abs(mov.amount) - _recSessionTotal;
+      _renderRecSessionUI();
+      _renderRecMovInfo(mov);
+      _initRecDiffPanel(mov);
+      // Reset to pick next type
+      setBankRecType('remittance'); // default back to remittance to pick another wire or switch to manual
+      rBADetail(); renderAll();
+      showToast('⚡ Tranche reconciled: ' + f(totalApplied) + ' · Still pending: ' + f(pendingLeft) + ' — continue reconciling below');
+    }
+    return;
+  }
+
+  // ── MANUAL reconciliation ─────────────────────────────────────
   if (_bankRecType === 'manual') {
     var counterAcc = document.getElementById('rec-bank-acc-sel').value;
     var manAmt     = parseFloat(document.getElementById('rec-bank-manual-amt').value) || amt;
@@ -7346,15 +8117,29 @@ function confirmBankReconcile() {
     var lines = isIn
       ? [{account:cashAcc, debit:manAmt, credit:0},{account:counterAcc, debit:0, credit:manAmt}]
       : [{account:counterAcc, debit:manAmt, credit:0},{account:cashAcc, debit:0, credit:manAmt}];
-    var je = {id:DB.ids.j++, date:mov.date, desc:desc, lines:lines, amount:manAmt, auto:true, sourceType:'bank_reconcile'};
+    var je = {id:DB.ids.j++, date:mov.date, desc:desc, lines:lines, amount:manAmt, auto:true, sourceType:'bank_reconcile', bankMovId:mov.id};
     DB.je.push(je);
-    mov.reconciled = true; mov.jeId = je.id;
 
+    _recSessionTotal += manAmt;
+    _recSessionItems.push({ label: 'Manual: '+desc, amt: manAmt });
+    mov.reconciledAmt = _recSessionTotal;
+    var movDone = _recSessionTotal >= Math.abs(mov.amount) - 0.01;
+    mov.reconciled = movDone; mov.partial = !movDone; mov.jeId = je.id;
+    sv();
+    if (movDone) {
+      closeOverlay('ov-reconcile-bank'); rBADetail(); renderAll();
+      showToast('✅ Movement fully reconciled via manual entry.');
+    } else {
+      _renderRecSessionUI(); _renderRecMovInfo(mov); _initRecDiffPanel(mov);
+      setBankRecType('remittance'); rBADetail(); renderAll();
+      showToast('⚡ Manual tranche: '+f(manAmt)+' · Pending: '+f(Math.abs(mov.amount)-_recSessionTotal));
+    }
+
+  // ── INVOICE reconciliation ────────────────────────────────────
   } else {
     var checked = Array.from(document.querySelectorAll('input[name="rec-inv"]:checked'));
     if (!checked.length) { alert('Select at least one invoice.'); return; }
-
-    var lastJeId = null;
+    var lastJeId = null; var invApplied = 0;
     checked.forEach(function(cb) {
       var id = parseInt(cb.value);
       if (_bankRecType === 'sales') {
@@ -7365,10 +8150,11 @@ function confirmBankReconcile() {
         if (rem <= 0.001) return;
         DB.coll.push({id:DB.ids.c++, date:mov.date, customer:s.customer, ref:s.num, method:'bank_transfer', amount:rem, notes:'Bank reconcile: '+mov.concept});
         var arAcc = plan.arAccts ? plan.arAccts[0] : (plan.id==='pgc'?'430':'1100');
-        var je2 = {id:DB.ids.j++, date:mov.date, desc:'Bank Collection — '+s.customer+' / '+s.num, lines:[{account:cashAcc,debit:rem,credit:0},{account:arAcc,debit:0,credit:rem}], amount:rem, auto:true, sourceType:'collection'};
+        var je2 = {id:DB.ids.j++, date:mov.date, desc:'Bank Collection — '+s.customer+' / '+s.num, lines:[{account:cashAcc,debit:rem,credit:0},{account:arAcc,debit:0,credit:rem}], amount:rem, auto:true, sourceType:'collection', bankMovId:mov.id};
         DB.je.push(je2); lastJeId = je2.id;
         var totColl = DB.coll.filter(function(c){ return c.ref===s.num; }).reduce(function(a,c){ return a+c.amount; }, 0);
         if (totColl >= s.total - 0.01) s.status = 'paid';
+        invApplied += rem;
       } else {
         var p = DB.purch.find(function(x){ return x.id===id; });
         if (!p) return;
@@ -7377,17 +8163,28 @@ function confirmBankReconcile() {
         if (rem2 <= 0.001) return;
         DB.pay.push({id:DB.ids.py++, date:mov.date, supplier:p.supplier, ref:p.num, method:'bank_transfer', amount:rem2, notes:'Bank reconcile: '+mov.concept});
         var apAcc = plan.apAccts ? plan.apAccts[0] : (plan.id==='pgc'?'400':'2000');
-        var je3 = {id:DB.ids.j++, date:mov.date, desc:'Bank Payment — '+p.supplier+' / '+p.num, lines:[{account:apAcc,debit:rem2,credit:0},{account:cashAcc,debit:0,credit:rem2}], amount:rem2, auto:true, sourceType:'payment'};
+        var je3 = {id:DB.ids.j++, date:mov.date, desc:'Bank Payment — '+p.supplier+' / '+p.num, lines:[{account:apAcc,debit:rem2,credit:0},{account:cashAcc,debit:0,credit:rem2}], amount:rem2, auto:true, sourceType:'payment', bankMovId:mov.id};
         DB.je.push(je3); lastJeId = je3.id;
         var totPaid = DB.pay.filter(function(py){ return py.ref===p.num; }).reduce(function(a,py){ return a+py.amount; }, 0);
         if (totPaid >= p.total - 0.01) p.status = 'paid';
+        invApplied += rem2;
       }
     });
-    mov.reconciled = true; mov.jeId = lastJeId;
+    _recSessionTotal += invApplied;
+    _recSessionItems.push({ label: checked.length+' invoice(s)', amt: invApplied });
+    mov.reconciledAmt = _recSessionTotal;
+    var movDoneInv = _recSessionTotal >= Math.abs(mov.amount) - 0.01;
+    mov.reconciled = movDoneInv; mov.partial = !movDoneInv; mov.jeId = lastJeId;
+    sv();
+    if (movDoneInv) {
+      closeOverlay('ov-reconcile-bank'); rBADetail(); renderAll();
+      showToast('✅ Movement fully reconciled — '+checked.length+' invoice(s)');
+    } else {
+      _renderRecSessionUI(); _renderRecMovInfo(mov); _initRecDiffPanel(mov);
+      setBankRecType(_bankRecType); rBADetail(); renderAll();
+      showToast('⚡ Tranche: '+f(invApplied)+' · Pending: '+f(Math.abs(mov.amount)-_recSessionTotal));
+    }
   }
-
-  sv(); closeOverlay('ov-reconcile-bank'); rBADetail(); renderAll();
-  showToast('✅ Movement reconciled — Journal Entry created.');
 }
 
 
@@ -7415,7 +8212,1090 @@ if(typeof signOut === 'undefined') {
   }
 }
 
-function renderAll(){rDash();rContacts();rSales();rRecurring();rPurch();rColl();rPay();rJE();rPL();rBS();rCF();rCFO();rBankAccounts();}
+// ══════════════════════════════════════════════════════════════════
+// HR MODULE — Employees, Org Chart, Payrolls
+// ══════════════════════════════════════════════════════════════════
+
+var _hrOpen    = false;
+var _editEmpId = null;
+var _editPrId  = null;
+var _currentEmpTab = 'personal';
+
+// Avatar colour palette
+var EMP_COLORS = ['#c8ff00','#0E9AA7','#f87171','#fb923c','#4ade80','#818cf8','#f472b6','#38bdf8','#a78bfa','#34d399'];
+function empColor(name){ var h=0; for(var i=0;i<name.length;i++) h=(h*31+name.charCodeAt(i))&0xffff; return EMP_COLORS[h%EMP_COLORS.length]; }
+function empInitials(fn,ln){ return ((fn||'?')[0]+(ln||'?')[0]).toUpperCase(); }
+
+// ── Nav ──────────────────────────────────────────────────────────
+function toggleHRNav() {
+  _hrOpen = !_hrOpen;
+  var sub   = document.getElementById('nav-hr-sub');
+  var arrow = document.getElementById('nav-hr-arrow');
+  if(sub)   sub.style.display   = _hrOpen ? 'block' : 'none';
+  if(arrow) arrow.style.transform = _hrOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+}
+
+function navHR(sub) {
+  if (!_hrOpen) toggleHRNav();
+  document.querySelectorAll('.nav-subitem').forEach(function(e){ e.classList.remove('active'); });
+  document.querySelectorAll('.nav-subitem').forEach(function(el){
+    if(el.textContent.trim().toLowerCase().indexOf(sub.slice(0,6)) !== -1) el.classList.add('active');
+  });
+  var pageMap = { employees:'employees', payrolls:'payrolls', orgchart:'orgchart', timetracking:'timetracking', absences:'absences' };
+  nav(pageMap[sub]||sub);
+  if(sub==='orgchart')     renderOrgChart();
+  if(sub==='employees')    rEmployees();
+  if(sub==='payrolls')     rPayrolls();
+  if(sub==='timetracking') rTimeTracking();
+  if(sub==='absences')     rAbsences();
+}
+
+// ── Employee Tab switching ────────────────────────────────────────
+function switchEmpTab(tab) {
+  _currentEmpTab = tab;
+  ['personal','contract','banking'].forEach(function(t){
+    var panel = document.getElementById('epanel-'+t);
+    var tabEl = document.getElementById('etab-'+t);
+    if(panel) panel.style.display = t===tab ? '' : 'none';
+    if(tabEl){
+      tabEl.style.background = t===tab ? 'var(--surface3)' : '';
+      tabEl.style.color      = t===tab ? 'var(--text)' : 'var(--text2)';
+    }
+  });
+}
+
+// ── Render Employees page ─────────────────────────────────────────
+function rEmployees() {
+  if(!DB.employees) DB.employees=[];
+  var grid = document.getElementById('emp-grid'); if(!grid) return;
+  var search  = ((document.getElementById('emp-search')||{}).value||'').toLowerCase();
+  var deptFil = ((document.getElementById('emp-dept-filter')||{}).value||'');
+
+  var list = DB.employees.filter(function(e){
+    if(deptFil && e.dept !== deptFil) return false;
+    var fullName = ((e.fname||'')+' '+(e.lname||'')).toLowerCase();
+    if(search && fullName.indexOf(search)===-1 && (e.empid||'').toLowerCase().indexOf(search)===-1) return false;
+    return true;
+  });
+
+  // Stats
+  var active = DB.employees.filter(function(e){ return e.status==='active'; }).length;
+  var depts  = [...new Set(DB.employees.map(function(e){ return e.dept; }).filter(Boolean))].length;
+  var salaryTotal = DB.employees.reduce(function(a,e){ return a+(parseFloat(e.salary)||0); }, 0);
+  var ec=document.getElementById('emp-count'); if(ec) ec.textContent=DB.employees.length;
+  var ea=document.getElementById('emp-active'); if(ea) ea.textContent=active;
+  var ed=document.getElementById('emp-depts');  if(ed) ed.textContent=depts;
+  var es=document.getElementById('emp-salary');  if(es) es.textContent=f(salaryTotal);
+
+  if(!list.length){
+    grid.innerHTML='<div style="color:var(--text3);padding:40px;text-align:center;grid-column:1/-1;font-size:13px;">No employees yet. Click "+ New Employee" to add your first team member.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(function(e){
+    var ini  = empInitials(e.fname, e.lname);
+    var col  = empColor((e.fname||'')+' '+(e.lname||''));
+    var stt  = e.status||'active';
+    return '<div class="emp-card" onclick="openEditEmployee('+e.id+')">' +
+      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">' +
+        '<div class="emp-avatar" style="background:'+col+';">'+ini+'</div>' +
+        '<div>' +
+          '<div class="emp-name">'+(e.fname||'')+' '+(e.lname||'')+'</div>' +
+          '<div class="emp-pos">'+(e.position||'—')+'</div>' +
+          '<div class="emp-dept">'+(e.dept||'—')+'</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="emp-footer">' +
+        '<span style="font-family:monospace;font-size:11px;color:var(--text3);">'+(e.empid||'—')+'</span>' +
+        '<span class="emp-status '+stt+'">'+stt.toUpperCase()+'</span>' +
+      '</div>' +
+      (e.salary ? '<div style="margin-top:8px;font-family:\'DM Serif Display\',serif;font-size:16px;color:var(--text);">'+f(parseFloat(e.salary))+'<span style="font-size:10px;font-family:monospace;color:var(--text3);"> /yr</span></div>' : '') +
+    '</div>';
+  }).join('');
+}
+
+// ── Open / Edit Employee ──────────────────────────────────────────
+function openNewEmployee() {
+  _editEmpId = null;
+  switchEmpTab('personal');
+  document.getElementById('emp-modal-title').textContent = 'New Employee';
+  document.getElementById('emp-del-btn').style.display = 'none';
+  ['emp-fname','emp-lname','emp-empid','emp-nationality','emp-phone','emp-email','emp-address',
+   'emp-position','emp-workcenter','emp-nae','emp-startdate','emp-enddate','emp-salary','emp-manager',
+   'emp-iban','emp-bankname','emp-bic','emp-notes'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  // Auto-generate employee ID
+  var nextId = 'EMP-'+String((DB.employees||[]).length+1).padStart(3,'0');
+  var empidEl = document.getElementById('emp-empid');
+  if(empidEl) empidEl.value = nextId;
+  document.getElementById('emp-gender').value='';
+  document.getElementById('emp-dept').value='';
+  document.getElementById('emp-contracttype').value='';
+  document.getElementById('emp-status').value='active';
+  _populateManagerDropdown(null);
+  openOverlay('ov-employee');
+}
+
+function openEditEmployee(id) {
+  var e = (DB.employees||[]).find(function(x){ return x.id===id; });
+  if(!e) return;
+  _editEmpId = id;
+  switchEmpTab('personal');
+  document.getElementById('emp-modal-title').textContent = (e.fname||'')+' '+(e.lname||'');
+  document.getElementById('emp-del-btn').style.display = 'inline-flex';
+  // Personal
+  document.getElementById('emp-fname').value       = e.fname||'';
+  document.getElementById('emp-lname').value       = e.lname||'';
+  document.getElementById('emp-empid').value       = e.empid||'';
+  document.getElementById('emp-gender').value      = e.gender||'';
+  document.getElementById('emp-nationality').value = e.nationality||'';
+  document.getElementById('emp-phone').value       = e.phone||'';
+  document.getElementById('emp-email').value       = e.email||'';
+  document.getElementById('emp-address').value     = e.address||'';
+  // Contract
+  document.getElementById('emp-position').value     = e.position||'';
+  document.getElementById('emp-dept').value         = e.dept||'';
+  document.getElementById('emp-workcenter').value   = e.workcenter||'';
+  document.getElementById('emp-nae').value          = e.nae||'';
+  document.getElementById('emp-contracttype').value = e.contracttype||'';
+  document.getElementById('emp-startdate').value    = e.startdate||'';
+  document.getElementById('emp-enddate').value      = e.enddate||'';
+  document.getElementById('emp-salary').value       = e.salary||'';
+  document.getElementById('emp-status').value       = e.status||'active';
+  // Banking
+  document.getElementById('emp-iban').value     = e.iban||'';
+  document.getElementById('emp-bankname').value = e.bankname||'';
+  document.getElementById('emp-bic').value      = e.bic||'';
+  document.getElementById('emp-notes').value    = e.notes||'';
+  // Manager dropdown — exclude self to prevent circular reference
+  _populateManagerDropdown(id);
+  document.getElementById('emp-manager').value = e.manager||'';
+  openOverlay('ov-employee');
+}
+
+function saveEmployee() {
+  var fname = document.getElementById('emp-fname').value.trim();
+  var lname = document.getElementById('emp-lname').value.trim();
+  if(!fname && !lname){ alert('Please enter at least a first or last name.'); return; }
+  if(!DB.employees) DB.employees=[];
+  if(!DB.ids.em)    DB.ids.em=1;
+
+  var data = {
+    fname: fname, lname: lname,
+    empid: document.getElementById('emp-empid').value.trim(),
+    gender: document.getElementById('emp-gender').value,
+    nationality: document.getElementById('emp-nationality').value.trim(),
+    phone: document.getElementById('emp-phone').value.trim(),
+    email: document.getElementById('emp-email').value.trim(),
+    address: document.getElementById('emp-address').value.trim(),
+    position: document.getElementById('emp-position').value.trim(),
+    dept: document.getElementById('emp-dept').value,
+    workcenter: document.getElementById('emp-workcenter').value.trim(),
+    nae: document.getElementById('emp-nae').value.trim(),
+    contracttype: document.getElementById('emp-contracttype').value,
+    startdate: document.getElementById('emp-startdate').value,
+    enddate: document.getElementById('emp-enddate').value,
+    salary: parseFloat(document.getElementById('emp-salary').value)||0,
+    status: document.getElementById('emp-status').value,
+    manager: parseInt(document.getElementById('emp-manager').value)||null,
+    iban: document.getElementById('emp-iban').value.trim(),
+    bankname: document.getElementById('emp-bankname').value.trim(),
+    bic: document.getElementById('emp-bic').value.trim(),
+    notes: document.getElementById('emp-notes').value.trim()
+  };
+
+  if(_editEmpId) {
+    var idx = DB.employees.findIndex(function(e){ return e.id===_editEmpId; });
+    if(idx>=0) { data.id=_editEmpId; DB.employees[idx]=data; }
+  } else {
+    data.id = DB.ids.em++;
+    DB.employees.push(data);
+  }
+  sv(); closeOverlay('ov-employee'); rEmployees();
+  showToast('✅ Employee saved: '+fname+' '+lname);
+}
+
+function deleteEmployee() {
+  if(!_editEmpId || !confirm('Delete this employee?')) return;
+  DB.employees = (DB.employees||[]).filter(function(e){ return e.id!==_editEmpId; });
+  sv(); closeOverlay('ov-employee'); rEmployees();
+  showToast('Employee deleted.');
+}
+
+// ── Org Chart ─────────────────────────────────────────────────────
+function renderOrgChart() {
+  var el = document.getElementById('org-chart-container'); if(!el) return;
+  var emps = DB.employees||[];
+  if(!emps.length){
+    el.innerHTML='<div style="color:var(--text3);padding:60px;font-size:13px;text-align:center;">No employees yet. Add employees first.</div>';
+    return;
+  }
+
+  var companyName = (DB.co&&DB.co.name)||'My Company';
+  var companyIni  = (companyName||'C')[0].toUpperCase();
+
+  // ── Build dept groups, ordering members by manager hierarchy ─────
+  var depts = {};
+  emps.forEach(function(e){
+    var d = e.dept||'General';
+    if(!depts[d]) depts[d]=[];
+    depts[d].push(e);
+  });
+
+  // Within each dept, sort: managers first, then their reports
+  function deptSorted(members) {
+    var managerIds = members.map(function(m){ return m.id; });
+    // Top of dept = no manager within dept
+    var tops = members.filter(function(m){
+      return !m.manager || managerIds.indexOf(m.manager)===-1;
+    });
+    var rest = members.filter(function(m){
+      return m.manager && managerIds.indexOf(m.manager)!==-1;
+    });
+    return tops.concat(rest);
+  }
+
+  // ── Render a single employee card ─────────────────────────────────
+  function empCard(e, borderCol) {
+    var ini = empInitials(e.fname, e.lname);
+    var col = empColor((e.fname||'')+' '+(e.lname||''));
+    var bc  = borderCol || 'var(--border)';
+    var manEmp = e.manager ? emps.find(function(x){ return x.id===e.manager; }) : null;
+    return '<div onclick="openEditEmployee('+e.id+')" style="' +
+      'background:var(--surface);border:1px solid '+bc+';border-radius:10px;' +
+      'padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;' +
+      'transition:all .15s;min-width:168px;max-width:200px;' +
+      '" onmouseover="this.style.borderColor=\''+col+'\';this.style.boxShadow=\'0 2px 12px rgba(0,0,0,.2)\'" ' +
+      'onmouseout="this.style.borderColor=\''+bc+'\';this.style.boxShadow=\'\'">' +
+      '<div style="width:32px;height:32px;border-radius:50%;background:'+col+';color:#0f0f11;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;">'+ini+'</div>' +
+      '<div style="min-width:0;">' +
+        '<div style="font-weight:700;font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+(e.fname||'')+' '+(e.lname||'')+'</div>' +
+        '<div style="font-size:10px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+(e.position||e.dept||'—')+'</div>' +
+        (manEmp && managerIds.indexOf(manEmp.id)!==-1 && manEmp.dept===e.dept
+          ? '<div style="font-size:9px;color:var(--accent);font-family:monospace;margin-top:1px;">↑ '+(manEmp.fname||'')+' '+(manEmp.lname||'')+'</div>' : '') +
+      '</div>' +
+    '</div>';
+  }
+
+  // ── Recursive sub-hierarchy within a dept ────────────────────────
+  function deptMemberIds(members){ return members.map(function(m){ return m.id; }); }
+
+  function renderDeptLevel(members, parentId, dCol) {
+    var ids = deptMemberIds(members);
+    var children = members.filter(function(m){
+      return m.manager === parentId && ids.indexOf(m.manager)!==-1;
+    });
+    if(!children.length) return '';
+    var html = '<div style="display:flex;gap:12px;justify-content:center;position:relative;">';
+    if(children.length > 1) html += '<div style="position:absolute;top:0;left:24px;right:24px;height:1px;background:var(--border);"></div>';
+    children.forEach(function(c){
+      html += '<div style="display:flex;flex-direction:column;align-items:center;">';
+      html += '<div style="width:1px;height:16px;background:var(--border);"></div>';
+      html += empCard(c, dCol);
+      html += renderDeptLevel(members, c.id, dCol);
+      html += '</div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  var managerIds = emps.map(function(e){ return e.id; });
+
+  // ── Build full HTML ───────────────────────────────────────────────
+  var html = '<div style="display:flex;flex-direction:column;align-items:center;font-family:\'DM Sans\',sans-serif;padding-bottom:40px;">';
+
+  // Company root
+  html += '<div style="background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:12px 22px;display:inline-flex;align-items:center;gap:10px;">' +
+    '<div style="width:36px;height:36px;border-radius:8px;background:var(--accent);color:#0f0f11;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;">'+companyIni+'</div>' +
+    '<div style="font-weight:700;font-size:14px;color:var(--text);">'+companyName+'</div>' +
+  '</div>';
+  html += '<div style="width:1px;height:24px;background:var(--border);"></div>';
+
+  var deptKeys = Object.keys(depts);
+
+  // Horizontal bar across depts
+  html += '<div style="display:flex;gap:16px;justify-content:center;position:relative;flex-wrap:wrap;">';
+  if(deptKeys.length > 1) html += '<div style="position:absolute;top:0;left:24px;right:24px;height:1px;background:var(--border);"></div>';
+
+  deptKeys.forEach(function(dept){
+    var members = deptSorted(depts[dept]);
+    var dCol    = empColor(dept);
+
+    html += '<div style="display:flex;flex-direction:column;align-items:center;gap:0;">';
+    html += '<div style="width:1px;height:24px;background:var(--border);"></div>';
+
+    // Dept label box
+    html += '<div style="background:var(--surface);border:1.5px dashed '+dCol+';border-radius:10px;padding:8px 18px;text-align:center;min-width:130px;margin-bottom:0;">' +
+      '<div style="font-size:10px;font-weight:700;color:'+dCol+';font-family:monospace;text-transform:uppercase;letter-spacing:1px;">'+dept+'</div>' +
+      '<div style="font-size:10px;color:var(--text3);">'+members.length+' '+(members.length===1?'member':'members')+'</div>' +
+    '</div>';
+    html += '<div style="width:1px;height:16px;background:var(--border);"></div>';
+
+    // Top-level members of this dept (no manager within dept)
+    var deptIds = members.map(function(m){ return m.id; });
+    var tops    = members.filter(function(m){ return !m.manager || deptIds.indexOf(m.manager)===-1; });
+    var hasHierarchy = members.some(function(m){ return m.manager && deptIds.indexOf(m.manager)!==-1; });
+
+    if(tops.length === 1 && hasHierarchy) {
+      // Single top manager with reports below
+      html += empCard(tops[0], dCol);
+      html += renderDeptLevel(members, tops[0].id, dCol);
+    } else {
+      // Multiple tops side by side
+      html += '<div style="display:flex;gap:10px;justify-content:center;position:relative;">';
+      if(tops.length > 1) html += '<div style="position:absolute;top:0;left:16px;right:16px;height:1px;background:var(--border);"></div>';
+      tops.forEach(function(e){
+        html += '<div style="display:flex;flex-direction:column;align-items:center;">';
+        if(tops.length > 1) html += '<div style="width:1px;height:16px;background:var(--border);"></div>';
+        html += empCard(e, dCol);
+        html += renderDeptLevel(members, e.id, dCol);
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    html += '</div>'; // end dept column
+  });
+
+  html += '</div></div>'; // end flex + outer
+  el.innerHTML = html;
+}
+
+// ── Payroll accounts per plan ─────────────────────────────────────
+function getPayrollAccounts() {
+  var plan = getActivePlan();
+  if(plan.id === 'pgc') {
+    return {
+      salary:  { acc:'640',  label:'640 — Sueldos y salarios' },
+      ssEmp:   { acc:'476',  label:'476 — Organismos SS, acreedores (cuota empleado)' },
+      ssCo:    { acc:'642',  label:'642 — SS a cargo de la empresa' },
+      ssTotal: { acc:'476',  label:'476 — Total SS Organismos Seguridad Social' },
+      irpf:    { acc:'4751', label:'4751 — HP acreedora por retenciones (IRPF)' },
+      net:     { acc:'465',  label:'465 — Remuneraciones pendientes de pago' }
+    };
+  } else {
+    // US GAAP
+    return {
+      salary:  { acc:'6000', label:'6000 — Salaries Expense' },
+      ssEmp:   { acc:'2200', label:'2200 — FICA / SS Payable (Employee)' },
+      ssCo:    { acc:'6100', label:'6100 — Payroll Tax Expense (Employer)' },
+      ssTotal: { acc:'2200', label:'2200 — Total Payroll Taxes Payable' },
+      irpf:    { acc:'2210', label:'2210 — Federal/State Income Tax Withholding' },
+      net:     { acc:'2100', label:'2100 — Wages Payable' }
+    };
+  }
+}
+
+// ── Render Payrolls page ──────────────────────────────────────────
+function rPayrolls() {
+  if(!DB.payrolls) DB.payrolls=[];
+  var listEl = document.getElementById('payroll-list'); if(!listEl) return;
+
+  // Populate month filter
+  var mf = document.getElementById('payroll-month-filter');
+  if(mf && mf.options.length <= 1){
+    var now = new Date();
+    for(var i=0;i<24;i++){
+      var d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+      var val = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+      var opt = document.createElement('option');
+      opt.value=val; opt.textContent=val;
+      mf.appendChild(opt);
+    }
+  }
+
+  var filter = (mf||{}).value||'';
+  var list = DB.payrolls.filter(function(p){ return !filter || (p.period||'').startsWith(filter); });
+  list = list.slice().sort(function(a,b){ return (b.period||'') > (a.period||'') ? 1 : -1; });
+
+  // Stats
+  var totGross = list.reduce(function(a,p){ return a+(p.gross||0); },0);
+  var totSS    = list.reduce(function(a,p){ return a+(p.ssTotal||0); },0);
+  var totNet   = list.reduce(function(a,p){ return a+(p.net||0); },0);
+  var pc=document.getElementById('pr-count');  if(pc) pc.textContent=list.length;
+  var pg=document.getElementById('pr-gross');  if(pg) pg.textContent=f(totGross);
+  var ps=document.getElementById('pr-ss');     if(ps) ps.textContent=f(totSS);
+  var pn=document.getElementById('pr-net');    if(pn) pn.textContent=f(totNet);
+
+  if(!list.length){
+    listEl.innerHTML='<div style="color:var(--text3);padding:40px;text-align:center;font-size:13px;">No payrolls yet. Click "+ New Payroll" to create the first one.</div>';
+    return;
+  }
+
+  listEl.innerHTML = list.map(function(p){
+    var emp = (DB.employees||[]).find(function(e){ return e.id===p.empId; });
+    var name = emp ? (emp.fname||'')+' '+(emp.lname||'') : p.empName||'Unknown';
+    var ini  = emp ? empInitials(emp.fname,emp.lname) : '?';
+    var col  = emp ? empColor(name) : '#9090a8';
+    return '<div class="payroll-list-row" onclick="openEditPayroll('+p.id+')">' +
+      '<div style="display:flex;align-items:center;gap:12px;flex:1;">' +
+        '<div style="width:36px;height:36px;border-radius:50%;background:'+col+';color:#0f0f11;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;">'+ini+'</div>' +
+        '<div>' +
+          '<div style="font-weight:600;font-size:13px;color:var(--text);">'+name+'</div>' +
+          '<div style="font-size:11px;color:var(--text3);font-family:monospace;">'+(p.period||'—')+' · '+(p.type||'monthly')+'</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="display:flex;align-items:center;gap:24px;">' +
+        '<div style="text-align:right;">' +
+          '<div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;">Gross</div>' +
+          '<div style="font-family:monospace;font-weight:600;color:var(--text);">'+f(p.gross||0)+'</div>' +
+        '</div>' +
+        '<div style="text-align:right;">' +
+          '<div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;">Net</div>' +
+          '<div style="font-family:\'DM Serif Display\',serif;font-size:16px;color:var(--green);">'+f(p.net||0)+'</div>' +
+        '</div>' +
+        '<span style="font-size:10px;font-family:monospace;padding:2px 8px;border-radius:8px;background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.3);">POSTED</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ── Open New Payroll ──────────────────────────────────────────────
+// ── Populate payroll account selects from COA ────────────────────
+function _populatePayrollAccSelects() {
+  var accs = getPayrollAccounts();
+  var opts = coaOpts();
+  [{id:'pr-acc-salary',def:accs.salary.acc},{id:'pr-acc-ss-co',def:accs.ssCo.acc},
+   {id:'pr-acc-ss-total',def:accs.ssTotal.acc},{id:'pr-acc-irpf',def:accs.irpf.acc},
+   {id:'pr-acc-net',def:accs.net.acc}
+  ].forEach(function(f2){
+    var sel=document.getElementById(f2.id); if(!sel) return;
+    sel.innerHTML=opts; sel.value=f2.def;
+  });
+}
+
+// ── Populate manager dropdown ─────────────────────────────────────
+function _populateManagerDropdown(excludeId) {
+  var sel=document.getElementById('emp-manager'); if(!sel) return;
+  sel.innerHTML='<option value="">— None (top level) —</option>'+(DB.employees||[])
+    .filter(function(e){return e.id!==excludeId;})
+    .map(function(e){return '<option value="'+e.id+'">'+e.fname+' '+e.lname+(e.position?' — '+e.position:'')+'</option>';})
+    .join('');
+}
+
+// ── Add extra payroll concept row ─────────────────────────────────
+var _prExtraCount=0;
+function addPayrollConcept() {
+  var el=document.getElementById('pr-extra-rows'); if(!el) return;
+  _prExtraCount++;
+  var rid='pr-extra-'+_prExtraCount;
+  var opts=coaOpts();
+  el.innerHTML+='<tr id="'+rid+'" style="border-bottom:1px solid var(--border);background:rgba(160,160,200,.04);">'+
+    '<td style="padding:6px 12px;">'+
+      '<input type="text" id="'+rid+'-label" placeholder="Concept name..." oninput="calcPayroll()" style="width:100%;padding:4px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;">'+
+      '<select id="'+rid+'-sign" onchange="calcPayroll()" style="margin-top:3px;width:100%;padding:3px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;">'+
+        '<option value="-">− Descuento (Cr)</option><option value="+">+ Plus (Dr)</option>'+
+      '</select>'+
+    '</td>'+
+    '<td style="padding:6px 12px;"><select id="'+rid+'-acc" style="width:100%;padding:4px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;font-family:monospace;">'+opts+'</select></td>'+
+    '<td style="padding:6px 12px;"><input type="number" id="'+rid+'-amt" placeholder="0.00" step="0.01" oninput="calcPayroll()" style="width:100%;text-align:right;padding:4px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;"></td>'+
+    '<td style="padding:6px 4px;text-align:center;"><button onclick="document.getElementById(\''+rid+'\').remove();calcPayroll();" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:15px;">✕</button></td>'+
+  '</tr>';
+}
+
+function openNewPayroll() {
+  _editPrId=null; _prExtraCount=0;
+  document.getElementById('pr-modal-title').textContent='New Payroll';
+  var sel=document.getElementById('pr-employee');
+  sel.innerHTML='<option value="">— Select Employee —</option>'+(DB.employees||[])
+    .filter(function(e){return e.status==='active';})
+    .map(function(e){return '<option value="'+e.id+'">'+e.fname+' '+e.lname+(e.dept?' ('+e.dept+')':'')+'</option>';})
+    .join('');
+  var now=new Date();
+  document.getElementById('pr-period').value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  document.getElementById('pr-paydate').value=td();
+  document.getElementById('pr-type').value='monthly';
+  ['pr-gross','pr-ss-co','pr-ss-total-input','pr-irpf','pr-notes'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  var ex=document.getElementById('pr-extra-rows'); if(ex) ex.innerHTML='';
+  _populatePayrollAccSelects();
+  calcPayroll();
+  openOverlay('ov-payroll');
+}
+
+function prefillPayrollSalary() {
+  var sel=document.getElementById('pr-employee'); if(!sel||!sel.value) return;
+  var emp=(DB.employees||[]).find(function(e){return e.id===parseInt(sel.value);});
+  if(!emp||!emp.salary) return;
+  var g=(parseFloat(emp.salary)||0)/12;
+  document.getElementById('pr-gross').value=g.toFixed(2);
+  document.getElementById('pr-ss-co').value=(g*0.2980).toFixed(2);
+  document.getElementById('pr-ss-total-input').value=(g*0.0635+g*0.2980).toFixed(2);
+  document.getElementById('pr-irpf').value=(g*0.15).toFixed(2);
+  calcPayroll();
+}
+
+function calcPayroll() {
+  var gross  =parseFloat(document.getElementById('pr-gross').value)||0;
+  var ssCo   =parseFloat(document.getElementById('pr-ss-co').value)||0;
+  var ssTotal=parseFloat(document.getElementById('pr-ss-total-input').value)||0;
+  var irpf   =parseFloat(document.getElementById('pr-irpf').value)||0;
+  var extras=[];
+  document.querySelectorAll('#pr-extra-rows tr').forEach(function(row){
+    var id=row.id;
+    var sign=(document.getElementById(id+'-sign')||{}).value||'-';
+    var amt=parseFloat((document.getElementById(id+'-amt')||{}).value)||0;
+    var lbl=(document.getElementById(id+'-label')||{}).value||'Extra';
+    var acc=(document.getElementById(id+'-acc')||{}).value||'';
+    if(amt>0.001) extras.push({sign:sign,amt:amt,label:lbl,acc:acc});
+  });
+  var eP=extras.filter(function(x){return x.sign==='+'}).reduce(function(a,x){return a+x.amt;},0);
+  var eM=extras.filter(function(x){return x.sign==='-'}).reduce(function(a,x){return a+x.amt;},0);
+  var net=gross+ssCo-ssTotal-irpf+eP-eM;
+  var nd=document.getElementById('pr-net-display');
+  if(nd){nd.textContent=f(net);nd.style.color=net>=0?'var(--accent)':'var(--red)';}
+  var salAcc=(document.getElementById('pr-acc-salary')||{}).value;
+  var ssCoAcc=(document.getElementById('pr-acc-ss-co')||{}).value;
+  var ssTAcc=(document.getElementById('pr-acc-ss-total')||{}).value;
+  var irpfAcc=(document.getElementById('pr-acc-irpf')||{}).value;
+  var netAcc=(document.getElementById('pr-acc-net')||{}).value;
+  var prev=document.getElementById('pr-je-preview'); if(!prev) return;
+  if(!gross){prev.innerHTML='<span style="color:var(--text3);">Enter salary amounts to see journal entry preview.</span>';return;}
+  var lines=[];
+  if(gross>0.001)  lines.push({side:'Dr',acc:salAcc, label:'Gross Salary',    amt:gross });
+  if(ssCo>0.001)   lines.push({side:'Dr',acc:ssCoAcc,label:'SS Company Cost',  amt:ssCo  });
+  extras.filter(function(x){return x.sign==='+'}).forEach(function(x){lines.push({side:'Dr',acc:x.acc,label:x.label,amt:x.amt});});
+  if(ssTotal>0.001)lines.push({side:'Cr',acc:ssTAcc, label:'Total SS Payable', amt:ssTotal});
+  if(irpf>0.001)   lines.push({side:'Cr',acc:irpfAcc,label:'IRPF Withholding', amt:irpf  });
+  extras.filter(function(x){return x.sign==='-'}).forEach(function(x){lines.push({side:'Cr',acc:x.acc,label:x.label,amt:x.amt});});
+  if(net>0.001)    lines.push({side:'Cr',acc:netAcc, label:'Net Salary',       amt:net   });
+  var tDr=lines.filter(function(l){return l.side==='Dr';}).reduce(function(a,l){return a+l.amt;},0);
+  var tCr=lines.filter(function(l){return l.side==='Cr';}).reduce(function(a,l){return a+l.amt;},0);
+  var bal=Math.abs(tDr-tCr)<0.02;
+  prev.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:11px;">'+
+    '<tr style="border-bottom:1px solid var(--border);"><th style="text-align:left;padding:4px 8px;color:var(--text3);font-family:monospace;width:36px;">D/C</th><th style="text-align:left;padding:4px 8px;color:var(--text3);font-family:monospace;">Account</th><th style="text-align:right;padding:4px 8px;color:var(--text3);font-family:monospace;">Amount</th></tr>'+
+    lines.map(function(l){return '<tr style="border-bottom:1px solid rgba(46,46,56,.3);">'+
+      '<td style="padding:4px 8px;font-weight:700;font-family:monospace;color:'+(l.side==='Dr'?'var(--green)':'var(--red)')+';">'+l.side+'</td>'+
+      '<td style="padding:4px 8px;font-family:monospace;color:var(--text2);">'+l.acc+' <span style="color:var(--text3);">'+l.label+'</span></td>'+
+      '<td style="padding:4px 8px;text-align:right;font-family:monospace;font-weight:600;">'+f(l.amt)+'</td></tr>';}).join('')+
+    '<tr style="border-top:2px solid var(--border);">'+
+      '<td colspan="2" style="padding:6px 8px;font-weight:700;font-size:12px;color:'+(bal?'var(--green)':'var(--red)')+';">'+(bal?'✅ Balanced':'⚠ Unbalanced')+'</td>'+
+      '<td style="padding:6px 8px;text-align:right;font-family:monospace;color:var(--accent);">'+f(tDr)+' / '+f(tCr)+'</td>'+
+    '</tr></table>';
+}
+
+function openEditPayroll(id) {
+  var p=(DB.payrolls||[]).find(function(x){return x.id===id;});
+  if(!p) return;
+  alert('Payroll: '+(p.empName||'')+'\nPeriod: '+p.period+'\nGross: '+f(p.gross)+'\nNet: '+f(p.net)+'\nJE: JE-'+String(p.jeId).padStart(3,'0'));
+}
+
+function savePayroll() {
+  var empSel=document.getElementById('pr-employee');
+  var empId=empSel?parseInt(empSel.value):null;
+  if(!empId){alert('Please select an employee.');return;}
+  var emp=(DB.employees||[]).find(function(e){return e.id===empId;});
+  var period=document.getElementById('pr-period').value;
+  var paydate=document.getElementById('pr-paydate').value||td();
+  var type=document.getElementById('pr-type').value||'monthly';
+  var gross=parseFloat(document.getElementById('pr-gross').value)||0;
+  var ssCo=parseFloat(document.getElementById('pr-ss-co').value)||0;
+  var ssTotal=parseFloat(document.getElementById('pr-ss-total-input').value)||0;
+  var irpf=parseFloat(document.getElementById('pr-irpf').value)||0;
+  var notes=document.getElementById('pr-notes').value||'';
+  if(!gross){alert('Please enter a gross salary amount.');return;}
+  var extras=[];
+  document.querySelectorAll('#pr-extra-rows tr').forEach(function(row){
+    var id=row.id; var sign=(document.getElementById(id+'-sign')||{}).value||'-';
+    var amt=parseFloat((document.getElementById(id+'-amt')||{}).value)||0;
+    var lbl=(document.getElementById(id+'-label')||{}).value||'Extra';
+    var acc=(document.getElementById(id+'-acc')||{}).value||'';
+    if(amt>0.001) extras.push({sign:sign,amt:amt,label:lbl,acc:acc});
+  });
+  var eP=extras.filter(function(x){return x.sign==='+'}).reduce(function(a,x){return a+x.amt;},0);
+  var eM=extras.filter(function(x){return x.sign==='-'}).reduce(function(a,x){return a+x.amt;},0);
+  var net=gross+ssCo-ssTotal-irpf+eP-eM;
+  var salAcc=document.getElementById('pr-acc-salary').value;
+  var ssCoAcc=document.getElementById('pr-acc-ss-co').value;
+  var ssTAcc=document.getElementById('pr-acc-ss-total').value;
+  var irpfAcc=document.getElementById('pr-acc-irpf').value;
+  var netAcc=document.getElementById('pr-acc-net').value;
+  var empName=emp?(emp.fname+' '+emp.lname):'Employee';
+  if(!DB.payrolls) DB.payrolls=[]; if(!DB.ids.pr) DB.ids.pr=1;
+  var jeLines=[];
+  if(gross>0.001)  jeLines.push({account:salAcc, debit:gross,  credit:0});
+  if(ssCo>0.001)   jeLines.push({account:ssCoAcc,debit:ssCo,   credit:0});
+  extras.filter(function(x){return x.sign==='+'}).forEach(function(x){if(x.acc&&x.amt>0.001) jeLines.push({account:x.acc,debit:x.amt,credit:0});});
+  if(ssTotal>0.001)jeLines.push({account:ssTAcc, debit:0,credit:ssTotal});
+  if(irpf>0.001)   jeLines.push({account:irpfAcc,debit:0,credit:irpf  });
+  extras.filter(function(x){return x.sign==='-'}).forEach(function(x){if(x.acc&&x.amt>0.001) jeLines.push({account:x.acc,debit:0,credit:x.amt});});
+  if(net>0.001)    jeLines.push({account:netAcc, debit:0,credit:net   });
+  var tDr=jeLines.reduce(function(a,l){return a+(l.debit||0);},0);
+  var tCr=jeLines.reduce(function(a,l){return a+(l.credit||0);},0);
+  if(Math.abs(tDr-tCr)>0.02&&!confirm('JE unbalanced (Dr:'+f(tDr)+' Cr:'+f(tCr)+'). Post anyway?')) return;
+  var jeId=DB.ids.j++;
+  DB.je.push({id:jeId,date:paydate,desc:'Payroll — '+empName+' / '+period+(type!=='monthly'?' ('+type+')':''),
+    lines:jeLines,amount:tDr,auto:true,sourceType:'payroll',empId:empId,payrollPeriod:period});
+  DB.payrolls.push({id:DB.ids.pr++,empId:empId,empName:empName,period:period,paydate:paydate,type:type,
+    gross:gross,ssCo:ssCo,ssTotal:ssTotal,irpf:irpf,net:net,extras:extras,jeId:jeId,notes:notes});
+  sv(); closeOverlay('ov-payroll'); rPayrolls(); renderAll();
+  showToast('✅ Payroll posted — '+empName+' · '+period+' · Net: '+f(net));
+}
+
+
+
+
+
+// ══════════════════════════════════════════════════════════════════
+// TIME TRACKING MODULE
+// ══════════════════════════════════════════════════════════════════
+
+var _ttYear  = new Date().getFullYear();
+var _ttMonth = new Date().getMonth(); // 0-based
+var _ttSelectedDay = null;
+var _ttClockInterval = null;
+
+// ── Default Spanish public holidays ─────────────────────────────
+function _defaultHolidays() {
+  var y = new Date().getFullYear();
+  return [
+    {id:1, name:'Año Nuevo',              date:y+'-01-01', recurring:1},
+    {id:2, name:'Reyes Magos',            date:y+'-01-06', recurring:1},
+    {id:3, name:'Viernes Santo',          date:y+'-04-18', recurring:0},
+    {id:4, name:'Día del Trabajo',        date:y+'-05-01', recurring:1},
+    {id:5, name:'Asunción de la Virgen',  date:y+'-08-15', recurring:1},
+    {id:6, name:'Día de la Hispanidad',   date:y+'-10-12', recurring:1},
+    {id:7, name:'Todos los Santos',       date:y+'-11-01', recurring:1},
+    {id:8, name:'Día de la Constitución', date:y+'-12-06', recurring:1},
+    {id:9, name:'Inmaculada Concepción',  date:y+'-12-08', recurring:1},
+    {id:10,name:'Navidad',                date:y+'-12-25', recurring:1},
+  ];
+}
+
+function ensureTTDB() {
+  if(!DB.timeEntries)   DB.timeEntries  = [];
+  if(!DB.absences)      DB.absences     = [];
+  if(!DB.holidays)      DB.holidays     = _defaultHolidays();
+  if(!DB.clockSessions) DB.clockSessions = {};
+  if(!DB.ids.te)        DB.ids.te = 1;
+  if(!DB.ids.ab)        DB.ids.ab = 1;
+}
+
+// ── Format helpers ─────────────────────────────────────────────
+function fHours(mins) {
+  var h = Math.floor(Math.abs(mins)/60), m = Math.abs(mins)%60;
+  return (mins<0?'-':'')+h+'h '+String(m).padStart(2,'0')+'m';
+}
+function timeToMins(t) {
+  if(!t) return 0;
+  var p = t.split(':'); return parseInt(p[0])*60+(parseInt(p[1])||0);
+}
+function minsToTime(m) {
+  return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+}
+function dateStr(d) { return d.toISOString().slice(0,10); }
+
+// ── Navigate calendar month ────────────────────────────────────
+function ttNavMonth(dir) {
+  _ttMonth += dir;
+  if(_ttMonth > 11){ _ttMonth=0; _ttYear++; }
+  if(_ttMonth < 0) { _ttMonth=11; _ttYear--; }
+  rTimeTracking();
+}
+
+// ── Populate employee filter dropdowns ────────────────────────
+function _ttPopulateEmpFilters() {
+  var emps = DB.employees||[];
+  ['tt-emp-filter','tt-clock-emp','me-emp','abs-emp','abs-emp-filter'].forEach(function(id){
+    var sel = document.getElementById(id); if(!sel) return;
+    var prev = sel.value;
+    var placeholder = id==='tt-emp-filter'||id==='abs-emp-filter' ? 'All Employees' : '— Select Employee —';
+    sel.innerHTML = '<option value="">'+placeholder+'</option>' +
+      emps.filter(function(e){return e.status==='active';}).map(function(e){
+        return '<option value="'+e.id+'">'+e.fname+' '+e.lname+(e.dept?' ('+e.dept+')':'')+'</option>';
+      }).join('');
+    if(prev) sel.value = prev;
+  });
+}
+
+// ── Render Time Tracking page ──────────────────────────────────
+function rTimeTracking() {
+  ensureTTDB();
+  var page = document.getElementById('page-timetracking'); if(!page) return;
+  _ttPopulateEmpFilters();
+
+  // Set month input
+  var mi = document.getElementById('tt-month');
+  if(mi && !mi.value) mi.value = _ttYear+'-'+String(_ttMonth+1).padStart(2,'0');
+
+  var filterEmp = parseInt((document.getElementById('tt-emp-filter')||{value:''}).value)||0;
+  var entries   = DB.timeEntries.filter(function(e){
+    return !filterEmp || e.empId===filterEmp;
+  });
+
+  // ── Week stats ───────────────────────────────────────────────
+  var now      = new Date();
+  var wStart   = new Date(now); wStart.setDate(now.getDate()-now.getDay()+1); // Monday
+  var weekDays = [0,1,2,3,4].map(function(i){
+    var d = new Date(wStart); d.setDate(wStart.getDate()+i); return dateStr(d);
+  });
+  var weekBar = document.getElementById('tt-week-bar');
+  if(weekBar) {
+    var MN = ['Mon','Tue','Wed','Thu','Fri'];
+    weekBar.innerHTML = weekDays.map(function(ds, i){
+      var dayEntries = entries.filter(function(e){ return e.date===ds && e.out; });
+      var mins = dayEntries.reduce(function(a,e){ return a+timeToMins(e.out)-timeToMins(e.in); },0);
+      var isToday = ds===dateStr(now);
+      return '<div class="tt-week-stat" style="'+(isToday?'border-color:var(--accent);':'')+'">' +
+        '<label>'+MN[i]+' '+ds.slice(8)+'</label>' +
+        '<span style="color:'+(mins>=480?'var(--green)':mins>0?'var(--yellow)':'var(--text3)')+'">'+( mins>0?fHours(mins):'\u2014')+'</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ── Calendar grid ────────────────────────────────────────────
+  var calTitle = document.getElementById('tt-cal-title');
+  var MNS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  if(calTitle) calTitle.textContent = MNS[_ttMonth]+' '+_ttYear;
+
+  var grid = document.getElementById('tt-cal-grid'); if(!grid) return;
+
+  // Holidays this month
+  var holDates = (DB.holidays||[]).map(function(h){
+    // recurring: replace year with current calendar year
+    return h.recurring ? h.date.slice(5) : h.date;
+  });
+
+  // Absences (approved)
+  var appAbsences = (DB.absences||[]).filter(function(a){ return a.status==='approved' && (!filterEmp||a.empId===filterEmp); });
+
+  var firstDay = new Date(_ttYear, _ttMonth, 1);
+  var lastDay  = new Date(_ttYear, _ttMonth+1, 0);
+  var startDow = (firstDay.getDay()+6)%7; // Mon=0
+  var cells = [];
+
+  // Padding from prev month
+  for(var i=0;i<startDow;i++){
+    var pd = new Date(_ttYear, _ttMonth, 1-startDow+i);
+    cells.push({date:dateStr(pd), other:true});
+  }
+  for(var d=1;d<=lastDay.getDate();d++){
+    cells.push({date:_ttYear+'-'+String(_ttMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'), other:false});
+  }
+  // Pad to full rows
+  while(cells.length%7!==0) {
+    var nd2 = new Date(_ttYear, _ttMonth+1, cells.length-lastDay.getDate()-startDow+1);
+    cells.push({date:dateStr(nd2), other:true});
+  }
+
+  var todayStr = dateStr(new Date());
+  grid.innerHTML = cells.map(function(c){
+    var dayEntries = entries.filter(function(e){ return e.date===c.date && e.out; });
+    var mins   = dayEntries.reduce(function(a,e){ return a+timeToMins(e.out)-timeToMins(e.in); },0);
+    var isHol  = holDates.some(function(h){ return c.date.endsWith(h)||c.date===h; });
+    var isAbs  = appAbsences.some(function(a){ return c.date>=a.from&&c.date<=a.to; });
+    var isToday= c.date===todayStr;
+    var cls    = 'tt-cal-day'+(c.other?' other-month':'')+(isToday?' today':'')+(mins>0?' has-entries':'')+(isAbs?' has-absence':'');
+    return '<div class="'+cls+'" onclick="ttShowDay(\''+c.date+'\')" style="'+(isHol?'background:rgba(248,113,113,.07);':'')+'">' +
+      '<div class="tt-day-num">'+parseInt(c.date.slice(8))+(isHol?' 🎉':'')+'</div>' +
+      (mins>0 ? '<div class="tt-day-hours">'+fHours(mins)+'</div>' : '') +
+      (isAbs  ? '<div class="tt-day-absence">🏖 Leave</div>' : '') +
+    '</div>';
+  }).join('');
+}
+
+// ── Show day detail ────────────────────────────────────────────
+function ttShowDay(dateStr2) {
+  ensureTTDB();
+  _ttSelectedDay = dateStr2;
+  var panel = document.getElementById('tt-day-detail'); if(!panel) return;
+  panel.style.display = 'block';
+  document.getElementById('tt-day-detail-title').textContent = 'Entries for ' + dateStr2;
+
+  var filterEmp = parseInt((document.getElementById('tt-emp-filter')||{value:''}).value)||0;
+  var dayEntries = DB.timeEntries.filter(function(e){ return e.date===dateStr2&&(!filterEmp||e.empId===filterEmp); });
+  var entriesEl = document.getElementById('tt-day-entries');
+
+  if(!dayEntries.length){
+    entriesEl.innerHTML='<div style="color:var(--text3);padding:12px;font-size:13px;text-align:center;">No entries for this day.</div>';
+    return;
+  }
+
+  entriesEl.innerHTML = dayEntries.map(function(e){
+    var emp   = (DB.employees||[]).find(function(x){ return x.id===e.empId; });
+    var name  = emp?(emp.fname+' '+emp.lname):'Unknown';
+    var dur   = e.out ? fHours(timeToMins(e.out)-timeToMins(e.in)) : '(still clocked in)';
+    var col   = empColor(name);
+    var ini   = emp?empInitials(emp.fname,emp.lname):'?';
+    return '<div class="tt-entry-row">' +
+      '<div style="width:28px;height:28px;border-radius:50%;background:'+col+';color:#0f0f11;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;flex-shrink:0;">'+ini+'</div>' +
+      '<div style="flex:1;">' +
+        '<div style="font-weight:600;font-size:12px;color:var(--text);">'+name+'</div>' +
+        '<div style="font-size:11px;color:var(--text3);font-family:monospace;">'+e.in+' → '+(e.out||'...')+'</div>' +
+        (e.notes?'<div style="font-size:11px;color:var(--text3);font-style:italic;">'+e.notes+'</div>':'') +
+      '</div>' +
+      '<div style="text-align:right;">' +
+        '<div style="font-family:\'DM Serif Display\',serif;font-size:16px;color:'+(e.out?'var(--green)':'var(--yellow)')+';">'+dur+'</div>' +
+        '<div style="font-size:10px;color:var(--red);cursor:pointer;" onclick="deleteTimeEntry('+e.id+')">✕ Delete</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function deleteTimeEntry(id) {
+  if(!confirm('Delete this time entry?')) return;
+  DB.timeEntries = DB.timeEntries.filter(function(e){ return e.id!==id; });
+  sv(); rTimeTracking(); if(_ttSelectedDay) ttShowDay(_ttSelectedDay);
+  showToast('Entry deleted.');
+}
+
+// ── Clock In/Out overlay ───────────────────────────────────────
+function openClockIn() {
+  ensureTTDB();
+  _ttPopulateEmpFilters();
+  startLiveClock();
+  updateClockStatus();
+  openOverlay('ov-clockinout');
+}
+
+function startLiveClock() {
+  if(_ttClockInterval) clearInterval(_ttClockInterval);
+  function tick(){
+    var now = new Date();
+    var el = document.getElementById('tt-live-clock');
+    var dl = document.getElementById('tt-live-date');
+    if(el) el.textContent = now.toTimeString().slice(0,8);
+    if(dl) dl.textContent = now.toDateString();
+  }
+  tick();
+  _ttClockInterval = setInterval(tick, 1000);
+}
+
+function updateClockStatus() {
+  ensureTTDB();
+  var empId = parseInt((document.getElementById('tt-clock-emp')||{value:''}).value)||0;
+  var statusEl = document.getElementById('tt-clock-status');
+  var btnIn    = document.getElementById('tt-btn-in');
+  var btnOut   = document.getElementById('tt-btn-out');
+  if(!statusEl) return;
+
+  if(!empId){
+    statusEl.textContent='Select an employee to see status';
+    statusEl.style.color='var(--text3)';
+    return;
+  }
+
+  var session = DB.clockSessions[empId];
+  if(session && session.in && !session.out){
+    statusEl.innerHTML = '🟢 <strong>Clocked in</strong> since <span style="color:var(--green);font-family:monospace;">'+session.in+'</span> on '+session.date;
+    statusEl.style.color='var(--text)';
+    if(btnIn)  { btnIn.disabled=true;  btnIn.style.opacity='0.4'; }
+    if(btnOut) { btnOut.disabled=false; btnOut.style.opacity='1'; }
+  } else {
+    statusEl.innerHTML = '⚪ <strong>Not clocked in</strong>';
+    statusEl.style.color='var(--text3)';
+    if(btnIn)  { btnIn.disabled=false;  btnIn.style.opacity='1'; }
+    if(btnOut) { btnOut.disabled=true;   btnOut.style.opacity='0.4'; }
+  }
+}
+
+function doPunch(direction) {
+  ensureTTDB();
+  var empId = parseInt((document.getElementById('tt-clock-emp')||{value:''}).value)||0;
+  if(!empId){ alert('Select an employee first.'); return; }
+
+  var now      = new Date();
+  var timeNow  = now.toTimeString().slice(0,5);
+  var today    = dateStr(now);
+  var notes    = (document.getElementById('tt-clock-notes')||{value:''}).value||'';
+
+  if(!DB.clockSessions) DB.clockSessions={};
+
+  if(direction==='in'){
+    DB.clockSessions[empId] = { in:timeNow, date:today, notes:notes };
+    showToast('✅ Clocked IN at '+timeNow);
+  } else {
+    var session = DB.clockSessions[empId];
+    if(!session||!session.in){ alert('No active clock-in session.'); return; }
+    // Save complete entry
+    DB.timeEntries.push({
+      id:DB.ids.te++, empId:empId,
+      date:session.date, in:session.in, out:timeNow,
+      notes:session.notes||notes, manual:false
+    });
+    delete DB.clockSessions[empId];
+    var dur = fHours(timeToMins(timeNow)-timeToMins(session.in));
+    showToast('✅ Clocked OUT at '+timeNow+' · Duration: '+dur);
+  }
+  sv(); updateClockStatus(); rTimeTracking();
+}
+
+// ── Manual entry ───────────────────────────────────────────────
+function openManualEntry() {
+  _ttPopulateEmpFilters();
+  var meDate = document.getElementById('me-date');
+  if(meDate && _ttSelectedDay) meDate.value = _ttSelectedDay;
+  else if(meDate) meDate.value = dateStr(new Date());
+  openOverlay('ov-manual-entry');
+}
+
+function saveManualEntry() {
+  ensureTTDB();
+  var empId = parseInt((document.getElementById('me-emp')||{value:''}).value)||0;
+  var date  = (document.getElementById('me-date')||{value:''}).value;
+  var inT   = (document.getElementById('me-in')||{value:''}).value;
+  var outT  = (document.getElementById('me-out')||{value:''}).value;
+  var notes = (document.getElementById('me-notes')||{value:''}).value||'';
+  if(!empId||!date||!inT){ alert('Please fill employee, date and clock-in time.'); return; }
+  if(outT && timeToMins(outT)<=timeToMins(inT)){ alert('Clock-out must be after clock-in.'); return; }
+
+  DB.timeEntries.push({ id:DB.ids.te++, empId:empId, date:date, in:inT, out:outT||null, notes:notes, manual:true });
+  sv(); closeOverlay('ov-manual-entry'); rTimeTracking();
+  if(_ttSelectedDay===date) ttShowDay(date);
+  showToast('✅ Manual entry saved.');
+}
+
+// ══════════════════════════════════════════════════════════════════
+// ABSENCES & HOLIDAYS MODULE
+// ══════════════════════════════════════════════════════════════════
+
+var _absEditId = null;
+
+function rAbsences() {
+  ensureTTDB();
+  _ttPopulateEmpFilters();
+
+  var filterEmp    = parseInt((document.getElementById('abs-emp-filter')||{value:''}).value)||0;
+  var filterStatus = (document.getElementById('abs-status-filter')||{value:''}).value||'';
+
+  var list = (DB.absences||[]).filter(function(a){
+    return (!filterEmp||a.empId===filterEmp) && (!filterStatus||a.status===filterStatus);
+  }).sort(function(a,b){ return b.from>a.from?1:-1; });
+
+  // Stats
+  var pending  = (DB.absences||[]).filter(function(a){return a.status==='pending';}).length;
+  var appDays  = (DB.absences||[]).filter(function(a){return a.status==='approved';})
+    .reduce(function(tot,a){ return tot+a.days; },0);
+  var vacDays  = (DB.absences||[]).filter(function(a){return a.status==='approved'&&a.type==='vacation';})
+    .reduce(function(tot,a){ return tot+a.days; },0);
+  var ac=document.getElementById('abs-count');       if(ac) ac.textContent=(DB.absences||[]).length;
+  var ap=document.getElementById('abs-pending');     if(ap) ap.textContent=pending;
+  var ad=document.getElementById('abs-days-approved');if(ad) ad.textContent=appDays;
+  var av=document.getElementById('abs-vacation-used');if(av) av.textContent=vacDays;
+
+  // Holiday pills
+  var holEl = document.getElementById('abs-holidays-list');
+  if(holEl) {
+    var y = new Date().getFullYear();
+    holEl.innerHTML = (DB.holidays||[]).sort(function(a,b){return a.date<b.date?-1:1;}).map(function(h){
+      var dStr = h.recurring ? y+'-'+h.date.slice(5) : h.date;
+      return '<div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:11px;cursor:pointer;" onclick="if(confirm(\'Delete holiday '+h.name+'?\')) { DB.holidays=DB.holidays.filter(function(x){return x.id!=='+h.id+';}); sv(); rAbsences(); }">' +
+        '<span style="font-family:monospace;color:var(--accent);">'+dStr+'</span>' +
+        '<span style="color:var(--text2);">'+h.name+'</span>' +
+        '<span style="color:var(--red);font-size:12px;">✕</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  // Absences list
+  var listEl = document.getElementById('abs-list');
+  if(!listEl) return;
+  if(!list.length){
+    listEl.innerHTML='<div style="color:var(--text3);padding:30px;text-align:center;font-size:13px;">No absence requests yet.</div>';
+    return;
+  }
+
+  var typeColors = { vacation:'abs-vacation', sick:'abs-sick', personal:'abs-personal', maternity:'abs-maternity', other:'abs-other' };
+  var typeLabels = { vacation:'Vacation', sick:'Sick Leave', personal:'Personal', maternity:'Maternity/Paternity', other:'Other' };
+  var typeEmojis = { vacation:'🏖', sick:'🤒', personal:'🏠', maternity:'👶', other:'📋' };
+
+  listEl.innerHTML = list.map(function(a){
+    var emp  = (DB.employees||[]).find(function(e){ return e.id===a.empId; });
+    var name = emp?(emp.fname+' '+emp.lname):'Unknown';
+    var col  = emp?empColor(name):'#9090a8';
+    var ini  = emp?empInitials(emp.fname,emp.lname):'?';
+    return '<div class="absence-card">' +
+      '<div style="width:36px;height:36px;border-radius:50%;background:'+col+';color:#0f0f11;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;">'+ini+'</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-weight:700;font-size:13px;color:var(--text);">'+name+'</div>' +
+        '<div style="font-size:11px;color:var(--text3);font-family:monospace;">'+a.from+' → '+a.to+' · '+a.days+' day'+(a.days!==1?'s':'')+'</div>' +
+        (a.notes?'<div style="font-size:11px;color:var(--text3);font-style:italic;margin-top:2px;">'+a.notes+'</div>':'') +
+      '</div>' +
+      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">' +
+        '<span class="absence-type-badge '+typeColors[a.type]+'">'+typeEmojis[a.type]+' '+typeLabels[a.type]+'</span>' +
+        '<span class="abs-status-'+a.status+'">'+a.status.toUpperCase()+'</span>' +
+        (a.status==='pending'?'<div style="display:flex;gap:4px;">' +
+          '<button class="btn btn-ghost btn-sm" style="color:var(--green);border-color:var(--green);padding:2px 8px;font-size:10px;" onclick="updateAbsenceStatus('+a.id+',\'approved\')">✓ Approve</button>' +
+          '<button class="btn btn-ghost btn-sm" style="color:var(--red);border-color:var(--red);padding:2px 8px;font-size:10px;" onclick="updateAbsenceStatus('+a.id+',\'rejected\')">✕ Reject</button>' +
+        '</div>':'') +
+        '<button class="btn btn-ghost btn-sm" style="font-size:10px;padding:2px 8px;color:var(--red);" onclick="deleteAbsence('+a.id+')">Delete</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function openNewAbsence() {
+  _absEditId = null;
+  _ttPopulateEmpFilters();
+  document.getElementById('abs-modal-title').textContent = 'Request Absence';
+  document.getElementById('abs-emp').value  = '';
+  document.getElementById('abs-type').value = 'vacation';
+  document.getElementById('abs-from').value = dateStr(new Date());
+  document.getElementById('abs-to').value   = dateStr(new Date());
+  document.getElementById('abs-notes').value = '';
+  document.getElementById('abs-duration').textContent = '1 day';
+  openOverlay('ov-absence');
+}
+
+function calcAbsDays() {
+  var from = (document.getElementById('abs-from')||{value:''}).value;
+  var to   = (document.getElementById('abs-to')||{value:''}).value;
+  if(!from||!to){ document.getElementById('abs-duration').textContent='— days'; return; }
+  var d = Math.round((new Date(to)-new Date(from))/(86400000))+1;
+  if(d<1) d=1;
+  document.getElementById('abs-duration').textContent = d+' day'+(d!==1?'s':'');
+}
+
+function saveAbsence() {
+  ensureTTDB();
+  var empId = parseInt((document.getElementById('abs-emp')||{value:''}).value)||0;
+  var from  = (document.getElementById('abs-from')||{value:''}).value;
+  var to    = (document.getElementById('abs-to')||{value:''}).value;
+  var type  = (document.getElementById('abs-type')||{value:'vacation'}).value;
+  var notes = (document.getElementById('abs-notes')||{value:''}).value||'';
+  if(!empId){ alert('Please select an employee.'); return; }
+  if(!from||!to){ alert('Please select dates.'); return; }
+  var days = Math.round((new Date(to)-new Date(from))/86400000)+1;
+  if(days<1){ alert('End date must be on or after start date.'); return; }
+
+  DB.absences.push({ id:DB.ids.ab++, empId:empId, type:type, from:from, to:to, days:days, notes:notes, status:'pending', createdAt:td() });
+  sv(); closeOverlay('ov-absence'); rAbsences();
+  showToast('✅ Absence request submitted · '+days+' day'+(days!==1?'s':'')+' · Pending approval');
+}
+
+function updateAbsenceStatus(id, status) {
+  var a = (DB.absences||[]).find(function(x){ return x.id===id; });
+  if(a){ a.status=status; sv(); rAbsences(); showToast('Absence '+status+'.'); }
+}
+
+function deleteAbsence(id) {
+  if(!confirm('Delete this absence request?')) return;
+  DB.absences = (DB.absences||[]).filter(function(a){ return a.id!==id; });
+  sv(); rAbsences(); showToast('Absence deleted.');
+}
+
+function openAddHoliday() {
+  document.getElementById('hol-name').value = '';
+  document.getElementById('hol-date').value = '';
+  document.getElementById('hol-recurring').value = '1';
+  openOverlay('ov-add-holiday');
+}
+
+function saveHoliday() {
+  ensureTTDB();
+  var name = (document.getElementById('hol-name')||{value:''}).value.trim();
+  var date = (document.getElementById('hol-date')||{value:''}).value;
+  var rec  = parseInt((document.getElementById('hol-recurring')||{value:'1'}).value)||0;
+  if(!name||!date){ alert('Please fill name and date.'); return; }
+  var maxId = (DB.holidays||[]).reduce(function(a,h){ return Math.max(a,h.id); },0);
+  DB.holidays.push({ id:maxId+1, name:name, date:date, recurring:rec });
+  sv(); closeOverlay('ov-add-holiday'); rAbsences();
+  showToast('Holiday added: '+name);
+}
+
+function renderAll(){rDash();rContacts();rSales();rRecurring();rPurch();rColl();rPay();rJE();rPL();rBS();rCF();rCFO();rBankAccounts();rEmployees();rPayrolls();rTimeTracking();rAbsences();}
 
 init();
 
@@ -8346,7 +10226,7 @@ function showToast(msg) {
       <div class="sec-hdr">
         <div>
           <div class="sec-title">Bank Accounts</div>
-          <div class="sec-sub">Treasury overview · Import bank movements · Reconcile</div>
+          <div class="sec-sub">Treasury overview · Journal Entry cash flow · Reconcile</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
           <select id="ba-period" onchange="rBankAccounts()" class="period-select" style="min-width:160px;">
@@ -8359,21 +10239,30 @@ function showToast(msg) {
         </div>
       </div>
 
-      <!-- Treasury chart -->
-      <div class="ba-chart-wrap">
-        <div class="ba-chart-header">
-          <div class="ba-chart-kpis">
-            <div class="ba-kpi-item"><label>Inflows</label><span id="ba-kpi-in" style="color:var(--green);">€0.00</span></div>
-            <div class="ba-kpi-item"><label>Outflows</label><span id="ba-kpi-out" style="color:var(--red);">€0.00</span></div>
-            <div class="ba-kpi-item"><label>Net Balance</label><span id="ba-kpi-bal">€0.00</span></div>
+      <!-- Treasury chart — full width -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:20px;width:100%;box-sizing:border-box;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <div style="display:flex;gap:40px;">
+            <div>
+              <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">Inflows (JE)</div>
+              <div id="ba-kpi-in" style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);">€0.00</div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">Outflows (JE)</div>
+              <div id="ba-kpi-out" style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--red);">€0.00</div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">Net Balance</div>
+              <div id="ba-kpi-bal" style="font-family:'DM Serif Display',serif;font-size:28px;">€0.00</div>
+            </div>
           </div>
-          <div style="display:flex;gap:16px;font-size:12px;color:var(--text3);">
-            <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--green);margin-right:4px;"></span>Inflows</span>
-            <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--red);margin-right:4px;"></span>Outflows</span>
-            <span><span style="display:inline-block;width:2px;height:10px;border-radius:1px;background:var(--accent);margin-right:4px;display:inline-block;vertical-align:middle;"></span>Balance</span>
+          <div style="display:flex;gap:20px;font-size:12px;color:var(--text3);">
+            <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:2px;background:var(--green);display:inline-block;"></span>Inflows</span>
+            <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:2px;background:var(--red);display:inline-block;"></span>Outflows</span>
+            <span style="display:flex;align-items:center;gap:5px;"><span style="width:3px;height:12px;border-radius:2px;background:var(--accent);display:inline-block;"></span>Balance</span>
           </div>
         </div>
-        <div id="ba-chart-svg" style="width:100%;overflow:hidden;"></div>
+        <div id="ba-chart-svg" style="width:100%;overflow:hidden;min-height:220px;"></div>
       </div>
 
       <!-- Account cards -->
@@ -8434,6 +10323,7 @@ function showToast(msg) {
             <div style="display:flex;gap:8px;margin-top:6px;">
               <button id="rec-type-sales" class="btn btn-ghost btn-sm" onclick="setBankRecType('sales')" style="flex:1;">📊 Sales Invoices</button>
               <button id="rec-type-purchases" class="btn btn-ghost btn-sm" onclick="setBankRecType('purchases')" style="flex:1;">📋 Purchase Invoices</button>
+              <button id="rec-type-remittance" class="btn btn-ghost btn-sm" onclick="setBankRecType('remittance')" style="flex:1;">⇄ Remittances</button>
               <button id="rec-type-manual" class="btn btn-ghost btn-sm" onclick="setBankRecType('manual')" style="flex:1;">✏️ Manual Account</button>
             </div>
           </div>
@@ -8456,33 +10346,37 @@ function showToast(msg) {
             </div>
           </div>
         </div>
-        <!-- Difference bar + Reconcile button -->
-        <div style="padding:14px 26px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px;">
-          <!-- Left: difference indicator -->
-          <div id="rec-diff-panel" style="flex:1;">
-            <div style="display:flex;align-items:center;gap:20px;">
+        <!-- Session accumulator + Reconcile button -->
+        <div style="border-top:1px solid var(--border);">
+          <!-- Accumulated tranches (shown when something already reconciled this session) -->
+          <div id="rec-session-tranches" style="display:none;padding:10px 26px;background:rgba(74,222,128,.04);border-bottom:1px solid rgba(74,222,128,.15);">
+            <div style="font-size:10px;color:var(--green);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">✓ Reconciled this session</div>
+            <div id="rec-session-list" style="font-size:12px;color:var(--text2);"></div>
+          </div>
+          <!-- Bottom bar -->
+          <div style="padding:14px 26px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <div style="display:flex;align-items:center;gap:20px;flex:1;">
               <div>
-                <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Allocated</div>
+                <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">This tranche</div>
                 <div id="rec-diff-allocated" style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--accent);">€0.00</div>
               </div>
-              <div style="font-size:18px;color:var(--text3);">/</div>
+              <div style="font-size:16px;color:var(--text3);">/</div>
               <div>
-                <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Movement</div>
+                <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Still pending</div>
                 <div id="rec-diff-total" style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);">€0.00</div>
               </div>
               <div id="rec-diff-pending-wrap" style="background:rgba(255,217,61,.12);border:1px solid rgba(255,217,61,.3);border-radius:8px;padding:6px 14px;display:none;">
-                <div style="font-size:10px;color:var(--yellow);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Pending to reconcile</div>
+                <div style="font-size:10px;color:var(--yellow);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Remaining after this</div>
                 <div id="rec-diff-pending" style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--yellow);">€0.00</div>
               </div>
               <div id="rec-diff-ok-wrap" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);border-radius:8px;padding:6px 14px;display:none;">
-                <div style="font-size:11px;color:var(--green);font-weight:700;">✓ Fully reconciled</div>
+                <div style="font-size:11px;color:var(--green);font-weight:700;">✓ Movement fully covered</div>
               </div>
             </div>
-          </div>
-          <!-- Right: buttons -->
-          <div style="display:flex;gap:8px;">
-            <button class="btn btn-ghost" onclick="closeOverlay('ov-reconcile-bank')">Cancel</button>
-            <button class="btn btn-primary" id="rec-confirm-btn" onclick="confirmBankReconcile()" disabled style="opacity:.4;cursor:not-allowed;">✅ Reconcile</button>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-ghost" onclick="cancelBankReconcile()">Cancel</button>
+              <button class="btn btn-primary" id="rec-confirm-btn" onclick="confirmBankReconcile()" disabled style="opacity:.4;cursor:not-allowed;">✅ Reconcile</button>
+            </div>
           </div>
         </div>
       </div>
@@ -8576,8 +10470,491 @@ function showToast(msg) {
       </div>
     </div>
 
+    <!-- ══ EMPLOYEES ══ -->
+    <div class="page" id="page-employees">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Employees</div><div class="sec-sub">Human Resources · Staff directory</div></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" onclick="navHR('orgchart')">🌳 Org Chart</button>
+          <input type="text" id="emp-search" oninput="rEmployees()" placeholder="🔍 Search employees..." style="padding:6px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;width:180px;">
+          <select id="emp-dept-filter" onchange="rEmployees()" style="padding:6px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;">
+            <option value="">All Departments</option>
+            <option>HR</option><option>Finance</option><option>Marketing</option>
+            <option>Production</option><option>Management</option><option>Administration</option>
+            <option>Sales</option><option>IT</option><option>Legal</option><option>Operations</option>
+          </select>
+          <button class="btn btn-primary" onclick="openNewEmployee()">+ New Employee</button>
+        </div>
+      </div>
+      <!-- Stats bar -->
+      <div class="totbar" style="margin-bottom:16px;">
+        <div class="tot-item"><label>Total Employees</label><span id="emp-count" style="color:var(--accent);">0</span></div>
+        <div class="tot-item"><label>Active</label><span id="emp-active" style="color:var(--green);">0</span></div>
+        <div class="tot-item"><label>Departments</label><span id="emp-depts" style="color:var(--text2);">0</span></div>
+        <div class="tot-item"><label>Total Gross Salary</label><span id="emp-salary" style="color:var(--text);">€0</span></div>
+      </div>
+      <div id="emp-grid" class="emp-grid"></div>
+    </div>
+
+    <!-- ══ ORG CHART ══ -->
+    <div class="page" id="page-orgchart" style="overflow:auto;">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Organisation Chart</div><div class="sec-sub">Company structure · Reporting lines</div></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" onclick="navHR('employees')">← Employees</button>
+        </div>
+      </div>
+      <div id="org-chart-container" style="padding:20px;overflow-x:auto;min-height:300px;text-align:center;"></div>
+    </div>
+
+    <!-- ══ PAYROLLS ══ -->
+    <div class="page" id="page-payrolls">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Payrolls</div><div class="sec-sub">Salary processing · Journal Entries · Social Security</div></div>
+        <div style="display:flex;gap:8px;">
+          <select id="payroll-month-filter" onchange="rPayrolls()" style="padding:6px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;">
+            <option value="">All months</option>
+          </select>
+          <button class="btn btn-primary" onclick="openNewPayroll()">+ New Payroll</button>
+        </div>
+      </div>
+      <!-- Stats -->
+      <div class="totbar" style="margin-bottom:16px;">
+        <div class="tot-item"><label>Total Payrolls</label><span id="pr-count" style="color:var(--accent);">0</span></div>
+        <div class="tot-item"><label>Total Gross</label><span id="pr-gross" style="color:var(--text);">€0</span></div>
+        <div class="tot-item"><label>Total SS</label><span id="pr-ss" style="color:var(--yellow);">€0</span></div>
+        <div class="tot-item"><label>Net to Pay</label><span id="pr-net" style="color:var(--green);">€0</span></div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div id="payroll-list" style=""></div>
+      </div>
+    </div>
+
+    <!-- ══ TIME TRACKING ══ -->
+    <div class="page" id="page-timetracking" style="overflow-y:auto;max-height:calc(100vh - 60px);">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Time Tracking</div><div class="sec-sub">Clock in/out · Daily records · Weekly summary</div></div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select id="tt-emp-filter" onchange="rTimeTracking()" style="padding:6px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;min-width:160px;">
+            <option value="">All Employees</option>
+          </select>
+          <input type="month" id="tt-month" onchange="rTimeTracking()" style="padding:6px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;">
+          <button class="btn btn-primary" onclick="openClockIn()">⏱ Clock In/Out</button>
+        </div>
+      </div>
+
+      <!-- Weekly summary bar -->
+      <div class="tt-week-bar" id="tt-week-bar"></div>
+
+      <!-- Calendar -->
+      <div class="card" style="padding:16px 20px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <button class="btn btn-ghost btn-sm" onclick="ttNavMonth(-1)">← Prev</button>
+          <div style="font-weight:700;font-size:15px;color:var(--text);" id="tt-cal-title">April 2026</div>
+          <button class="btn btn-ghost btn-sm" onclick="ttNavMonth(1)">Next →</button>
+        </div>
+        <div class="tt-calendar">
+          <div class="tt-cal-hdr">Mon</div><div class="tt-cal-hdr">Tue</div><div class="tt-cal-hdr">Wed</div>
+          <div class="tt-cal-hdr">Thu</div><div class="tt-cal-hdr">Fri</div><div class="tt-cal-hdr">Sat</div><div class="tt-cal-hdr">Sun</div>
+        </div>
+        <div class="tt-calendar" id="tt-cal-grid"></div>
+      </div>
+
+      <!-- Day detail panel -->
+      <div class="card" style="padding:16px 20px;display:none;" id="tt-day-detail">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-weight:700;font-size:14px;color:var(--text);" id="tt-day-detail-title">Day Detail</div>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('tt-day-detail').style.display='none'">✕</button>
+        </div>
+        <div id="tt-day-entries"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:10px;" onclick="openManualEntry()">+ Add manual entry</button>
+      </div>
+    </div>
+
+    <!-- ══ ABSENCES & HOLIDAYS ══ -->
+    <div class="page" id="page-absences" style="overflow-y:auto;max-height:calc(100vh - 60px);">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Absences & Holidays</div><div class="sec-sub">Leave requests · Holiday calendar · Approvals</div></div>
+        <div style="display:flex;gap:8px;">
+          <select id="abs-emp-filter" onchange="rAbsences()" style="padding:6px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;min-width:160px;">
+            <option value="">All Employees</option>
+          </select>
+          <select id="abs-status-filter" onchange="rAbsences()" style="padding:6px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <button class="btn btn-primary" onclick="openNewAbsence()">+ Request Absence</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="totbar" style="margin-bottom:16px;">
+        <div class="tot-item"><label>Total Requests</label><span id="abs-count" style="color:var(--accent);">0</span></div>
+        <div class="tot-item"><label>Pending</label><span id="abs-pending" style="color:var(--yellow);">0</span></div>
+        <div class="tot-item"><label>Approved Days</label><span id="abs-days-approved" style="color:var(--green);">0</span></div>
+        <div class="tot-item"><label>Vacation Days Used</label><span id="abs-vacation-used" style="color:var(--text);">0</span></div>
+      </div>
+
+      <!-- Holiday calendar strip -->
+      <div class="card" style="padding:14px 18px;margin-bottom:16px;">
+        <div style="font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Public Holidays <span style="font-size:10px;opacity:.6;">(Spain by default · editable)</span></div>
+        <div id="abs-holidays-list" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:10px;" onclick="openAddHoliday()">+ Add holiday</button>
+      </div>
+
+      <!-- Absences list -->
+      <div id="abs-list"></div>
+    </div>
+
+    <!-- ══ CLOCK IN/OUT OVERLAY ══ -->
+    <div class="overlay" id="ov-clockinout">
+      <div class="modal" style="width:min(440px,96vw);">
+        <div class="mhdr">
+          <div class="mtitle">Time Tracking</div>
+          <div class="mclose" onclick="closeOverlay('ov-clockinout')">✕</div>
+        </div>
+        <div class="mbody">
+          <div class="fg" style="margin-bottom:16px;">
+            <label>Employee</label>
+            <select id="tt-clock-emp" onchange="updateClockStatus()" style="width:100%;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:13px;">
+              <option value="">— Select Employee —</option>
+            </select>
+          </div>
+          <!-- Current status -->
+          <div id="tt-clock-status" style="text-align:center;padding:12px;background:var(--surface2);border-radius:10px;margin-bottom:16px;font-size:13px;color:var(--text3);">Select an employee to see status</div>
+          <!-- Live clock -->
+          <div style="text-align:center;margin-bottom:16px;">
+            <div id="tt-live-clock" style="font-family:'DM Serif Display',serif;font-size:36px;color:var(--text);letter-spacing:2px;">--:--:--</div>
+            <div style="font-size:12px;color:var(--text3);" id="tt-live-date">--</div>
+          </div>
+          <!-- Punch buttons -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+            <button class="tt-punch-btn tt-punch-in" id="tt-btn-in" onclick="doPunch('in')">▶ Clock In</button>
+            <button class="tt-punch-btn tt-punch-out" id="tt-btn-out" onclick="doPunch('out')">■ Clock Out</button>
+          </div>
+          <div class="fg">
+            <label>Notes (optional)</label>
+            <input type="text" id="tt-clock-notes" placeholder="Working from home, Meeting, etc.">
+          </div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-ghost" onclick="closeOverlay('ov-clockinout')">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MANUAL TIME ENTRY OVERLAY ══ -->
+    <div class="overlay" id="ov-manual-entry">
+      <div class="modal">
+        <div class="mhdr">
+          <div class="mtitle">Add Manual Time Entry</div>
+          <div class="mclose" onclick="closeOverlay('ov-manual-entry')">✕</div>
+        </div>
+        <div class="mbody">
+          <div class="fgrid">
+            <div class="fg"><label>Employee</label>
+              <select id="me-emp" style="width:100%;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:13px;"><option value="">— Select —</option></select>
+            </div>
+            <div class="fg"><label>Date</label><input type="date" id="me-date"></div>
+            <div class="fg"><label>Clock In</label><input type="time" id="me-in" step="60"></div>
+            <div class="fg"><label>Clock Out</label><input type="time" id="me-out" step="60"></div>
+            <div class="fg full"><label>Notes</label><input type="text" id="me-notes" placeholder="Reason for manual entry..."></div>
+          </div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-ghost" onclick="closeOverlay('ov-manual-entry')">Cancel</button>
+          <button class="btn btn-primary" onclick="saveManualEntry()">Save Entry</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ABSENCE REQUEST OVERLAY ══ -->
+    <div class="overlay" id="ov-absence">
+      <div class="modal">
+        <div class="mhdr">
+          <div class="mtitle" id="abs-modal-title">Request Absence</div>
+          <div class="mclose" onclick="closeOverlay('ov-absence')">✕</div>
+        </div>
+        <div class="mbody">
+          <div class="fgrid">
+            <div class="fg"><label>Employee *</label>
+              <select id="abs-emp" style="width:100%;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:13px;"><option value="">— Select —</option></select>
+            </div>
+            <div class="fg"><label>Type</label>
+              <select id="abs-type" style="width:100%;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:13px;">
+                <option value="vacation">🏖 Vacation / Annual Leave</option>
+                <option value="sick">🤒 Sick Leave</option>
+                <option value="personal">🏠 Personal Day</option>
+                <option value="maternity">👶 Maternity / Paternity</option>
+                <option value="other">📋 Other</option>
+              </select>
+            </div>
+            <div class="fg"><label>From Date *</label><input type="date" id="abs-from" oninput="calcAbsDays()"></div>
+            <div class="fg"><label>To Date *</label><input type="date" id="abs-to" oninput="calcAbsDays()"></div>
+            <div class="fg full">
+              <div style="padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;text-align:center;">
+                <span style="color:var(--text3);">Duration: </span><strong id="abs-duration" style="color:var(--accent);">— days</strong>
+              </div>
+            </div>
+            <div class="fg full"><label>Notes / Reason</label><input type="text" id="abs-notes" placeholder="Optional reason..."></div>
+          </div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-ghost" onclick="closeOverlay('ov-absence')">Cancel</button>
+          <button class="btn btn-primary" onclick="saveAbsence()">Submit Request</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADD HOLIDAY OVERLAY ══ -->
+    <div class="overlay" id="ov-add-holiday">
+      <div class="modal" style="width:min(400px,96vw);">
+        <div class="mhdr">
+          <div class="mtitle">Add Public Holiday</div>
+          <div class="mclose" onclick="closeOverlay('ov-add-holiday')">✕</div>
+        </div>
+        <div class="mbody">
+          <div class="fgrid">
+            <div class="fg full"><label>Holiday Name</label><input type="text" id="hol-name" placeholder="e.g. Christmas Day"></div>
+            <div class="fg"><label>Date</label><input type="date" id="hol-date"></div>
+            <div class="fg"><label>Recurring (every year)</label>
+              <select id="hol-recurring" style="width:100%;padding:8px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:13px;">
+                <option value="1">Yes</option><option value="0">No (this year only)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-ghost" onclick="closeOverlay('ov-add-holiday')">Cancel</button>
+          <button class="btn btn-primary" onclick="saveHoliday()">Add Holiday</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ EMPLOYEE OVERLAY ══ -->
+    <div class="overlay" id="ov-employee">
+      <div class="modal wide">
+        <div class="mhdr">
+          <div class="mtitle" id="emp-modal-title">New Employee</div>
+          <div class="mclose" onclick="closeOverlay('ov-employee')">✕</div>
+        </div>
+        <div class="mbody" style="max-height:70vh;overflow-y:auto;">
+          <!-- Tabs -->
+          <div style="display:flex;gap:0;background:var(--surface2);border-radius:8px;padding:3px;margin-bottom:20px;width:fit-content;">
+            <div class="emp-tab active" id="etab-personal" onclick="switchEmpTab('personal')" style="padding:6px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;background:var(--surface3);color:var(--text);">Personal</div>
+            <div class="emp-tab" id="etab-contract" onclick="switchEmpTab('contract')" style="padding:6px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);">Contract</div>
+            <div class="emp-tab" id="etab-banking" onclick="switchEmpTab('banking')" style="padding:6px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);">Banking</div>
+          </div>
+
+          <!-- Personal tab -->
+          <div id="epanel-personal">
+            <div class="fgrid">
+              <div class="fg"><label>First Name *</label><input type="text" id="emp-fname" placeholder="John"></div>
+              <div class="fg"><label>Last Name *</label><input type="text" id="emp-lname" placeholder="Smith"></div>
+              <div class="fg"><label>Employee ID</label><input type="text" id="emp-empid" placeholder="EMP-001"></div>
+              <div class="fg"><label>Gender</label>
+                <select id="emp-gender"><option value="">— Select —</option><option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select>
+              </div>
+              <div class="fg"><label>Nationality</label><input type="text" id="emp-nationality" placeholder="Spanish"></div>
+              <div class="fg"><label>Phone</label><input type="text" id="emp-phone" placeholder="+34 600 000 000"></div>
+              <div class="fg full"><label>Email</label><input type="email" id="emp-email" placeholder="john@company.com"></div>
+              <div class="fg full"><label>Address / Direction</label><input type="text" id="emp-address" placeholder="Calle Mayor 1, 28001 Madrid"></div>
+            </div>
+          </div>
+
+          <!-- Contract tab -->
+          <div id="epanel-contract" style="display:none;">
+            <div class="fgrid">
+              <div class="fg"><label>Position / Role</label><input type="text" id="emp-position" placeholder="Software Engineer"></div>
+              <div class="fg"><label>Department</label>
+                <select id="emp-dept">
+                  <option value="">— Select —</option>
+                  <option>HR</option><option>Finance</option><option>Marketing</option>
+                  <option>Production</option><option>Management</option><option>Administration</option>
+                  <option>Sales</option><option>IT</option><option>Legal</option><option>Operations</option>
+                </select>
+              </div>
+              <div class="fg"><label>Work Center / Location</label><input type="text" id="emp-workcenter" placeholder="Madrid HQ"></div>
+              <div class="fg"><label>NAE / Social Security #</label><input type="text" id="emp-nae" placeholder="12345678901" style="font-family:monospace;"></div>
+              <div class="fg"><label>Contract Type</label>
+                <select id="emp-contracttype">
+                  <option value="">— Select —</option>
+                  <option>Indefinido</option><option>Temporal</option><option>Prácticas</option>
+                  <option>Part-time</option><option>Freelance</option><option>Interino</option>
+                  <option>Full-time</option><option>Fixed-term</option>
+                </select>
+              </div>
+              <div class="fg"><label>Start Date</label><input type="date" id="emp-startdate"></div>
+              <div class="fg"><label>End Date (if temporal)</label><input type="date" id="emp-enddate"></div>
+              <div class="fg"><label>Gross Annual Salary (€)</label><input type="number" id="emp-salary" placeholder="30000" step="100"></div>
+              <div class="fg"><label>Status</label>
+                <select id="emp-status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="leave">On Leave</option></select>
+              </div>
+              <div class="fg"><label>Reports To (Manager)</label>
+                <select id="emp-manager" style="width:100%;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:13px;">
+                  <option value="">— None (top level) —</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Banking tab -->
+          <div id="epanel-banking" style="display:none;">
+            <div class="fgrid">
+              <div class="fg full"><label>Bank Account (IBAN)</label><input type="text" id="emp-iban" placeholder="ES90 0049 1883 3226 1037 7710" style="font-family:monospace;"></div>
+              <div class="fg"><label>Bank Name</label><input type="text" id="emp-bankname" placeholder="Banco Santander"></div>
+              <div class="fg"><label>BIC / SWIFT</label><input type="text" id="emp-bic" placeholder="BSCHESMM" style="font-family:monospace;"></div>
+              <div class="fg full"><label>Notes</label><textarea id="emp-notes" rows="3" placeholder="Additional notes..." style="width:100%;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:13px;resize:vertical;"></textarea></div>
+            </div>
+          </div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-danger btn-sm" id="emp-del-btn" onclick="deleteEmployee()" style="display:none;margin-right:auto;">Delete</button>
+          <button class="btn btn-ghost" onclick="closeOverlay('ov-employee')">Cancel</button>
+          <button class="btn btn-primary" onclick="saveEmployee()">Save Employee</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAYROLL OVERLAY ══ -->
+    <div class="overlay" id="ov-payroll">
+      <div class="modal wide">
+        <div class="mhdr">
+          <div class="mtitle" id="pr-modal-title">New Payroll</div>
+          <div class="mclose" onclick="closeOverlay('ov-payroll')">✕</div>
+        </div>
+        <div class="mbody" style="max-height:75vh;overflow-y:auto;">
+          <div class="fgrid" style="margin-bottom:16px;">
+            <div class="fg"><label>Employee *</label>
+              <select id="pr-employee" onchange="prefillPayrollSalary()">
+                <option value="">— Select Employee —</option>
+              </select>
+            </div>
+            <div class="fg"><label>Period (Month/Year)</label>
+              <input type="month" id="pr-period">
+            </div>
+            <div class="fg"><label>Payment Date</label>
+              <input type="date" id="pr-paydate">
+            </div>
+            <div class="fg"><label>Payroll Type</label>
+              <select id="pr-type">
+                <option value="monthly">Monthly</option>
+                <option value="extra">Extra (Paga Extra)</option>
+                <option value="bonus">Bonus</option>
+                <option value="termination">Termination</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Payroll components table -->
+          <div style="font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Salary Components</div>
+          <div class="card" style="padding:0;overflow:hidden;margin-bottom:8px;">
+            <table style="width:100%;border-collapse:collapse;">
+              <thead><tr style="background:var(--surface2);">
+                <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;">Concept</th>
+                <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;width:200px;">Account</th>
+                <th style="padding:8px 12px;text-align:right;font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;width:140px;">Amount (€)</th>
+                <th style="width:28px;"></th>
+              </tr></thead>
+              <tbody>
+                <!-- Row 1: Gross Salary Dr 640/6000 -->
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:8px 12px;">
+                    <div style="font-size:13px;font-weight:600;color:var(--text);">Gross Salary</div>
+                    <div style="font-size:10px;color:var(--green);font-family:monospace;">Dr · +Debe</div>
+                  </td>
+                  <td style="padding:6px 12px;">
+                    <select id="pr-acc-salary" onchange="calcPayroll()" style="width:100%;padding:4px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;font-family:monospace;"></select>
+                  </td>
+                  <td style="padding:8px 12px;">
+                    <input type="number" id="pr-gross" placeholder="0.00" step="0.01" oninput="calcPayroll()" style="width:100%;text-align:right;padding:4px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;">
+                  </td>
+                  <td></td>
+                </tr>
+                <!-- Row 2: SS Company Cost Dr 642/6100 -->
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:8px 12px;">
+                    <div style="font-size:13px;font-weight:600;color:var(--text);">SS Company Cost</div>
+                    <div style="font-size:10px;color:var(--green);font-family:monospace;">Dr · +Debe</div>
+                  </td>
+                  <td style="padding:6px 12px;">
+                    <select id="pr-acc-ss-co" onchange="calcPayroll()" style="width:100%;padding:4px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;font-family:monospace;"></select>
+                  </td>
+                  <td style="padding:8px 12px;">
+                    <input type="number" id="pr-ss-co" placeholder="0.00" step="0.01" oninput="calcPayroll()" style="width:100%;text-align:right;padding:4px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;">
+                  </td>
+                  <td></td>
+                </tr>
+                <!-- Row 3: Total SS Payable Cr 476/2200 -->
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:8px 12px;">
+                    <div style="font-size:13px;font-weight:600;color:var(--text);">Total SS Payable</div>
+                    <div style="font-size:10px;color:var(--red);font-family:monospace;">Cr · −Haber</div>
+                  </td>
+                  <td style="padding:6px 12px;">
+                    <select id="pr-acc-ss-total" onchange="calcPayroll()" style="width:100%;padding:4px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;font-family:monospace;"></select>
+                  </td>
+                  <td style="padding:8px 12px;">
+                    <input type="number" id="pr-ss-total-input" placeholder="0.00" step="0.01" oninput="calcPayroll()" style="width:100%;text-align:right;padding:4px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;">
+                  </td>
+                  <td></td>
+                </tr>
+                <!-- Row 4: IRPF Cr 4751/2210 -->
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:8px 12px;">
+                    <div style="font-size:13px;font-weight:600;color:var(--text);">IRPF Withholding</div>
+                    <div style="font-size:10px;color:var(--red);font-family:monospace;">Cr · −Haber</div>
+                  </td>
+                  <td style="padding:6px 12px;">
+                    <select id="pr-acc-irpf" onchange="calcPayroll()" style="width:100%;padding:4px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;font-family:monospace;"></select>
+                  </td>
+                  <td style="padding:8px 12px;">
+                    <input type="number" id="pr-irpf" placeholder="0.00" step="0.01" oninput="calcPayroll()" style="width:100%;text-align:right;padding:4px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;">
+                  </td>
+                  <td></td>
+                </tr>
+                <!-- Extra dynamic rows -->
+                <tbody id="pr-extra-rows"></tbody>
+                <!-- Net Salary result -->
+                <tr style="background:rgba(200,255,0,.04);border-top:2px solid rgba(200,255,0,.3);">
+                  <td style="padding:10px 12px;">
+                    <div style="font-size:13px;font-weight:700;color:var(--text);">Net Salary (to pay)</div>
+                    <div style="font-size:10px;color:var(--text3);font-family:monospace;">= Gross + SS Co − Total SS − IRPF</div>
+                  </td>
+                  <td style="padding:6px 12px;">
+                    <select id="pr-acc-net" style="width:100%;padding:4px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;font-family:monospace;"></select>
+                  </td>
+                  <td style="padding:10px 12px;text-align:right;">
+                    <div id="pr-net-display" style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--accent);">€0.00</div>
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Add concept -->
+          <button class="btn btn-ghost btn-sm" onclick="addPayrollConcept()" style="font-size:12px;margin-bottom:16px;">+ Add concept</button>
+
+          <!-- Journal Entry Preview -->
+          <div style="font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Journal Entry Preview</div>
+          <div id="pr-je-preview" class="card" style="padding:12px 16px;background:var(--surface2);font-size:12px;"></div>
+
+          <div class="fg" style="margin-top:14px;">
+            <label>Notes</label>
+            <input type="text" id="pr-notes" placeholder="Optional notes for this payroll...">
+          </div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-ghost" onclick="closeOverlay('ov-payroll')">Cancel</button>
+          <button class="btn btn-primary" onclick="savePayroll()">💾 Save & Post to Journal</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ CFO MODULE ══ -->
-    <div class="page" id="page-cfo">
+    <div class="page" id="page-cfo" style="overflow-y:auto;max-height:calc(100vh - 60px);padding-right:4px;">
       <div class="sec-hdr">
         <div>
           <div class="sec-title" style="display:flex;align-items:center;gap:10px;">
@@ -8594,19 +10971,38 @@ function showToast(msg) {
       <!-- KPI Row -->
       <div class="cfo-grid" id="cfo-kpis"></div>
 
-      <!-- Revenue vs Net Result chart + Cohort table -->
+      <!-- Revenue vs Net Result chart + Ratios -->
       <div class="cfo-grid-3">
-        <!-- Left: Revenue vs Net chart -->
         <div class="cfo-panel">
           <div class="cfo-panel-title">📈 Revenue vs Net Result <span style="font-size:10px;font-weight:400;color:var(--text3);" id="cfo-chart-year"></span></div>
-          <div class="cfo-panel-sub">Monthly comparison Jan–Dec</div>
+          <div class="cfo-panel-sub">Monthly comparison Jan–Dec · Hover bars for details</div>
           <div class="cfo-chart-wrap" id="cfo-rev-chart"></div>
         </div>
-        <!-- Right: Financial Ratios -->
         <div class="cfo-panel">
           <div class="cfo-panel-title">⚖️ Financial Ratios</div>
           <div class="cfo-panel-sub">Calculated from latest financial statements</div>
           <div class="ratio-grid" id="cfo-ratios"></div>
+        </div>
+      </div>
+
+      <!-- Balance Sheet Patrimony Pie -->
+      <div class="cfo-grid-2" style="margin-bottom:20px;">
+        <div class="cfo-panel">
+          <div class="cfo-panel-title">🥧 Patrimonial Structure</div>
+          <div class="cfo-panel-sub">Assets, Liabilities & Equity — current breakdown</div>
+          <div id="cfo-pie-chart" style="display:flex;align-items:center;justify-content:center;gap:24px;padding:16px 0;"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div class="cfo-panel" style="flex:1;">
+            <div class="cfo-panel-title">💰 MRR Breakdown</div>
+            <div class="cfo-panel-sub">Monthly Recurring Revenue from active recurrences</div>
+            <div id="cfo-mrr-detail"></div>
+          </div>
+          <div class="cfo-panel" style="flex:1;">
+            <div class="cfo-panel-title">⏱ Cash Runway</div>
+            <div class="cfo-panel-sub">Based on current cash and monthly burn rate</div>
+            <div id="cfo-runway"></div>
+          </div>
         </div>
       </div>
 
@@ -8623,18 +11019,10 @@ function showToast(msg) {
             <tbody id="cfo-cohort-body"></tbody>
           </table>
         </div>
-        <!-- MRR + Cash Runway -->
-        <div style="display:flex;flex-direction:column;gap:20px;">
-          <div class="cfo-panel" style="flex:1;">
-            <div class="cfo-panel-title">💰 MRR Breakdown</div>
-            <div class="cfo-panel-sub">Monthly Recurring Revenue from active recurrences</div>
-            <div id="cfo-mrr-detail"></div>
-          </div>
-          <div class="cfo-panel" style="flex:1;">
-            <div class="cfo-panel-title">⏱ Cash Runway</div>
-            <div class="cfo-panel-sub">Based on current cash and monthly burn rate</div>
-            <div id="cfo-runway"></div>
-          </div>
+        <div class="cfo-panel">
+          <div class="cfo-panel-title">📊 Cash Flow Waterfall</div>
+          <div class="cfo-panel-sub">Operating · Investing · Financing</div>
+          <div id="cfo-waterfall"></div>
         </div>
       </div>
     </div>
@@ -8928,16 +11316,11 @@ async function loadFromSupabase() {
   if (!error && data && data.data && data.data.ids) {
     DB = data.data;
     refreshCOA();
-    if(!DB.wires)        DB.wires        = [];
-    if(!DB.ids.wt)       DB.ids.wt       = 1;
-    if(!DB.contacts)     DB.contacts     = [];
-    if(!DB.recurring)    DB.recurring    = [];
-    if(!DB.assets)       DB.assets       = [];
-    if(!DB.deprPlans)    DB.deprPlans    = [];
-    if(!DB.bankAccounts)  DB.bankAccounts  = [];
-    if(!DB.bankMovements) DB.bankMovements = [];
-    if(!DB.ids.ba)       DB.ids.ba       = 1;
-    if(!DB.ids.bm)       DB.ids.bm       = 1;
+    // Ensure all arrays exist
+    var arrFields = ['wires','contacts','recurring','assets','deprPlans','bankAccounts','bankMovements','employees','payrolls'];
+    arrFields.forEach(function(f){ if(!DB[f]) DB[f]=[]; });
+    var idFields = {wt:1,ba:1,bm:1,em:1,pr:1};
+    Object.keys(idFields).forEach(function(k){ if(!DB.ids[k]) DB.ids[k]=idFields[k]; });
   }
   updateUserUI();
   renderAll();
@@ -8972,6 +11355,112 @@ async function signOut() {
 </script>
 </body>
 </html>"""
+
+
+
+import json as _json
+import os as _os
+import pathlib as _pathlib
+
+def get_data_file():
+    """Returns path to the persistent data file next to the executable."""
+    if getattr(sys, 'frozen', False):
+        # Running as compiled .exe
+        base = _pathlib.Path(sys.executable).parent
+    else:
+        # Running as .py script
+        base = _pathlib.Path(__file__).parent
+    return base / 'finledger_data.json'
+
+
+class Handler(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/load':
+            self._load_data()
+        else:
+            self._serve_app()
+
+    def do_POST(self):
+        if self.path == '/save':
+            self._save_data()
+        elif self.path == '/export':
+            self._export_file()
+        else:
+            self.send_response(404)
+            self.end_headers()
+
+    def _export_file(self):
+        import json as _json2
+        import pathlib as _pathlib2
+        import os as _os2
+        try:
+            length = int(self.headers.get('Content-Length', 0))
+            body   = self.rfile.read(length)
+            data   = _json2.loads(body)
+            fname  = data.get('filename', 'export.csv')
+            content= data.get('content', '')
+
+            # Save to Desktop
+            desktop = _pathlib2.Path.home() / 'Desktop' / fname
+            desktop.write_text(content, encoding='utf-8-sig')
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(_json2.dumps({'ok': True, 'path': str(desktop)}).encode())
+        except Exception as e:
+            self.send_response(500)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(_json2.dumps({'ok': False, 'error': str(e)}).encode())
+
+    def _serve_app(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html; charset=utf-8')
+        self.send_header('Cache-Control', 'no-cache')
+        self.end_headers()
+        self.wfile.write(HTML.encode('utf-8'))
+
+    def _load_data(self):
+        data_file = get_data_file()
+        if data_file.exists():
+            try:
+                data = data_file.read_text(encoding='utf-8')
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(data.encode('utf-8'))
+                return
+            except Exception:
+                pass
+        # No data file yet
+        self.send_response(204)
+        self.end_headers()
+
+    def _save_data(self):
+        try:
+            length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(length)
+            data = _json.loads(body)
+            data_file = get_data_file()
+            data_file.write_text(
+                _json.dumps(data, ensure_ascii=False, indent=2),
+                encoding='utf-8'
+            )
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b'ok')
+        except Exception as e:
+            self.send_response(500)
+            self.end_headers()
+            self.wfile.write(str(e).encode())
+
+    def log_message(self, format, *args):
+        pass  # Silencioso
+
+
+def start_server(port):
+    """Arranca el servidor HTTP en un hilo secundario."""
 
 import json as _json2
 
