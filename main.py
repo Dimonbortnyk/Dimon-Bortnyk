@@ -11585,7 +11585,7 @@ LANDING = r'''<!DOCTYPE html>
           <li>Dark/Light UI + i18n</li>
           <li>Basic Treasury management</li>
         </ul>
-        <a href="/app" class="plan-btn" style="background:#1a2a4a;color:#7eb8d4;border-color:#1a2a4a;">Community &amp; awareness</a>
+        <a href="/" class="plan-btn" style="background:#1a2a4a;color:#7eb8d4;border-color:#1a2a4a;">Community &amp; awareness</a>
       </div>
 
       <div class="plan-card featured">
@@ -11737,9 +11737,9 @@ LANDING = r'''<!DOCTYPE html>
 class H(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         path = urlparse(self.path).path.rstrip('/')
-        if   path == '/health': self.send_response(200);self.send_header('Content-Type','application/json');self._c();self.end_headers();self.wfile.write(b'{"status":"ok"}')
-        elif path == '/app':    self._html(HTML,    'no-cache')
-        else:                   self._html(LANDING, 'public, max-age=3600')
+        if   path == '/health':  self._json(b'{"status":"ok"}')
+        elif path == '/landing': self._html(LANDING, 'public, max-age=3600')
+        else:                    self._html(HTML,    'no-cache')  # / and /app -> app
     def do_POST(self):
         if self.path=='/export':self._e()
         else:self.send_response(200);self._c();self.end_headers();self.wfile.write(b'ok')
@@ -11748,6 +11748,9 @@ class H(http.server.BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Origin','*')
         self.send_header('Access-Control-Allow-Methods','GET,POST,OPTIONS')
         self.send_header('Access-Control-Allow-Headers','Content-Type')
+    def _json(self,b):
+        self.send_response(200);self.send_header('Content-Type','application/json')
+        self._c();self.end_headers();self.wfile.write(b)
     def _html(self,body,cache):
         self.send_response(200);self.send_header('Content-type','text/html; charset=utf-8')
         self.send_header('Cache-Control',cache);self._c();self.end_headers();self.wfile.write(body.encode('utf-8'))
