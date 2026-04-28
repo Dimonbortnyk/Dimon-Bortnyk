@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""FinLedger — Railway + Supabase auth deployment."""
-import http.server, socketserver, os
-import json as _json
+"""Leadger — Railway + Supabase deployment."""
+import http.server,socketserver,os
+PORT=int(os.environ.get("PORT",8765))
 
-PORT = int(os.environ.get("PORT", 8765))
-
-HTML = r"""<!DOCTYPE html>
+HTML = r"""
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FinLedger</title>
+<title>Leadger</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -633,7 +632,7 @@ textarea{resize:vertical;min-height:72px;}
 <!-- ═══════════════════════════════════════════ SIDEBAR ═══ -->
 <nav class="sidebar">
   <div class="logo-area">
-    <div class="logo-title">FinLedger</div>
+    <div class="logo-title">Leadger</div>
     <div class="logo-sub">Accounting System</div>
   </div>
 
@@ -669,6 +668,7 @@ textarea{resize:vertical;min-height:72px;}
     </div>
 
     <div class="nav-sec">Reports</div>
+    <div class="nav-item" onclick="nav('taxes')"><span class="nav-icon">📊</span>Taxes</div>
     <div class="nav-item" onclick="nav('pl')"><span class="nav-icon">◈</span>P&amp;L Statement</div>
     <div class="nav-item" onclick="nav('bs')"><span class="nav-icon">⊞</span>Balance Sheet</div>
     <div class="nav-item" onclick="nav('cf')"><span class="nav-icon">⟳</span>Cash Flow</div>
@@ -692,7 +692,7 @@ textarea{resize:vertical;min-height:72px;}
       <div class="user-card" onclick="toggleUserDropdown(event)" title="Account options">
         <div class="user-avatar" id="sideAvatarBg"><span id="sideAvatarInitials">PK</span></div>
         <div class="user-info">
-          <div class="user-name" id="sideUserName">Previt Ketsia</div>
+          <div class="user-name" id="sideUserName">My Name</div>
           <div class="user-role" id="sideUserRole">Chief Accountant</div>
           <div class="user-co" id="sideUserCo">My Company Ltd.</div>
         </div>
@@ -711,7 +711,7 @@ textarea{resize:vertical;min-height:72px;}
       <div class="breadcrumb" id="pgCrumb">FinLedger / Overview</div>
     </div>
     <div class="topbar-right">
-      <div class="greeting">Welcome back, <strong id="topGreeting">Previt Ketsia</strong></div>
+      <div class="greeting">Welcome back, <strong id="topGreeting">User</strong></div>
       <div class="server-badge">● localhost:8765</div>
       <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light mode">
         <div class="theme-toggle-track" id="themeTrack"><div class="theme-toggle-thumb"></div></div>
@@ -1221,8 +1221,27 @@ textarea{resize:vertical;min-height:72px;}
         </div>
         <div class="fg full"><label>Description</label><input type="text" id="s-desc" placeholder="e.g. Consulting services Q1"></div>
         <div class="fg"><label>Net Amount (€)</label><input type="number" id="s-net" placeholder="0.00" step="0.01" oninput="calcS()"></div>
-        <div class="fg"><label>VAT Rate</label><select id="s-vat" onchange="calcS()"><option value="0">0%</option><option value="4">4%</option><option value="10">10%</option><option value="21" selected>21%</option></select></div>
+        <div class="fg"><label>IVA</label>
+          <select id="s-vat" onchange="calcS()">
+            <option value="0">Sin IVA (0%)</option>
+            <option value="4">IVA 4%</option>
+            <option value="10">IVA 10%</option>
+            <option value="21" selected>IVA 21%</option>
+            <option value="exempt">Exento</option>
+            <option value="isp">Inversión Sujeto Pasivo</option>
+          </select>
+        </div>
+        <div class="fg"><label>Retención</label>
+          <select id="s-ret" onchange="calcS()">
+            <option value="0">Sin retención</option>
+            <option value="7">Ret. 7%</option>
+            <option value="15">Ret. 15%</option>
+            <option value="19">Ret. 19% (Capital mobiliario)</option>
+            <option value="19g">Ret. 19% (Garantía obra)</option>
+          </select>
+        </div>
         <div class="fg"><label>VAT Amount</label><input type="text" id="s-va" readonly style="background:var(--surface3);"></div>
+        <div class="fg"><label>Retención Amount</label><input type="text" id="s-ret-amt" readonly style="background:var(--surface3);color:var(--red);"></div>
         <div class="fg"><label>Total (€)</label><input type="text" id="s-tot2" readonly style="background:var(--surface3);color:var(--accent);font-family:monospace;font-weight:600;"></div>
         <div class="fg"><label>Status</label><select id="s-stat"><option value="pending">Pending</option><option value="paid">Paid</option><option value="partial">Partial</option></select></div>
         <div class="fg"><label>Payment Method</label><select id="s-meth"><option value="bank">Bank Transfer</option><option value="cash">Cash</option><option value="card">Card</option><option value="other">Other</option></select></div>
@@ -1351,6 +1370,7 @@ textarea{resize:vertical;min-height:72px;}
       <div class="set-tabs">
         <div class="set-tab active" id="stab-user" onclick="setTab('user')">👤 User Profile</div>
         <div class="set-tab" id="stab-company" onclick="setTab('company')">🏢 Company</div>
+        <div class="set-tab" id="stab-invoicing" onclick="setTab('invoicing')">🧾 Invoicing</div>
         <div class="set-tab" id="stab-prefs" onclick="setTab('prefs')">🎨 Preferences</div>
         <div class="set-tab" id="stab-data" onclick="setTab('data')">🗃 Data</div>
       </div>
@@ -1359,17 +1379,17 @@ textarea{resize:vertical;min-height:72px;}
       <div class="set-panel active" id="spanel-user">
         <div class="set-section-label">Profile Photo &amp; Name</div>
         <div class="avatar-row">
-          <div class="avatar-big" id="previewAvatar" style="background:#c8ff00;">PK</div>
+          <div class="avatar-big" id="previewAvatar" style="background:#c8ff00;">?</div>
           <div>
             <div style="font-size:12px;color:var(--text3);margin-bottom:8px;font-family:monospace;text-transform:uppercase;letter-spacing:1px;">Avatar Color</div>
             <div class="color-swatches" id="colorSwatches"></div>
           </div>
         </div>
         <div class="fgrid" style="margin-top:18px;">
-          <div class="fg"><label>First Name</label><input type="text" id="u-fname" placeholder="Previt" oninput="livePreviewUser()"></div>
-          <div class="fg"><label>Last Name</label><input type="text" id="u-lname" placeholder="Ketsia" oninput="livePreviewUser()"></div>
+          <div class="fg"><label>First Name</label><input type="text" id="u-fname" placeholder="First name" oninput="livePreviewUser()"></div>
+          <div class="fg"><label>Last Name</label><input type="text" id="u-lname" placeholder="Last name" oninput="livePreviewUser()"></div>
           <div class="fg full"><label>Job Title / Role</label><input type="text" id="u-role" placeholder="e.g. Chief Accountant, CFO, Finance Manager"></div>
-          <div class="fg full"><label>Email Address</label><input type="email" id="u-email" placeholder="previt.ketsia@company.com"></div>
+          <div class="fg full"><label>Email Address</label><input type="email" id="u-email" placeholder="email@company.com"></div>
           <div class="fg full"><label>Phone (optional)</label><input type="text" id="u-phone" placeholder="+1 234 567 890"></div>
         </div>
       </div>
@@ -1407,7 +1427,119 @@ textarea{resize:vertical;min-height:72px;}
         </div>
       </div>
 
-      <!-- ── PREFERENCES PANEL ── -->
+      <!-- ── INVOICING PANEL ── -->
+      <div class="set-panel" id="spanel-invoicing">
+
+        <!-- Sub-nav tabs -->
+        <div style="display:flex;gap:0;background:var(--surface2);border-radius:8px;padding:3px;margin-bottom:20px;width:fit-content;">
+          <div id="inv-sub-prefs" onclick="setInvSubTab('prefs')" style="padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;background:var(--surface3);color:var(--text);">📋 Preferences</div>
+          <div id="inv-sub-templates" onclick="setInvSubTab('templates')" style="padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);">🎨 Templates</div>
+          <div id="inv-sub-payments" onclick="setInvSubTab('payments')" style="padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);">💳 Payment Methods</div>
+          <div id="inv-sub-taxes" onclick="setInvSubTab('taxes')" style="padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);">📊 Taxes</div>
+        </div>
+
+        <!-- Preferences sub-panel -->
+        <div id="inv-panel-prefs">
+          <div class="set-section-label">Sales &amp; Expenses Defaults</div>
+          <div class="fgrid">
+            <div class="fg">
+              <label>Default Sales Account</label>
+              <select id="inv-sales-acc"></select>
+            </div>
+            <div class="fg">
+              <label>Default Expense Account</label>
+              <select id="inv-exp-acc"></select>
+            </div>
+            <div class="fg">
+              <label>Default Sales VAT (%)</label>
+              <select id="inv-sales-vat">
+                <option value="0">0%</option><option value="4">4%</option>
+                <option value="10">10%</option><option value="21" selected>21%</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Default Purchase VAT (%)</label>
+              <select id="inv-purch-vat">
+                <option value="0">0%</option><option value="4">4%</option>
+                <option value="10">10%</option><option value="21" selected>21%</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Default Due Days</label>
+              <select id="inv-due-days">
+                <option value="0">Immediate</option><option value="15">15 days</option>
+                <option value="30" selected>30 days</option><option value="45">45 days</option>
+                <option value="60">60 days</option><option value="90">90 days</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Default Payment Method</label>
+              <select id="inv-def-payment">
+                <option value="bank">Bank Transfer</option>
+                <option value="cash">Cash</option>
+                <option value="card">Card</option>
+                <option value="sepa">SEPA Direct Debit</option>
+              </select>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="set-section-label">📋 Invoice Numbering Series</div>
+          <div style="font-size:12px;color:var(--text3);margin-bottom:12px;">
+            Format tokens: <code style="background:var(--surface3);padding:2px 6px;border-radius:4px;">[YY]</code> = 2-digit year &nbsp;
+            <code style="background:var(--surface3);padding:2px 6px;border-radius:4px;">[YYYY]</code> = 4-digit year &nbsp;
+            <code style="background:var(--surface3);padding:2px 6px;border-radius:4px;">%</code> = sequential digit
+          </div>
+          <div id="series-list-inv"></div>
+          <button class="btn btn-ghost btn-sm" onclick="openSeriesModal()" style="margin-top:8px;">+ Add Series</button>
+          <div class="divider"></div>
+          <div class="set-section-label">Invoice Footer / Notes</div>
+          <div class="fg full">
+            <textarea id="inv-notes" placeholder="e.g. Payment due within 30 days. Thank you for your business." style="width:100%;min-height:80px;"></textarea>
+          </div>
+        </div>
+
+        <!-- Templates sub-panel -->
+        <div id="inv-panel-templates" style="display:none;">
+          <div class="set-section-label">Document Templates</div>
+          <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Select or create templates for your invoices and other documents.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;">
+            <!-- Default template card -->
+            <div style="border:2px solid var(--accent);border-radius:12px;overflow:hidden;cursor:pointer;">
+              <div style="background:white;padding:16px;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+                <div style="font-size:28px;">🧾</div>
+                <div style="font-size:11px;color:#333;text-align:center;font-family:monospace;">INVOICE TEMPLATE</div>
+                <div style="font-size:9px;color:#666;border:1px solid #eee;padding:4px 8px;border-radius:4px;width:90%;text-align:center;">Default Layout</div>
+              </div>
+              <div style="padding:10px 12px;background:var(--surface2);">
+                <div style="font-size:12px;font-weight:700;color:var(--text);">Standard Invoice</div>
+                <div style="font-size:10px;color:var(--accent);font-family:monospace;">✓ ACTIVE</div>
+              </div>
+            </div>
+            <!-- New template card -->
+            <div onclick="showToast('Template creator coming soon')" style="border:2px dashed var(--border);border-radius:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:190px;gap:8px;transition:all .15s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="font-size:28px;color:var(--text3);">+</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text3);">New template</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Methods sub-panel -->
+        <div id="inv-panel-payments" style="display:none;">
+          <div class="set-section-label">Payment Methods</div>
+          <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Configure payment methods that will appear on your invoices.</p>
+          <div id="inv-payment-methods-list"></div>
+          <button class="btn btn-ghost btn-sm" onclick="openAddPaymentMethod()" style="margin-top:12px;">+ Add payment method</button>
+        </div>
+
+        <!-- Taxes sub-panel -->
+        <div id="inv-panel-taxes" style="display:none;">
+          <div class="set-section-label">Tax Configuration</div>
+          <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Configure VAT rates and withholding taxes. These are applied when creating invoices.</p>
+          <div id="inv-taxes-list"></div>
+          <button class="btn btn-ghost btn-sm" onclick="openAddTax()" style="margin-top:12px;">+ Add tax</button>
+        </div>
+
+      </div>
       <div class="set-panel" id="spanel-prefs">
         <div class="set-section-label">Display &amp; Interface</div>
         <div class="fgrid">
@@ -1894,7 +2026,7 @@ function updateUserUI(){
   var greetEl=document.getElementById('topGreeting');
   if(greetEl) greetEl.textContent=(DB.user.fname||fn);
   // Page title
-  document.title='FinLedger — '+fn;
+  document.title='Leadger — '+fn;
 }
 
 // ── COLOUR SWATCHES ────────────────────────────────────────────────────────
@@ -1937,7 +2069,7 @@ function livePreviewUser(){
 }
 
 // ── NAVIGATION ─────────────────────────────────────────────────────────────
-var titles={dashboard:'Dashboard',contacts:'Contacts',sales:'Sales Invoices',purchases:'Purchase Invoices',collections:'Collections',payments:'Payments',journal:'Journal Entries',pl:'P&L Statement',bs:'Balance Sheet',cf:'Cash Flow Statement', cfo:'CFO Intelligence', tesoreria:'Tesorería', bankaccounts:'Bank Accounts', badetail:'Account Detail', employees:'Employees', payrolls:'Payrolls', orgchart:'Organisation Chart', timetracking:'Time Tracking', absences:'Absences & Holidays'};
+var titles={dashboard:'Dashboard',contacts:'Contacts',sales:'Sales Invoices',purchases:'Purchase Invoices',collections:'Collections',payments:'Payments',journal:'Journal Entries',pl:'P&L Statement',bs:'Balance Sheet',cf:'Cash Flow Statement', cfo:'CFO Intelligence', tesoreria:'Tesorería', bankaccounts:'Bank Accounts', badetail:'Account Detail', employees:'Employees', payrolls:'Payrolls', orgchart:'Organisation Chart', timetracking:'Time Tracking', absences:'Absences & Holidays', taxes:'Taxes'};
 var crumbs={dashboard:'FinLedger / Overview',contacts:'FinLedger / Operations / Contacts',sales:'FinLedger / Operations / Sales',purchases:'FinLedger / Operations / Purchases',collections:'FinLedger / Tesorería / Collections',payments:'FinLedger / Tesorería / Payments',journal:'FinLedger / Operations / Journal',pl:'FinLedger / Reports / P&L',bs:'FinLedger / Reports / Balance Sheet',cf:'FinLedger / Reports / Cash Flow',
     cfo:'FinLedger / CFO Module', tesoreria:'FinLedger / Tesorería', bankaccounts:'FinLedger / Tesorería / Bank Accounts', badetail:'FinLedger / Tesorería / Bank Accounts / Detail',
     employees:'FinLedger / HR / Employees', payrolls:'FinLedger / HR / Payrolls', orgchart:'FinLedger / HR / Organisation Chart',
@@ -2059,13 +2191,37 @@ function clearAll(){
 }
 
 // ── CALC HELPERS ───────────────────────────────────────────────────────────
-function calcS(){var n=parseFloat(document.getElementById('s-net').value)||0,v=parseFloat(document.getElementById('s-vat').value)||0,va=n*v/100;document.getElementById('s-va').value=va.toFixed(2);document.getElementById('s-tot2').value=(n+va).toFixed(2);}
+function calcS(){
+  var n   = parseFloat(document.getElementById('s-net').value)||0;
+  var vSel= document.getElementById('s-vat');
+  var vVal= vSel ? vSel.value : '21';
+  var v   = (vVal==='exempt'||vVal==='isp') ? 0 : (parseFloat(vVal)||0);
+  var va  = n * v / 100;
+  // Retención
+  var rSel= document.getElementById('s-ret');
+  var rVal= rSel ? rSel.value : '0';
+  var rPct= rVal.endsWith('g') ? parseFloat(rVal)||0 : (parseFloat(rVal)||0);
+  var ra  = n * rPct / 100;
+  var tot = n + va - ra;
+  var vaEl=document.getElementById('s-va'); if(vaEl) vaEl.value=va.toFixed(2);
+  var raEl=document.getElementById('s-ret-amt'); if(raEl){ raEl.value=ra>0?('-'+ra.toFixed(2)):'0.00'; raEl.style.color=ra>0?'var(--red)':'var(--text3)'; }
+  var tEl =document.getElementById('s-tot2'); if(tEl) tEl.value=tot.toFixed(2);
+}
 function calcP(){var n=parseFloat(document.getElementById('p-net').value)||0,v=parseFloat(document.getElementById('p-vat').value)||0,va=n*v/100;document.getElementById('p-va').value=va.toFixed(2);document.getElementById('p-tot2').value=(n+va).toFixed(2);}
 
 // ── SAVE OPERATIONS ────────────────────────────────────────────────────────
 function saveSale(){
   var net=parseFloat(document.getElementById('s-net').value)||0;if(!net){alert('Enter net amount.');return;}
-  var vat=parseFloat(document.getElementById('s-vat').value)||0,va=net*vat/100,stat=document.getElementById('s-stat').value,meth=document.getElementById('s-meth').value,dt=document.getElementById('s-date').value;
+  var vSel=document.getElementById('s-vat');
+  var vVal=vSel?vSel.value:'21';
+  var vat=(vVal==='exempt'||vVal==='isp')?0:(parseFloat(vVal)||0);
+  var va=net*vat/100;
+  var rSel=document.getElementById('s-ret');
+  var rVal=rSel?rSel.value:'0';
+  var retRate=parseFloat(rVal)||0;
+  var ra=net*retRate/100;
+  var total=net+va-ra;
+  var stat=document.getElementById('s-stat').value,meth=document.getElementById('s-meth').value,dt=document.getElementById('s-date').value;
   // Use series numbering if available, fallback to legacy prefix
   var _manualNum = document.getElementById('s-num').value;
   var num;
@@ -2081,7 +2237,7 @@ function saveSale(){
     }
   }
   var cust=document.getElementById('s-cust').value||'Unknown',desc=document.getElementById('s-desc').value;
-  var rec={id:DB.ids.s++,date:dt,num:num,customer:cust,desc:desc,vatRate:vat,net:net,vatAmt:va,total:net+va,status:stat,method:meth};
+  var rec={id:DB.ids.s++,date:dt,num:num,customer:cust,desc:desc,vatRate:vat,net:net,vatAmt:va,retRate:retRate,retAmt:ra,total:total,status:stat,method:meth,vatType:vVal};
   DB.sales.push(rec);
   // Auto JE using active plan accounts
   var _sp = getActivePlan();
@@ -2090,14 +2246,21 @@ function saveSale(){
     {account:_sp.revenue, debit:0,         credit:net}
   ];
   if(va > 0) saleLines.push({account:_sp.vatIn, debit:0, credit:va});
-  DB.je.push({id:DB.ids.j++,date:dt,desc:'Sale — '+cust+' / '+num,lines:saleLines,amount:rec.total,auto:true,sourceType:'sale',sourceId:rec.id});
-  if(stat==='paid'){
-    DB.coll.push({id:DB.ids.c++,date:dt,customer:cust,ref:num,method:meth,amount:rec.total,notes:'Auto from invoice'});
-    DB.je.push({id:DB.ids.j++,date:dt,desc:'Collection — '+cust+' / '+num,
-      lines:[{account:_sp.cash,debit:rec.total,credit:0},{account:_sp.ar,debit:0,credit:rec.total}],
-      amount:rec.total,auto:true,sourceType:'collection'});
+  // Retención: Dr AR (less cash), Cr 473 Hacienda Pública acreedora
+  var retAcc = getActivePlan().id==='pgc' ? '473' : '2210';
+  if(ra > 0) saleLines.push({account:retAcc, debit:ra, credit:0});
+  // Adjust AR for retención (net collectible = total - retención already deducted)
+  if(ra > 0) {
+    saleLines[0].debit = total; // AR = net + vat - ret
   }
-  sv();closeOverlay('ov-sale');['s-num','s-cust','s-desc','s-net','s-va','s-tot2'].forEach(function(id){document.getElementById(id).value='';});renderAll();
+  DB.je.push({id:DB.ids.j++,date:dt,desc:'Sale — '+cust+' / '+num,lines:saleLines,amount:total,auto:true,sourceType:'sale',sourceId:rec.id});
+  if(stat==='paid'){
+    DB.coll.push({id:DB.ids.c++,date:dt,customer:cust,ref:num,method:meth,amount:total,notes:'Auto from invoice'});
+    DB.je.push({id:DB.ids.j++,date:dt,desc:'Collection — '+cust+' / '+num,
+      lines:[{account:_sp.cash,debit:total,credit:0},{account:_sp.ar,debit:0,credit:total}],
+      amount:total,auto:true,sourceType:'collection'});
+  }
+  sv();closeOverlay('ov-sale');['s-num','s-cust','s-desc','s-net','s-va','s-ret-amt','s-tot2'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});renderAll();
 }
 function savePurch(){
   var net=parseFloat(document.getElementById('p-net').value)||0;if(!net){alert('Enter net amount.');return;}
@@ -9295,7 +9458,347 @@ function saveHoliday() {
   showToast('Holiday added: '+name);
 }
 
-function renderAll(){rDash();rContacts();rSales();rRecurring();rPurch();rColl();rPay();rJE();rPL();rBS();rCF();rCFO();rBankAccounts();rEmployees();rPayrolls();rTimeTracking();rAbsences();}
+// ══════════════════════════════════════════════════════════════════
+// TAXES MODULE
+// ══════════════════════════════════════════════════════════════════
+
+// Default tax catalog per plan
+function getDefaultTaxes() {
+  var plan = getActivePlan();
+  if (plan.id === 'pgc') {
+    return [
+      // IVA Repercutido (Sales)
+      {id:'iva21out', name:'IVA 21%', type:'iva_out', rate:21, acc:'477', group:'IVA Repercutido', active:true},
+      {id:'iva10out', name:'IVA 10%', type:'iva_out', rate:10, acc:'477', group:'IVA Repercutido', active:true},
+      {id:'iva4out',  name:'IVA 4%',  type:'iva_out', rate:4,  acc:'477', group:'IVA Repercutido', active:true},
+      {id:'isp',      name:'Inv. Sujeto Pasivo (+)', type:'iva_out', rate:21, acc:'477', group:'IVA Repercutido', active:true},
+      {id:'exenta',   name:'Exenta',  type:'iva_out', rate:0,  acc:'', group:'IVA Repercutido', active:true},
+      // IVA Soportado (Purchases)
+      {id:'iva21in',  name:'IVA 21%', type:'iva_in',  rate:21, acc:'472', group:'IVA Soportado', active:true},
+      {id:'iva10in',  name:'IVA 10%', type:'iva_in',  rate:10, acc:'472', group:'IVA Soportado', active:true},
+      {id:'iva4in',   name:'IVA 4%',  type:'iva_in',  rate:4,  acc:'472', group:'IVA Soportado', active:true},
+      {id:'isp_neg',  name:'Inv. Sujeto Pasivo (−)', type:'iva_in', rate:21, acc:'472', group:'IVA Soportado', active:true},
+      // Retenciones
+      {id:'ret19cap', name:'Retención 19% Capital mobiliario', type:'ret_out', rate:19, acc:'473', group:'Retenciones', active:true},
+      {id:'ret19pro', name:'Retención 19% Garantía obra',      type:'ret_out', rate:5,  acc:'473', group:'Retenciones', active:true},
+      {id:'ret15',    name:'Retención 15%',                    type:'ret_out', rate:15, acc:'473', group:'Retenciones', active:true},
+      {id:'ret7',     name:'Retención 7%',                     type:'ret_out', rate:7,  acc:'473', group:'Retenciones', active:true},
+    ];
+  } else {
+    return [
+      {id:'tax_sales', name:'Sales Tax 10%', type:'iva_out', rate:10, acc:'2300', group:'Sales Tax', active:true},
+      {id:'tax_purch', name:'Purchase Tax 10%', type:'iva_in', rate:10, acc:'2310', group:'Purchase Tax', active:true},
+      {id:'fed_wh',    name:'Federal Withholding 24%', type:'ret_out', rate:24, acc:'2210', group:'Withholding', active:true},
+      {id:'state_wh',  name:'State Withholding 5%',    type:'ret_out', rate:5,  acc:'2220', group:'Withholding', active:true},
+    ];
+  }
+}
+
+function ensureTaxDB() {
+  if (!DB.taxes || !DB.taxes.length) {
+    DB.taxes = getDefaultTaxes();
+  }
+  if (!DB.paymentMethods) {
+    DB.paymentMethods = [];
+    // Auto-create from bank accounts
+    (DB.bankAccounts||[]).forEach(function(acc){
+      if(acc.iban) {
+        DB.paymentMethods.push({
+          id:'pm_'+acc.id, name:acc.name, type:'bank',
+          dueDays:30, bankAccId:acc.id,
+          text:'Pagar por transferencia bancaria al número de cuenta: '+acc.iban
+        });
+      }
+    });
+    if(!DB.paymentMethods.length) {
+      DB.paymentMethods.push({id:'pm1', name:'Bank Transfer', type:'bank', dueDays:30, bankAccId:'', text:'Pay by bank transfer'});
+      DB.paymentMethods.push({id:'pm2', name:'Cash', type:'cash', dueDays:0, bankAccId:'', text:'Pay in cash'});
+    }
+  }
+}
+
+function getIVATaxes(direction) {
+  ensureTaxDB();
+  return (DB.taxes||[]).filter(function(t){ return t.type === (direction==='out'?'iva_out':'iva_in') && t.active; });
+}
+
+function getRetTaxes() {
+  ensureTaxDB();
+  return (DB.taxes||[]).filter(function(t){ return (t.type==='ret_out'||t.type==='ret_in') && t.active; });
+}
+
+// ── Render Taxes page ─────────────────────────────────────────────
+function rTaxes() {
+  ensureTaxDB();
+  var yearSel = document.getElementById('taxes-year');
+  if(yearSel && yearSel.options.length<=1){
+    var now=new Date().getFullYear();
+    for(var y=now;y>=now-3;y--){var o=document.createElement('option');o.value=y;o.textContent=y;if(y===now)o.selected=true;yearSel.appendChild(o);}
+  }
+  var year   = (yearSel&&yearSel.value) || String(new Date().getFullYear());
+  var period = (document.getElementById('taxes-period')||{value:'all'}).value||'all';
+
+  // Quarter filter
+  function inPeriod(date) {
+    if(!date) return false;
+    if(!date.startsWith(year)) return false;
+    if(period==='all') return true;
+    var m = parseInt(date.slice(5,7));
+    if(period==='Q1') return m>=1&&m<=3;
+    if(period==='Q2') return m>=4&&m<=6;
+    if(period==='Q3') return m>=7&&m<=9;
+    if(period==='Q4') return m>=10&&m<=12;
+    return true;
+  }
+
+  // Collect from sales and purchases
+  var salesFiltered = DB.sales.filter(function(s){ return inPeriod(s.date); });
+  var purchFiltered = DB.purch.filter(function(p){ return inPeriod(p.date); });
+
+  var ivaOut  = salesFiltered.reduce(function(a,s){ return a+(s.vatAmt||0); }, 0);
+  var ivaIn   = purchFiltered.reduce(function(a,p){ return a+(p.vatAmt||0); }, 0);
+  var retOut  = salesFiltered.reduce(function(a,s){ return a+(s.retAmt||0); }, 0);
+  var result  = ivaOut - ivaIn;
+
+  // KPIs
+  var ko=document.getElementById('tax-kpi-out'); if(ko){ ko.textContent=f(ivaOut); ko.style.color='var(--green)';}
+  var ki=document.getElementById('tax-kpi-in');  if(ki){ ki.textContent=f(ivaIn);  ki.style.color='var(--red)';}
+  var kr=document.getElementById('tax-kpi-result'); if(kr){ kr.textContent=f(result); kr.style.color=result>=0?'var(--accent)':'var(--red)';}
+  var krt=document.getElementById('tax-kpi-ret'); if(krt){ krt.textContent=f(retOut); krt.style.color='var(--yellow)';}
+
+  // Sales breakdown by VAT rate
+  var salesBreak={};
+  salesFiltered.forEach(function(s){
+    var key=s.vatRate||'0'; if(!salesBreak[key]) salesBreak[key]={net:0,vat:0,count:0};
+    salesBreak[key].net+=s.net||0; salesBreak[key].vat+=s.vatAmt||0; salesBreak[key].count++;
+  });
+  var sbEl=document.getElementById('taxes-sales-breakdown'); if(sbEl){
+    sbEl.innerHTML=Object.keys(salesBreak).length?
+      '<table style="width:100%;font-size:12px;border-collapse:collapse;">'+
+      '<tr style="border-bottom:1px solid var(--border);"><th style="text-align:left;padding:6px 8px;color:var(--text3);">Rate</th><th style="text-align:right;padding:6px 8px;color:var(--text3);">Base</th><th style="text-align:right;padding:6px 8px;color:var(--text3);">IVA</th><th style="text-align:right;padding:6px 8px;color:var(--text3);">Invoices</th></tr>'+
+      Object.keys(salesBreak).map(function(k){ var d=salesBreak[k]; return '<tr style="border-bottom:1px solid rgba(46,46,56,.3);"><td style="padding:6px 8px;font-family:monospace;">'+k+'%</td><td style="padding:6px 8px;text-align:right;">'+f(d.net)+'</td><td style="padding:6px 8px;text-align:right;color:var(--green);">'+f(d.vat)+'</td><td style="padding:6px 8px;text-align:right;color:var(--text3);">'+d.count+'</td></tr>'; }).join('')+
+      '</table>'
+      : '<div style="color:var(--text3);padding:20px;text-align:center;font-size:12px;">No sales in this period.</div>';
+  }
+
+  // Purchase breakdown by VAT rate
+  var purchBreak={};
+  purchFiltered.forEach(function(p){
+    var key=p.vatRate||'0'; if(!purchBreak[key]) purchBreak[key]={net:0,vat:0,count:0};
+    purchBreak[key].net+=p.net||0; purchBreak[key].vat+=p.vatAmt||0; purchBreak[key].count++;
+  });
+  var pbEl=document.getElementById('taxes-purch-breakdown'); if(pbEl){
+    pbEl.innerHTML=Object.keys(purchBreak).length?
+      '<table style="width:100%;font-size:12px;border-collapse:collapse;">'+
+      '<tr style="border-bottom:1px solid var(--border);"><th style="text-align:left;padding:6px 8px;color:var(--text3);">Rate</th><th style="text-align:right;padding:6px 8px;color:var(--text3);">Base</th><th style="text-align:right;padding:6px 8px;color:var(--text3);">IVA</th><th style="text-align:right;padding:6px 8px;color:var(--text3);">Invoices</th></tr>'+
+      Object.keys(purchBreak).map(function(k){ var d=purchBreak[k]; return '<tr style="border-bottom:1px solid rgba(46,46,56,.3);"><td style="padding:6px 8px;font-family:monospace;">'+k+'%</td><td style="padding:6px 8px;text-align:right;">'+f(d.net)+'</td><td style="padding:6px 8px;text-align:right;color:var(--red);">'+f(d.vat)+'</td><td style="padding:6px 8px;text-align:right;color:var(--text3);">'+d.count+'</td></tr>'; }).join('')+
+      '</table>'
+      : '<div style="color:var(--text3);padding:20px;text-align:center;font-size:12px;">No purchases in this period.</div>';
+  }
+
+  // Retenciones breakdown
+  var retBreak={};
+  salesFiltered.filter(function(s){return s.retAmt>0;}).forEach(function(s){
+    var key=s.retRate||'0'; if(!retBreak[key]) retBreak[key]={base:0,ret:0,count:0};
+    retBreak[key].base+=s.net||0; retBreak[key].ret+=s.retAmt||0; retBreak[key].count++;
+  });
+  var retEl=document.getElementById('taxes-ret-breakdown'); if(retEl){
+    retEl.innerHTML=Object.keys(retBreak).length?
+      '<table style="width:100%;font-size:12px;border-collapse:collapse;">'+
+      '<tr style="border-bottom:1px solid var(--border);"><th style="text-align:left;padding:6px 8px;color:var(--text3);">Retención</th><th style="text-align:right;padding:6px 8px;color:var(--text3);">Base</th><th style="text-align:right;padding:6px 8px;color:var(--text3);">Importe</th><th style="text-align:right;padding:6px 8px;color:var(--text3);">Invoices</th></tr>'+
+      Object.keys(retBreak).map(function(k){ var d=retBreak[k]; return '<tr style="border-bottom:1px solid rgba(46,46,56,.3);"><td style="padding:6px 8px;font-family:monospace;">Ret. '+k+'%</td><td style="padding:6px 8px;text-align:right;">'+f(d.base)+'</td><td style="padding:6px 8px;text-align:right;color:var(--yellow);">'+f(d.ret)+'</td><td style="padding:6px 8px;text-align:right;color:var(--text3);">'+d.count+'</td></tr>'; }).join('')+
+      '</table>'
+      : '<div style="color:var(--text3);padding:20px;text-align:center;font-size:12px;">No retenciones in this period.</div>';
+  }
+
+  // Quarterly table
+  var qtbl=document.getElementById('taxes-quarterly-tbl'); if(!qtbl) return;
+  var quarters=['Q1','Q2','Q3','Q4'];
+  var qMonths={Q1:[1,2,3],Q2:[4,5,6],Q3:[7,8,9],Q4:[10,11,12]};
+  qtbl.innerHTML=quarters.map(function(q){
+    var ms=qMonths[q];
+    var sF=DB.sales.filter(function(s){ return s.date&&s.date.startsWith(year)&&ms.indexOf(parseInt(s.date.slice(5,7)))!==-1; });
+    var pF=DB.purch.filter(function(p){ return p.date&&p.date.startsWith(year)&&ms.indexOf(parseInt(p.date.slice(5,7)))!==-1; });
+    var qOut=sF.reduce(function(a,s){return a+(s.vatAmt||0);},0);
+    var qIn =pF.reduce(function(a,p){return a+(p.vatAmt||0);},0);
+    var qRes=qOut-qIn;
+    var state=qOut===0&&qIn===0?'<span style="color:var(--text3);font-size:11px;">—</span>':'<span style="color:var(--yellow);font-size:11px;font-weight:700;font-family:monospace;">PENDIENTE</span>';
+    return '<tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;font-weight:600;color:var(--text);">'+q+' '+year+'</td><td style="padding:10px 12px;text-align:right;color:var(--red);">'+f(qIn)+'</td><td style="padding:10px 12px;text-align:right;color:var(--green);">'+f(qOut)+'</td><td style="padding:10px 12px;text-align:right;font-weight:700;color:'+(qRes>=0?'var(--accent)':'var(--red)')+';">'+f(qRes)+'</td><td style="padding:10px 12px;text-align:center;">'+state+'</td></tr>';
+  }).join('');
+}
+
+// ── Invoicing Settings sub-tabs ───────────────────────────────────
+function setInvSubTab(tab) {
+  ['prefs','templates','payments','taxes'].forEach(function(t){
+    var el = document.getElementById('inv-sub-'+t);
+    var pn = document.getElementById('inv-panel-'+t);
+    if(el){ el.style.background=t===tab?'var(--surface3)':''; el.style.color=t===tab?'var(--text)':'var(--text2)'; }
+    if(pn) pn.style.display = t===tab ? '' : 'none';
+  });
+  if(tab==='payments') renderInvPaymentMethods();
+  if(tab==='taxes')    renderInvTaxes();
+  if(tab==='prefs')    renderSeriesListInv();
+}
+
+function renderSeriesListInv() {
+  // Mirror series-list to series-list-inv
+  var src = document.getElementById('series-list');
+  var dst = document.getElementById('series-list-inv');
+  if(src && dst) dst.innerHTML = src.innerHTML;
+}
+
+function renderInvPaymentMethods() {
+  ensureTaxDB();
+  var el = document.getElementById('inv-payment-methods-list'); if(!el) return;
+  if(!DB.paymentMethods.length){
+    el.innerHTML='<div style="color:var(--text3);padding:20px;font-size:13px;">No payment methods yet.</div>'; return;
+  }
+  el.innerHTML = DB.paymentMethods.map(function(pm){
+    var bankAcc = (DB.bankAccounts||[]).find(function(a){ return a.id===pm.bankAccId; });
+    var icon = pm.type==='bank'?'🏦':pm.type==='cash'?'💵':pm.type==='sepa'?'🔄':'💳';
+    return '<div style="display:flex;align-items:center;padding:12px 16px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;gap:12px;">'+
+      '<div style="font-size:20px;">'+icon+'</div>'+
+      '<div style="flex:1;">'+
+        '<div style="font-weight:600;font-size:13px;color:var(--text);">'+pm.name+'</div>'+
+        '<div style="font-size:11px;color:var(--text3);">'+(pm.text||'')+'</div>'+
+        (bankAcc?'<div style="font-size:11px;color:var(--text3);font-family:monospace;">'+bankAcc.iban+'</div>':'')+
+        '<div style="font-size:10px;color:var(--text3);font-family:monospace;margin-top:2px;">'+pm.dueDays+' Due days</div>'+
+      '</div>'+
+      '<button onclick="deletePaymentMethod(\''+pm.id+'\')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">🗑</button>'+
+    '</div>';
+  }).join('');
+}
+
+function renderInvTaxes() {
+  ensureTaxDB();
+  var el = document.getElementById('inv-taxes-list'); if(!el) return;
+  var groups = {};
+  (DB.taxes||[]).forEach(function(t){ if(!groups[t.group]) groups[t.group]=[]; groups[t.group].push(t); });
+  el.innerHTML = Object.keys(groups).map(function(g){
+    return '<div style="margin-bottom:16px;">'+
+      '<div style="font-size:11px;font-weight:700;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">'+g+'</div>'+
+      groups[g].map(function(t){
+        return '<div style="display:flex;align-items:center;padding:8px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:4px;gap:10px;">'+
+          '<div style="flex:1;font-size:13px;color:var(--text);font-weight:500;">'+t.name+'</div>'+
+          '<div style="font-family:monospace;font-size:12px;color:var(--text3);">'+t.acc+'</div>'+
+          '<div style="font-family:monospace;font-size:12px;background:rgba(200,255,0,.1);color:var(--accent);padding:2px 8px;border-radius:6px;">'+t.rate+'%</div>'+
+          '<button onclick="deleteTax(\''+t.id+'\')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;">✕</button>'+
+        '</div>';
+      }).join('')+
+    '</div>';
+  }).join('');
+}
+
+function openAddTax() {
+  ['tax-name','tax-acc','tax-rate','tax-desc'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  openOverlay('ov-add-tax');
+}
+
+function saveTax() {
+  ensureTaxDB();
+  var name = document.getElementById('tax-name').value.trim();
+  if(!name){ alert('Enter a tax name.'); return; }
+  var type = document.getElementById('tax-type').value;
+  var rate = parseFloat(document.getElementById('tax-rate').value)||0;
+  var acc  = document.getElementById('tax-acc').value.trim();
+  var desc = document.getElementById('tax-desc').value.trim();
+  var group = type==='iva_out'?'IVA Repercutido':type==='iva_in'?'IVA Soportado':'Retenciones';
+  DB.taxes.push({id:'tax_'+Date.now(), name:name, type:type, rate:rate, acc:acc, desc:desc, group:group, active:true});
+  sv(); closeOverlay('ov-add-tax'); renderInvTaxes();
+  showToast('Tax added: '+name);
+}
+
+function deleteTax(id) {
+  if(!confirm('Delete this tax?')) return;
+  DB.taxes = (DB.taxes||[]).filter(function(t){ return t.id!==id; });
+  sv(); renderInvTaxes();
+}
+
+function openAddPaymentMethod() {
+  ensureTaxDB();
+  ['pm-name','pm-text','pm-due'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  // Populate bank accounts dropdown
+  var sel = document.getElementById('pm-bank-acc');
+  if(sel){
+    sel.innerHTML='<option value="">— Select bank account —</option>'+
+      (DB.bankAccounts||[]).map(function(a){ return '<option value="'+a.id+'">'+a.name+(a.iban?' — '+a.iban.slice(0,20)+'…':'')+'</option>'; }).join('');
+  }
+  openOverlay('ov-add-payment-method');
+}
+
+function savePaymentMethod() {
+  ensureTaxDB();
+  var name = document.getElementById('pm-name').value.trim();
+  if(!name){ alert('Enter a method name.'); return; }
+  var type    = document.getElementById('pm-type').value;
+  var due     = parseInt(document.getElementById('pm-due').value)||30;
+  var bankId  = document.getElementById('pm-bank-acc').value;
+  var text    = document.getElementById('pm-text').value.trim();
+  // Auto-fill text from bank IBAN if empty
+  if(!text && bankId) {
+    var bk = (DB.bankAccounts||[]).find(function(a){ return a.id===parseInt(bankId)||a.id===bankId; });
+    if(bk&&bk.iban) text='Pagar por transferencia bancaria al número de cuenta: '+bk.iban;
+  }
+  DB.paymentMethods.push({id:'pm_'+Date.now(), name:name, type:type, dueDays:due, bankAccId:bankId, text:text});
+  sv(); closeOverlay('ov-add-payment-method'); renderInvPaymentMethods();
+  showToast('Payment method added: '+name);
+}
+
+function deletePaymentMethod(id) {
+  if(!confirm('Delete this payment method?')) return;
+  DB.paymentMethods = (DB.paymentMethods||[]).filter(function(p){ return p.id!==id; });
+  sv(); renderInvPaymentMethods();
+}
+
+// ── Invoicing settings save/load additions ────────────────────────
+var _origOpenSettings2 = openSettings;
+openSettings = function(tab) {
+  _origOpenSettings2(tab);
+  // Populate invoicing account selects
+  var opts = coaOpts();
+  ['inv-sales-acc','inv-exp-acc'].forEach(function(id){
+    var sel = document.getElementById(id); if(!sel) return;
+    sel.innerHTML = opts;
+    if(id==='inv-sales-acc') sel.value = (DB.prefs&&DB.prefs.invSalesAcc)||'';
+    else sel.value = (DB.prefs&&DB.prefs.invExpAcc)||'';
+  });
+  var isd=document.getElementById('inv-sales-vat'); if(isd) isd.value=(DB.prefs&&DB.prefs.invSalesVat)||'21';
+  var ipd=document.getElementById('inv-purch-vat'); if(ipd) ipd.value=(DB.prefs&&DB.prefs.invPurchVat)||'21';
+  var idd=document.getElementById('inv-due-days');  if(idd) idd.value=(DB.prefs&&DB.prefs.invDueDays)||'30';
+  var idp=document.getElementById('inv-def-payment'); if(idp) idp.value=(DB.prefs&&DB.prefs.invDefPayment)||'bank';
+  var int=document.getElementById('inv-notes'); if(int) int.value=(DB.prefs&&DB.prefs.invnotes)||'';
+};
+
+var _origSaveSettings2 = saveSettings;
+saveSettings = function() {
+  // Save invoicing prefs before calling original
+  if(DB.prefs){
+    var sa=document.getElementById('inv-sales-acc'); if(sa) DB.prefs.invSalesAcc=sa.value;
+    var ea=document.getElementById('inv-exp-acc');  if(ea) DB.prefs.invExpAcc=ea.value;
+    var sv2=document.getElementById('inv-sales-vat'); if(sv2) DB.prefs.invSalesVat=sv2.value;
+    var pv=document.getElementById('inv-purch-vat'); if(pv) DB.prefs.invPurchVat=pv.value;
+    var dd=document.getElementById('inv-due-days');  if(dd) DB.prefs.invDueDays=dd.value;
+    var dp=document.getElementById('inv-def-payment'); if(dp) DB.prefs.invDefPayment=dp.value;
+    var nt=document.getElementById('inv-notes'); if(nt) DB.prefs.invnotes=nt.value;
+  }
+  _origSaveSettings2();
+};
+
+function renderAll(){rDash();rContacts();rSales();rRecurring();rPurch();rColl();rPay();rJE();rPL();rBS();rCF();rCFO();rBankAccounts();rEmployees();rPayrolls();rTimeTracking();rAbsences();rTaxes();}
+var _origSetTab2 = setTab;
+setTab = function(t) {
+  _origSetTab2(t);
+  var tabs=['user','company','invoicing','prefs','data'];
+  tabs.forEach(function(n){
+    var st=document.getElementById('stab-'+n);
+    var sp=document.getElementById('spanel-'+n);
+    if(st) st.classList.toggle('active', n===t);
+    if(sp) sp.classList.toggle('active', n===t);
+  });
+  if(t==='invoicing') setInvSubTab('prefs');
+};
+
+
 
 init();
 
@@ -9311,7 +9814,7 @@ function exportPDF(sectionId, title) {
   target.style.display = 'block';
   // Set print title
   var oldTitle = document.title;
-  document.title = 'FinLedger — ' + title + ' — ' + new Date().toLocaleDateString('en-GB');
+  document.title = 'Leadger — ' + title + ' — ' + new Date().toLocaleDateString('en-GB');
   window.print();
   // Restore
   document.title = oldTitle;
@@ -10953,6 +11456,124 @@ function showToast(msg) {
       </div>
     </div>
 
+    <!-- ══ TAXES ══ -->
+    <div class="page" id="page-taxes" style="overflow-y:auto;max-height:calc(100vh - 60px);">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Taxes</div><div class="sec-sub">IVA repercutido · IVA soportado · Retenciones · Informativo</div></div>
+        <div style="display:flex;gap:8px;">
+          <select id="taxes-year" onchange="rTaxes()" class="period-select" style="min-width:90px;"></select>
+          <select id="taxes-period" onchange="rTaxes()" class="period-select">
+            <option value="all">All year</option>
+            <option value="Q1">Q1 (Jan–Mar)</option>
+            <option value="Q2">Q2 (Apr–Jun)</option>
+            <option value="Q3">Q3 (Jul–Sep)</option>
+            <option value="Q4">Q4 (Oct–Dec)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Summary KPIs -->
+      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px;">
+        <div class="kpi-card g"><div class="card-title">IVA Repercutido</div><div class="card-value" id="tax-kpi-out">€0</div><div class="card-delta">From Sales</div></div>
+        <div class="kpi-card r"><div class="card-title">IVA Soportado</div><div class="card-value" id="tax-kpi-in">€0</div><div class="card-delta">From Purchases</div></div>
+        <div class="kpi-card a"><div class="card-title">Resultado IVA</div><div class="card-value" id="tax-kpi-result">€0</div><div class="card-delta">Repercutido − Soportado</div></div>
+        <div class="kpi-card b"><div class="card-title">Retenciones</div><div class="card-value" id="tax-kpi-ret">€0</div><div class="card-delta">Total withheld</div></div>
+      </div>
+
+      <!-- Quarterly breakdown -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+        <div class="chart-area">
+          <div class="sec-title" style="font-size:14px;margin-bottom:12px;">📤 IVA Repercutido (Ventas)</div>
+          <div id="taxes-sales-breakdown"></div>
+        </div>
+        <div class="chart-area">
+          <div class="sec-title" style="font-size:14px;margin-bottom:12px;">📥 IVA Soportado (Compras)</div>
+          <div id="taxes-purch-breakdown"></div>
+        </div>
+      </div>
+
+      <!-- Retenciones table -->
+      <div class="chart-area" style="margin-bottom:20px;">
+        <div class="sec-title" style="font-size:14px;margin-bottom:12px;">✂️ Retenciones</div>
+        <div id="taxes-ret-breakdown"></div>
+      </div>
+
+      <!-- Quarterly summary table (like Holded) -->
+      <div class="chart-area">
+        <div class="sec-title" style="font-size:14px;margin-bottom:12px;">📋 Quarterly Summary · <span style="font-size:11px;color:var(--text3);">Modelo 303 basis</span></div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead><tr style="border-bottom:2px solid var(--border);">
+            <th style="text-align:left;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;text-transform:uppercase;">Period</th>
+            <th style="text-align:right;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;">IVA Soportado</th>
+            <th style="text-align:right;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;">IVA Repercutido</th>
+            <th style="text-align:right;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;">Resultado</th>
+            <th style="text-align:center;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;">Estado</th>
+          </tr></thead>
+          <tbody id="taxes-quarterly-tbl"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ ADD TAX OVERLAY ══ -->
+    <div class="overlay" id="ov-add-tax">
+      <div class="modal">
+        <div class="mhdr"><div class="mtitle" id="tax-modal-title">Add Tax</div><div class="mclose" onclick="closeOverlay('ov-add-tax')">✕</div></div>
+        <div class="mbody">
+          <div class="fgrid">
+            <div class="fg full"><label>Tax Name</label><input type="text" id="tax-name" placeholder="e.g. IVA 21%, Retención 15%"></div>
+            <div class="fg"><label>Type</label>
+              <select id="tax-type">
+                <option value="iva_out">IVA Repercutido (Sales)</option>
+                <option value="iva_in">IVA Soportado (Purchases)</option>
+                <option value="ret_out">Retención s/Ventas</option>
+                <option value="ret_in">Retención s/Compras</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="fg"><label>Rate (%)</label><input type="number" id="tax-rate" placeholder="21" step="0.01" min="0" max="100"></div>
+            <div class="fg"><label>Account Code</label><input type="text" id="tax-acc" placeholder="477 or 473" style="font-family:monospace;"></div>
+            <div class="fg full"><label>Description</label><input type="text" id="tax-desc" placeholder="Optional description"></div>
+          </div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-ghost" onclick="closeOverlay('ov-add-tax')">Cancel</button>
+          <button class="btn btn-primary" onclick="saveTax()">Save Tax</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADD PAYMENT METHOD OVERLAY ══ -->
+    <div class="overlay" id="ov-add-payment-method">
+      <div class="modal">
+        <div class="mhdr"><div class="mtitle">Add Payment Method</div><div class="mclose" onclick="closeOverlay('ov-add-payment-method')">✕</div></div>
+        <div class="mbody">
+          <div class="fgrid">
+            <div class="fg full"><label>Method Name</label><input type="text" id="pm-name" placeholder="e.g. Transferencia bancaria"></div>
+            <div class="fg"><label>Type</label>
+              <select id="pm-type">
+                <option value="bank">Bank Transfer</option>
+                <option value="cash">Cash</option>
+                <option value="card">Card</option>
+                <option value="sepa">SEPA Direct Debit</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="fg"><label>Due Days</label><input type="number" id="pm-due" placeholder="30" min="0"></div>
+            <div class="fg"><label>Bank Account (IBAN)</label>
+              <select id="pm-bank-acc">
+                <option value="">— Select bank account —</option>
+              </select>
+            </div>
+            <div class="fg full"><label>Text on Invoice</label><textarea id="pm-text" placeholder="e.g. Pagar por transferencia bancaria al siguiente número de cuenta: ES90 0049..." rows="2" style="width:100%;padding:8px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:13px;"></textarea></div>
+          </div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-ghost" onclick="closeOverlay('ov-add-payment-method')">Cancel</button>
+          <button class="btn btn-primary" onclick="savePaymentMethod()">Save</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ CFO MODULE ══ -->
     <div class="page" id="page-cfo" style="overflow-y:auto;max-height:calc(100vh - 60px);padding-right:4px;">
       <div class="sec-hdr">
@@ -11201,10 +11822,9 @@ body.light-mode .auth-box{background:#fff;border-color:#dde0e4;}
 body.light-mode .auth-field input{background:#f4f5f7;color:#1a1d23;}
 body.light-mode .auth-title{color:#1a1d23;}
 </style>
-
 <div id="auth-overlay">
   <div class="auth-box">
-    <div class="auth-logo">FinLedger</div>
+    <div class="auth-logo">Leadger</div>
     <div class="auth-sub">Accounting System</div>
     <div id="auth-login">
       <div class="auth-title">Welcome back</div>
@@ -11237,121 +11857,20 @@ body.light-mode .auth-title{color:#1a1d23;}
     </div>
   </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPA_URL = 'https://xoaujnyamjsexybjswwj.supabase.co';
-const SUPA_KEY = 'sb_publishable_BcWxOGS-mTzTimjQZvFSIw_f0kyY1ka';
-const _supa = supabase.createClient(SUPA_URL, SUPA_KEY);
-var _currentUser = null;
-
-function showAuthPanel(panel) {
-  ['login','register','reset'].forEach(function(p){
-    document.getElementById('auth-'+p).style.display = p===panel ? '' : 'none';
-  });
-  ['auth-err-login','auth-err-register','auth-err-reset','auth-ok-reset'].forEach(function(id){
-    var el=document.getElementById(id); if(el) el.textContent='';
-  });
-}
-
-async function authLogin() {
-  var email = document.getElementById('auth-email').value.trim();
-  var pass  = document.getElementById('auth-pass').value;
-  var errEl = document.getElementById('auth-err-login');
-  errEl.textContent = 'Signing in...';
-  var { data, error } = await _supa.auth.signInWithPassword({ email, password: pass });
-  if (error) { errEl.textContent = error.message; return; }
-  _currentUser = data.user;
-  onAuthSuccess();
-}
-
-async function authRegister() {
-  var email = document.getElementById('reg-email').value.trim();
-  var pass  = document.getElementById('reg-pass').value;
-  var pass2 = document.getElementById('reg-pass2').value;
-  var errEl = document.getElementById('auth-err-register');
-  if (!email || !pass) { errEl.textContent = 'Email and password are required.'; return; }
-  if (pass !== pass2)  { errEl.textContent = 'Passwords do not match.'; return; }
-  if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
-  errEl.textContent = 'Creating account...';
-  var { data, error } = await _supa.auth.signUp({ email, password: pass });
-  if (error) { errEl.textContent = error.message; return; }
-  _currentUser = data.user;
-  var { data: d2, error: e2 } = await _supa.auth.signInWithPassword({ email, password: pass });
-  if (!e2 && d2.user) { _currentUser = d2.user; onAuthSuccess(); }
-  else { errEl.style.color='#4ade80'; errEl.textContent = 'Account created! Check your email to confirm, then sign in.'; showAuthPanel('login'); }
-}
-
-async function authReset() {
-  var email = document.getElementById('reset-email').value.trim();
-  var errEl = document.getElementById('auth-err-reset');
-  var okEl  = document.getElementById('auth-ok-reset');
-  if (!email) { errEl.textContent = 'Enter your email address.'; return; }
-  var { error } = await _supa.auth.resetPasswordForEmail(email);
-  if (error) { errEl.textContent = error.message; return; }
-  okEl.textContent = 'Reset email sent! Check your inbox.';
-}
-
-function onAuthSuccess() {
-  document.getElementById('auth-overlay').classList.add('hidden');
-  var emailShort = (_currentUser.email||'').split('@')[0];
-  var greetEl = document.getElementById('topGreeting');
-  if(greetEl) greetEl.textContent = emailShort;
-  loadFromSupabase();
-}
-
-async function saveToSupabase(dbObj) {
-  if (!_currentUser) return;
-  await _supa.from('user_data').upsert({
-    user_id: _currentUser.id,
-    data: dbObj,
-    updated_at: new Date().toISOString()
-  }, { onConflict: 'user_id' });
-}
-
-async function loadFromSupabase() {
-  if (!_currentUser) return;
-  var { data, error } = await _supa.from('user_data')
-    .select('data').eq('user_id', _currentUser.id).single();
-  if (!error && data && data.data && data.data.ids) {
-    DB = data.data;
-    refreshCOA();
-    // Ensure all arrays exist
-    var arrFields = ['wires','contacts','recurring','assets','deprPlans','bankAccounts','bankMovements','employees','payrolls'];
-    arrFields.forEach(function(f){ if(!DB[f]) DB[f]=[]; });
-    var idFields = {wt:1,ba:1,bm:1,em:1,pr:1};
-    Object.keys(idFields).forEach(function(k){ if(!DB.ids[k]) DB.ids[k]=idFields[k]; });
-  }
-  updateUserUI();
-  renderAll();
-  initJE();
-}
-
-var _origSv = sv;
-sv = function() {
-  _origSv();
-  saveToSupabase(DB);
-};
-
-async function signOut() {
-  closeUserDropdown();
-  await _supa.auth.signOut();
-  _currentUser = null;
-  document.getElementById('auth-overlay').classList.remove('hidden');
-  showAuthPanel('login');
-}
-
-(async function() {
-  var { data: { session } } = await _supa.auth.getSession();
-  if (session && session.user) {
-    _currentUser = session.user;
-    onAuthSuccess();
-  }
-  _supa.auth.onAuthStateChange(function(event, session) {
-    if (event === 'SIGNED_IN' && session) { _currentUser = session.user; onAuthSuccess(); }
-    if (event === 'SIGNED_OUT') { _currentUser = null; document.getElementById('auth-overlay').classList.remove('hidden'); }
-  });
-})();
+const SUPA_URL='https://xoaujnyamjsexybjswwj.supabase.co';const SUPA_KEY='sb_publishable_BcWxOGS-mTzTimjQZvFSIw_f0kyY1ka';
+const _supa=supabase.createClient(SUPA_URL,SUPA_KEY);var _currentUser=null;
+function showAuthPanel(p){['login','register','reset'].forEach(function(x){document.getElementById('auth-'+x).style.display=x===p?'':'none';});['auth-err-login','auth-err-register','auth-err-reset','auth-ok-reset'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent='';});}
+async function authLogin(){var email=document.getElementById('auth-email').value.trim(),pass=document.getElementById('auth-pass').value,errEl=document.getElementById('auth-err-login');errEl.textContent='Signing in...';var{data,error}=await _supa.auth.signInWithPassword({email,password:pass});if(error){errEl.textContent=error.message;return;}_currentUser=data.user;onAuthSuccess();}
+async function authRegister(){var email=document.getElementById('reg-email').value.trim(),pass=document.getElementById('reg-pass').value,pass2=document.getElementById('reg-pass2').value,errEl=document.getElementById('auth-err-register');if(!email||!pass){errEl.textContent='Email and password required.';return;}if(pass!==pass2){errEl.textContent='Passwords do not match.';return;}if(pass.length<6){errEl.textContent='Min 6 characters.';return;}errEl.textContent='Creating...';var{data,error}=await _supa.auth.signUp({email,password:pass});if(error){errEl.textContent=error.message;return;}_currentUser=data.user;var{data:d2,error:e2}=await _supa.auth.signInWithPassword({email,password:pass});if(!e2&&d2.user){_currentUser=d2.user;onAuthSuccess();}else{errEl.style.color='#4ade80';errEl.textContent='Check your email to confirm, then sign in.';showAuthPanel('login');}}
+async function authReset(){var email=document.getElementById('reset-email').value.trim(),errEl=document.getElementById('auth-err-reset'),okEl=document.getElementById('auth-ok-reset');if(!email){errEl.textContent='Enter your email.';return;}var{error}=await _supa.auth.resetPasswordForEmail(email);if(error){errEl.textContent=error.message;return;}okEl.textContent='Reset email sent!';}
+function onAuthSuccess(){document.getElementById('auth-overlay').classList.add('hidden');var emailShort=(_currentUser.email||'').split('@')[0];var greetEl=document.getElementById('topGreeting');if(greetEl)greetEl.textContent=emailShort;loadFromSupabase();}
+async function saveToSupabase(dbObj){if(!_currentUser)return;await _supa.from('user_data').upsert({user_id:_currentUser.id,data:dbObj,updated_at:new Date().toISOString()},{onConflict:'user_id'});}
+async function loadFromSupabase(){if(!_currentUser)return;var{data,error}=await _supa.from('user_data').select('data').eq('user_id',_currentUser.id).single();if(!error&&data&&data.data&&data.data.ids){DB=data.data;refreshCOA();var arrFields=['wires','contacts','recurring','assets','deprPlans','bankAccounts','bankMovements','employees','payrolls','taxes','paymentMethods'];arrFields.forEach(function(f){if(!DB[f])DB[f]=[];});var idFields={wt:1,ba:1,bm:1,em:1,pr:1};Object.keys(idFields).forEach(function(k){if(!DB.ids[k])DB.ids[k]=idFields[k];});}updateUserUI();renderAll();initJE();}
+var _origSv=sv;sv=function(){_origSv();saveToSupabase(DB);};
+async function signOut(){closeUserDropdown();await _supa.auth.signOut();_currentUser=null;document.getElementById('auth-overlay').classList.remove('hidden');showAuthPanel('login');}
+(async function(){var{data:{session}}=await _supa.auth.getSession();if(session&&session.user){_currentUser=session.user;onAuthSuccess();}_supa.auth.onAuthStateChange(function(event,session){if(event==='SIGNED_IN'&&session){_currentUser=session.user;onAuthSuccess();}if(event==='SIGNED_OUT'){_currentUser=null;document.getElementById('auth-overlay').classList.remove('hidden');}});})();
 </script>
 </body>
 </html>"""
@@ -11460,44 +11979,36 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 
 def start_server(port):
-    """Arranca el servidor HTTP en un hilo secundario."""
+    """Arranca el servidor HTTP en un hilo secundario.
+"""
 
-import json as _json2
 
-class Handler(http.server.BaseHTTPRequestHandler):
+import json as _j2
+class H(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path=="/health": self._health()
-        else: self._serve_app()
+        if self.path=="/health":self._h()
+        else:self._a()
     def do_POST(self):
-        if self.path=="/export": self._export()
-        else: self.send_response(200); self._cors(); self.end_headers(); self.wfile.write(b"ok")
-    def do_OPTIONS(self):
-        self.send_response(200); self._cors(); self.end_headers()
-    def _cors(self):
+        if self.path=="/export":self._e()
+        else:self.send_response(200);self._c();self.end_headers();self.wfile.write(b"ok")
+    def do_OPTIONS(self):self.send_response(200);self._c();self.end_headers()
+    def _c(self):
         self.send_header("Access-Control-Allow-Origin","*")
         self.send_header("Access-Control-Allow-Methods","GET,POST,OPTIONS")
         self.send_header("Access-Control-Allow-Headers","Content-Type")
-    def _health(self):
-        self.send_response(200); self.send_header("Content-Type","application/json"); self._cors(); self.end_headers()
-        self.wfile.write(b'{"status":"ok"}')
-    def _serve_app(self):
-        self.send_response(200); self.send_header("Content-type","text/html; charset=utf-8")
-        self.send_header("Cache-Control","no-cache"); self._cors(); self.end_headers()
-        self.wfile.write(HTML.encode("utf-8"))
-    def _export(self):
+    def _h(self):self.send_response(200);self.send_header("Content-Type","application/json");self._c();self.end_headers();self.wfile.write(b'{"status":"ok"}')
+    def _a(self):self.send_response(200);self.send_header("Content-type","text/html; charset=utf-8");self.send_header("Cache-Control","no-cache");self._c();self.end_headers();self.wfile.write(HTML.encode("utf-8"))
+    def _e(self):
         try:
-            length=int(self.headers.get("Content-Length",0)); body=self.rfile.read(length)
-            payload=_json2.loads(body); content=payload.get("content",""); fname=payload.get("filename","export.csv")
-            self.send_response(200); self.send_header("Content-Type","text/csv; charset=utf-8-sig")
-            self.send_header("Content-Disposition",f'attachment; filename="{fname}"'); self._cors(); self.end_headers()
+            length=int(self.headers.get("Content-Length",0));body=self.rfile.read(length)
+            payload=_j2.loads(body);content=payload.get("content","");fname=payload.get("filename","export.csv")
+            self.send_response(200);self.send_header("Content-Type","text/csv; charset=utf-8-sig")
+            self.send_header("Content-Disposition",f'attachment; filename="{fname}"');self._c();self.end_headers()
             self.wfile.write(content.encode("utf-8-sig"))
-        except Exception as e:
-            self.send_response(500); self._cors(); self.end_headers(); self.wfile.write(str(e).encode())
-    def log_message(self,f,*a): pass
-
+        except Exception as e:self.send_response(500);self._c();self.end_headers();self.wfile.write(str(e).encode())
+    def log_message(self,f,*a):pass
 def main():
     socketserver.TCPServer.allow_reuse_address=True
-    with socketserver.TCPServer(("0.0.0.0",PORT),Handler) as h:
-        print(f"FinLedger running on port {PORT}"); h.serve_forever()
-
-if __name__=="__main__": main()
+    with socketserver.TCPServer(("0.0.0.0",PORT),H) as h:
+        print(f"Leadger running on port {PORT}");h.serve_forever()
+if __name__=="__main__":main()
