@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leadger — Accounting that actually works</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body>
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- NAVIGATION -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<nav class="navbar">
+    <div class="container">
+        <div class="nav-brand">
+            <span class="logo-icon">⚡</span>
+            <span class="logo-text">leadGer</span>
+        </div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#consulting">Consulting</a>
+            <a href="{{ url_for('login') }}" class="btn-link">Sign In</a>
+            <a href="{{ url_for('login') }}" class="btn-primary">Start free →</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- HERO SECTION -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Accounting that <br>
+                <span class="highlight">actually works</span> <br>
+                for your business
+            </h1>
+            <p class="hero-subtitle">
+                Double-entry bookkeeping, VAT management, payroll, treasury reconciliation 
+                and CFO analytics — all in one platform built for modern finance teams.
+            </p>
+            <div class="hero-cta">
+                <a href="{{ url_for('login') }}" class="btn-primary-large">Start for free →</a>
+                <a href="#features" class="btn-ghost-large">See features</a>
+            </div>
+        </div>
+        
+        <!-- Dashboard Preview -->
+        <div class="dashboard-preview">
+            <div class="browser-chrome">
+                <div class="chrome-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <div class="chrome-url">leadger.net</div>
+            </div>
+            <div class="dashboard-image">
+                <div class="mini-sidebar">
+                    <div class="mini-logo">⚡ <span>leadGer</span></div>
+                    <div class="mini-nav">
+                        <div class="mini-nav-item active">📊 Dashboard</div>
+                        <div class="mini-nav-item">📦 Purchases</div>
+                        <div class="mini-nav-item">💰 Treasury</div>
+                    </div>
+                </div>
+                <div class="mini-content">
+                    <div class="mini-kpis">
+                        <div class="mini-kpi green">
+                            <div class="mini-kpi-label">REVENUE</div>
+                            <div class="mini-kpi-value">€246k</div>
+                        </div>
+                        <div class="mini-kpi red">
+                            <div class="mini-kpi-label">EXPENSES</div>
+                            <div class="mini-kpi-value">€91k</div>
+                        </div>
+                        <div class="mini-kpi blue">
+                            <div class="mini-kpi-label">NET MARGIN</div>
+                            <div class="mini-kpi-value">61.7%</div>
+                        </div>
+                        <div class="mini-kpi accent">
+                            <div class="mini-kpi-label">CASH</div>
+                            <div class="mini-kpi-value">€363k</div>
+                        </div>
+                    </div>
+                    <div class="mini-chart">
+                        <!-- Simple bar chart visualization -->
+                        <div class="bars">
+                            <div class="bar green" style="height: 65%;"></div>
+                            <div class="bar green" style="height: 70%;"></div>
+                            <div class="bar green" style="height: 68%;"></div>
+                            <div class="bar green" style="height: 80%;"></div>
+                            <div class="bar green" style="height: 90%;"></div>
+                            <div class="bar green" style="height: 85%;"></div>
+                            <div class="bar green" style="height: 95%;"></div>
+                            <div class="bar green" style="height: 100%;"></div>
+                            <div class="bar red" style="height: 75%;"></div>
+                            <div class="bar red" style="height: 78%;"></div>
+                            <div class="bar red" style="height: 80%;"></div>
+                            <div class="bar red" style="height: 76%;"></div>
+                            <div class="bar red" style="height: 82%;"></div>
+                            <div class="bar red" style="height: 88%;"></div>
+                            <div class="bar red" style="height: 85%;"></div>
+                            <div class="bar red" style="height: 90%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- FEATURES SECTION -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section id="features" class="features">
+    <div class="container">
+        <h2 class="section-title">Everything you need, nothing you don't</h2>
+        <p class="section-subtitle">Professional accounting tools designed for efficiency</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Double-Entry Bookkeeping</h3>
+                <p>Full accrual accounting with automatic journal entries, T-accounts, and trial balance generation.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Treasury Management</h3>
+                <p>Bank account reconciliation, cash flow tracking, and multi-currency support.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>CFO Analytics</h3>
+                <p>Real-time P&L, balance sheet, cash flow statements, and custom dashboards.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🧾</div>
+                <h3>VAT & Tax Compliance</h3>
+                <p>Automatic VAT calculations, tax reports, and compliance tracking.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>Contacts & CRM</h3>
+                <p>Manage customers, suppliers, and employees in one unified database.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Purchase & Sales</h3>
+                <p>Invoice generation, purchase orders, and automated expense tracking.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">leadGer</span>
+                <p class="footer-tagline">Professional accounting that actually works</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <a href="#features">Features</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="{{ url_for('login') }}">Login</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <a href="#about">About</a>
+                    <a href="#consulting">Consulting</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="#privacy">Privacy</a>
+                    <a href="#terms">Terms</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Leadger. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
