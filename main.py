@@ -112,13 +112,17 @@ def login():
         
         if response.user:
             # Obtener datos adicionales del perfil
-            profile = supabase.table('profiles').select('*').eq('id', response.user.id).execute()
+            try:
+                profile = supabase.table('profiles').select('*').eq('id', response.user.id).execute()
+                profile_data = profile.data[0] if profile.data else {}
+            except:
+                profile_data = {}
             
             user_data = {
                 'id': response.user.id,
                 'email': response.user.email,
-                'full_name': profile.data[0].get('full_name', '') if profile.data else '',
-                'company': profile.data[0].get('company', '') if profile.data else ''
+                'full_name': profile_data.get('full_name', ''),
+                'company': profile_data.get('company', '')
             }
             
             session['user'] = user_data
@@ -139,7 +143,7 @@ def logout():
             supabase.auth.sign_out()
         except:
             pass
-    return jsonify({'success': True})
+    return jsonify({'success': True, 'redirect': '/app'})
 
 
 # =====================================================
