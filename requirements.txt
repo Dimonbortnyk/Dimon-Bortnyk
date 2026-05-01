@@ -1,3 +1,0 @@
-# FinLedger — Railway deployment
-# Pure stdlib only — no external dependencies needed
-# The app is a self-contained HTML/JS/CSS served by Python's built-in http.server
