@@ -191,6 +191,37 @@ textarea{resize:vertical;min-height:72px;}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:min(620px,95vw);max-height:90vh;overflow-y:auto;box-shadow:0 8px 50px rgba(0,0,0,.6);}
 .modal.wide{width:min(740px,95vw);}
 .modal.xwide{width:min(820px,95vw);}
+.modal.xxwide{width:min(1180px,97vw);}
+
+/* ── INVOICE LINES TABLE (Holded-style) ── */
+.inv-lines-section{margin-top:6px;margin-bottom:8px;}
+.inv-lines-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.inv-lines-title{font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;}
+.inv-lines-tbl-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--surface2);}
+.inv-lines-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.inv-lines-tbl thead tr{background:var(--surface3);}
+.inv-lines-tbl thead th{padding:8px 10px;text-align:left;font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;font-weight:500;border-bottom:1px solid var(--border);}
+.inv-lines-tbl thead th.amt,.inv-lines-tbl thead th.center{text-align:right;}
+.inv-lines-tbl thead th.center{text-align:center;}
+.inv-lines-tbl tbody tr{border-bottom:1px solid var(--border);}
+.inv-lines-tbl tbody tr:last-child{border-bottom:none;}
+.inv-lines-tbl tbody td{padding:6px 8px;vertical-align:middle;}
+.inv-lines-tbl tbody td input,
+.inv-lines-tbl tbody td select{padding:7px 9px;font-size:12px;border-radius:6px;background:var(--surface);}
+.inv-lines-tbl tbody td input.amt,
+.inv-lines-tbl tbody td input.qty{text-align:right;font-family:'DM Mono',monospace;}
+.inv-lines-tbl tbody td .line-subtotal{display:block;text-align:right;padding:7px 9px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);font-weight:600;}
+.inv-lines-tbl tbody td.del-cell{width:38px;text-align:center;}
+.inv-line-del-btn{width:28px;height:28px;border-radius:6px;background:var(--surface3);border:1px solid var(--border);color:var(--text3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all .15s;}
+.inv-line-del-btn:hover{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4);color:var(--red);}
+.inv-add-line-btn{margin-top:10px;padding:8px 14px;font-size:12px;background:var(--surface2);border:1px dashed var(--border);border-radius:7px;color:var(--text2);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;}
+.inv-add-line-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(200,255,0,.04);}
+.inv-totals-box{margin-top:14px;padding:14px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+.inv-totals-row{display:flex;justify-content:space-between;width:260px;font-size:13px;color:var(--text2);}
+.inv-totals-row.grand{border-top:1px solid var(--border);padding-top:8px;margin-top:4px;font-family:'DM Serif Display',serif;font-size:17px;color:var(--accent);}
+.inv-totals-row.grand .inv-totals-val{font-family:'DM Mono',monospace;font-weight:700;}
+.inv-totals-val{font-family:'DM Mono',monospace;}
+.inv-totals-val.neg{color:var(--red);}
 .mhdr{padding:22px 26px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .mtitle{font-family:'DM Serif Display',serif;font-size:20px;}
 .mclose{width:30px;height:30px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:15px;}
@@ -1209,7 +1240,7 @@ textarea{resize:vertical;min-height:72px;}
 
 <!-- SALE -->
 <div class="overlay" id="ov-sale">
-  <div class="modal">
+  <div class="modal xxwide">
     <div class="mhdr"><div class="mtitle">New Sales Invoice</div><div class="mclose" onclick="closeOverlay('ov-sale')">✕</div></div>
     <div class="mbody">
       <div class="fgrid">
@@ -1224,33 +1255,55 @@ textarea{resize:vertical;min-height:72px;}
             <div class="autocomplete-list" id="s-cust-list"></div>
           </div>
         </div>
-        <div class="fg full"><label>Description</label><input type="text" id="s-desc" placeholder="e.g. Consulting services Q1"></div>
-        <div class="fg"><label>Net Amount (€)</label><input type="number" id="s-net" placeholder="0.00" step="0.01" oninput="calcS()"></div>
-        <div class="fg"><label>IVA</label>
-          <select id="s-vat" onchange="calcS()">
-            <option value="0">Sin IVA (0%)</option>
-            <option value="4">IVA 4%</option>
-            <option value="10">IVA 10%</option>
-            <option value="21" selected>IVA 21%</option>
-            <option value="exempt">Exento</option>
-            <option value="isp">Inversión Sujeto Pasivo</option>
-          </select>
+      </div>
+
+      <!-- ─── INVOICE LINES (Holded-style) ─── -->
+      <div class="inv-lines-section" style="margin-top:18px;">
+        <div class="inv-lines-header">
+          <div class="inv-lines-title">📋 Invoice Lines</div>
         </div>
-        <div class="fg"><label>Retención</label>
-          <select id="s-ret" onchange="calcS()">
-            <option value="0">Sin retención</option>
-            <option value="7">Ret. 7%</option>
-            <option value="15">Ret. 15%</option>
-            <option value="19">Ret. 19% (Capital mobiliario)</option>
-            <option value="19g">Ret. 19% (Garantía obra)</option>
-          </select>
+        <div class="inv-lines-tbl-wrap">
+          <table class="inv-lines-tbl">
+            <thead>
+              <tr>
+                <th style="width:30%;">Concept / Description</th>
+                <th class="center" style="width:8%;">Qty</th>
+                <th class="amt" style="width:11%;">Unit Price (€)</th>
+                <th class="amt" style="width:11%;">Subtotal (€)</th>
+                <th style="width:14%;">IVA</th>
+                <th style="width:14%;">Retención</th>
+                <th class="amt" style="width:9%;">Line Total</th>
+                <th class="del-cell"></th>
+              </tr>
+            </thead>
+            <tbody id="s-lines-body"></tbody>
+          </table>
         </div>
-        <div class="fg"><label>VAT Amount</label><input type="text" id="s-va" readonly style="background:var(--surface3);"></div>
-        <div class="fg"><label>Retención Amount</label><input type="text" id="s-ret-amt" readonly style="background:var(--surface3);color:var(--red);"></div>
-        <div class="fg"><label>Total (€)</label><input type="text" id="s-tot2" readonly style="background:var(--surface3);color:var(--accent);font-family:monospace;font-weight:600;"></div>
+        <button type="button" class="inv-add-line-btn" onclick="addSaleLine()">+ Add line</button>
+      </div>
+
+      <!-- ─── TOTALS BOX ─── -->
+      <div class="inv-totals-box">
+        <div class="inv-totals-row"><span>Subtotal (Net):</span><span class="inv-totals-val" id="s-sum-net">0.00 €</span></div>
+        <div class="inv-totals-row"><span>VAT total:</span><span class="inv-totals-val" id="s-sum-vat">0.00 €</span></div>
+        <div class="inv-totals-row"><span>Retención total:</span><span class="inv-totals-val neg" id="s-sum-ret">0.00 €</span></div>
+        <div class="inv-totals-row grand"><span>TOTAL</span><span class="inv-totals-val" id="s-sum-tot">0.00 €</span></div>
+      </div>
+
+      <!-- ─── STATUS / METHOD ─── -->
+      <div class="fgrid" style="margin-top:18px;">
         <div class="fg"><label>Status</label><select id="s-stat"><option value="pending">Pending</option><option value="paid">Paid</option><option value="partial">Partial</option></select></div>
         <div class="fg"><label>Payment Method</label><select id="s-meth"><option value="bank">Bank Transfer</option><option value="cash">Cash</option><option value="card">Card</option><option value="other">Other</option></select></div>
       </div>
+
+      <!-- Hidden compatibility fields (populated by calcS) -->
+      <input type="hidden" id="s-net" value="0">
+      <input type="hidden" id="s-vat" value="21">
+      <input type="hidden" id="s-ret" value="0">
+      <input type="hidden" id="s-desc" value="">
+      <input type="hidden" id="s-va" value="0">
+      <input type="hidden" id="s-ret-amt" value="0">
+      <input type="hidden" id="s-tot2" value="0">
     </div>
     <div class="mfoot"><button class="btn btn-ghost" onclick="closeOverlay('ov-sale')">Cancel</button><button class="btn btn-primary" onclick="saveSale()">Save Invoice</button></div>
   </div>
@@ -1258,7 +1311,7 @@ textarea{resize:vertical;min-height:72px;}
 
 <!-- PURCHASE -->
 <div class="overlay" id="ov-purch">
-  <div class="modal">
+  <div class="modal xxwide">
     <div class="mhdr"><div class="mtitle">New Purchase Invoice</div><div class="mclose" onclick="closeOverlay('ov-purch')">✕</div></div>
     <div class="mbody">
       <div class="fgrid">
@@ -1285,15 +1338,52 @@ textarea{resize:vertical;min-height:72px;}
             <div class="autocomplete-list" id="p-sup-list"></div>
           </div>
         </div>
-        <div class="fg full"><label>Description</label><input type="text" id="p-desc" placeholder="e.g. Office rent March"></div>
-        <div class="fg"><label>Category</label><select id="p-cat"><option value="COGS">Cost of Goods Sold</option><option value="Rent">Rent</option><option value="Salaries">Salaries</option><option value="Utilities">Utilities</option><option value="Marketing">Marketing</option><option value="Professional">Professional Services</option><option value="Depreciation">Depreciation</option><option value="Other OpEx">Other OpEx</option></select></div>
-        <div class="fg"><label>VAT Rate</label><select id="p-vat" onchange="calcP()"><option value="0">0%</option><option value="4">4%</option><option value="10">10%</option><option value="21" selected>21%</option></select></div>
-        <div class="fg"><label>Net Amount (€)</label><input type="number" id="p-net" placeholder="0.00" step="0.01" oninput="calcP()"></div>
-        <div class="fg"><label>VAT Amount</label><input type="text" id="p-va" readonly style="background:var(--surface3);"></div>
-        <div class="fg full"><label>Total (€)</label><input type="text" id="p-tot2" readonly style="background:var(--surface3);color:var(--red);font-family:monospace;font-weight:600;"></div>
+        <div class="fg full"><label>Category (applied to all lines)</label><select id="p-cat"><option value="COGS">Cost of Goods Sold</option><option value="Rent">Rent</option><option value="Salaries">Salaries</option><option value="Utilities">Utilities</option><option value="Marketing">Marketing</option><option value="Professional">Professional Services</option><option value="Depreciation">Depreciation</option><option value="Other OpEx">Other OpEx</option></select></div>
+      </div>
+
+      <!-- ─── PURCHASE LINES (Holded-style) ─── -->
+      <div class="inv-lines-section" style="margin-top:18px;">
+        <div class="inv-lines-header">
+          <div class="inv-lines-title">📋 Purchase Lines</div>
+        </div>
+        <div class="inv-lines-tbl-wrap">
+          <table class="inv-lines-tbl">
+            <thead>
+              <tr>
+                <th style="width:38%;">Concept / Description</th>
+                <th class="center" style="width:8%;">Qty</th>
+                <th class="amt" style="width:12%;">Unit Price (€)</th>
+                <th class="amt" style="width:12%;">Subtotal (€)</th>
+                <th style="width:14%;">IVA</th>
+                <th class="amt" style="width:12%;">Line Total</th>
+                <th class="del-cell"></th>
+              </tr>
+            </thead>
+            <tbody id="p-lines-body"></tbody>
+          </table>
+        </div>
+        <button type="button" class="inv-add-line-btn" onclick="addPurchLine()">+ Add line</button>
+      </div>
+
+      <!-- ─── TOTALS BOX ─── -->
+      <div class="inv-totals-box">
+        <div class="inv-totals-row"><span>Subtotal (Net):</span><span class="inv-totals-val" id="p-sum-net">0.00 €</span></div>
+        <div class="inv-totals-row"><span>VAT total:</span><span class="inv-totals-val" id="p-sum-vat">0.00 €</span></div>
+        <div class="inv-totals-row grand"><span>TOTAL</span><span class="inv-totals-val" id="p-sum-tot">0.00 €</span></div>
+      </div>
+
+      <!-- ─── STATUS / METHOD ─── -->
+      <div class="fgrid" style="margin-top:18px;">
         <div class="fg"><label>Status</label><select id="p-stat"><option value="pending">Pending</option><option value="paid">Paid</option></select></div>
         <div class="fg"><label>Payment Method</label><select id="p-meth"><option value="bank">Bank Transfer</option><option value="cash">Cash</option><option value="card">Card</option><option value="other">Other</option></select></div>
       </div>
+
+      <!-- Hidden compatibility fields (populated by calcP) -->
+      <input type="hidden" id="p-net" value="0">
+      <input type="hidden" id="p-vat" value="21">
+      <input type="hidden" id="p-desc" value="">
+      <input type="hidden" id="p-va" value="0">
+      <input type="hidden" id="p-tot2" value="0">
     </div>
     <div class="mfoot"><button class="btn btn-ghost" onclick="closeOverlay('ov-purch')">Cancel</button><button class="btn btn-primary" onclick="savePurch()">Save Purchase</button></div>
   </div>
@@ -2090,7 +2180,18 @@ function nav(p){
 }
 
 // ── OVERLAYS ───────────────────────────────────────────────────────────────
-function openOverlay(id){document.getElementById(id).classList.add('open');setDates();}
+function openOverlay(id){
+  document.getElementById(id).classList.add('open');
+  setDates();
+  // Initialize line tables when opening invoice/purchase modals
+  if(id==='ov-sale'){
+    var sBody=document.getElementById('s-lines-body');
+    if(sBody && sBody.children.length===0){ resetSaleLines(); }
+  } else if(id==='ov-purch'){
+    var pBody=document.getElementById('p-lines-body');
+    if(pBody && pBody.children.length===0){ resetPurchLines(); }
+  }
+}
 function closeOverlay(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.overlay').forEach(function(ov){
   ov.addEventListener('click',function(e){if(e.target===ov)ov.classList.remove('open');});
@@ -2196,36 +2297,370 @@ function clearAll(){
 }
 
 // ── CALC HELPERS ───────────────────────────────────────────────────────────
-function calcS(){
-  var n   = parseFloat(document.getElementById('s-net').value)||0;
-  var vSel= document.getElementById('s-vat');
-  var vVal= vSel ? vSel.value : '21';
-  var v   = (vVal==='exempt'||vVal==='isp') ? 0 : (parseFloat(vVal)||0);
-  var va  = n * v / 100;
-  // Retención
-  var rSel= document.getElementById('s-ret');
-  var rVal= rSel ? rSel.value : '0';
-  var rPct= rVal.endsWith('g') ? parseFloat(rVal)||0 : (parseFloat(rVal)||0);
-  var ra  = n * rPct / 100;
-  var tot = n + va - ra;
-  var vaEl=document.getElementById('s-va'); if(vaEl) vaEl.value=va.toFixed(2);
-  var raEl=document.getElementById('s-ret-amt'); if(raEl){ raEl.value=ra>0?('-'+ra.toFixed(2)):'0.00'; raEl.style.color=ra>0?'var(--red)':'var(--text3)'; }
-  var tEl =document.getElementById('s-tot2'); if(tEl) tEl.value=tot.toFixed(2);
+// ══════════════════════════════════════════════════════════════════
+// INVOICE LINES MANAGEMENT (Holded-style line-by-line)
+// ══════════════════════════════════════════════════════════════════
+// Each line: {concept, qty, price, vatRate, vatType, retRate, retType}
+// Top-level fields (net, vatAmt, retAmt, total, vatRate, retRate, desc) are
+// kept synced for full backward compatibility with the rest of the system
+// (JE, P&L, BS, exports, imports, recurring, contacts module, etc.)
+
+// ─── VAT/Retención dropdown options (shared) ───
+function _vatOptionsHTML(selVal){
+  var sv=String(selVal===undefined||selVal===null?'21':selVal);
+  var opts=[
+    ['0','Sin IVA (0%)'],['4','IVA 4%'],['10','IVA 10%'],['21','IVA 21%'],
+    ['exempt','Exento'],['isp','Inv. Sujeto Pasivo']
+  ];
+  return opts.map(function(o){
+    return '<option value="'+o[0]+'"'+(o[0]===sv?' selected':'')+'>'+o[1]+'</option>';
+  }).join('');
 }
-function calcP(){var n=parseFloat(document.getElementById('p-net').value)||0,v=parseFloat(document.getElementById('p-vat').value)||0,va=n*v/100;document.getElementById('p-va').value=va.toFixed(2);document.getElementById('p-tot2').value=(n+va).toFixed(2);}
+function _retOptionsHTML(selVal){
+  var sv=String(selVal===undefined||selVal===null?'0':selVal);
+  var opts=[
+    ['0','Sin retención'],['7','Ret. 7%'],['15','Ret. 15%'],
+    ['19','Ret. 19% (Cap.)'],['19g','Ret. 19% (Garantía)']
+  ];
+  return opts.map(function(o){
+    return '<option value="'+o[0]+'"'+(o[0]===sv?' selected':'')+'>'+o[1]+'</option>';
+  }).join('');
+}
+
+// Convert legacy (single-amount) sale record to a line object
+function _legacyToSaleLine(rec){
+  var rRate = rec.retRate || 0;
+  var rType = rec.retType || (rec.retRate ? String(rec.retRate) : '0');
+  return {
+    concept: rec.desc || '',
+    qty: 1,
+    price: rec.net || 0,
+    vatRate: (rec.vatType==='exempt'||rec.vatType==='isp') ? 0 : (rec.vatRate || 0),
+    vatType: rec.vatType || String(rec.vatRate || 0),
+    retRate: rRate,
+    retType: String(rType)
+  };
+}
+function _legacyToPurchLine(rec){
+  return {
+    concept: rec.desc || '',
+    qty: 1,
+    price: rec.net || 0,
+    vatRate: rec.vatRate || 0,
+    vatType: String(rec.vatRate || 0)
+  };
+}
+
+// ─── Compute totals for a sale lines array ───
+function _computeSaleLinesTotals(lines){
+  var net=0, vat=0, ret=0;
+  for(var i=0;i<lines.length;i++){
+    var ln=lines[i];
+    var sub=(parseFloat(ln.qty)||0)*(parseFloat(ln.price)||0);
+    var vrate=(parseFloat(ln.vatRate)||0);
+    var vtype=ln.vatType||String(vrate);
+    var actualVat=(vtype==='exempt'||vtype==='isp')?0:vrate;
+    var rrate=(parseFloat(ln.retRate)||0);
+    net+=sub;
+    vat+=sub*actualVat/100;
+    ret+=sub*rrate/100;
+  }
+  return {net:net, vat:vat, ret:ret, total:net+vat-ret};
+}
+function _computePurchLinesTotals(lines){
+  var net=0, vat=0;
+  for(var i=0;i<lines.length;i++){
+    var ln=lines[i];
+    var sub=(parseFloat(ln.qty)||0)*(parseFloat(ln.price)||0);
+    var vrate=(parseFloat(ln.vatRate)||0);
+    net+=sub;
+    vat+=sub*vrate/100;
+  }
+  return {net:net, vat:vat, total:net+vat};
+}
+
+// ─── Build a sale line <tr> ───
+function _saleLineRowHTML(idx, prefix, includeRet){
+  // prefix is 's' for new sale, 'ie' for edit
+  var retCell = includeRet ?
+    '<td><select class="line-ret" onchange="'+prefix+'LinesChanged()">'+_retOptionsHTML('0')+'</select></td>' : '';
+  return ''+
+    '<tr data-line-idx="'+idx+'">'+
+      '<td><input type="text" class="line-concept" placeholder="Concept / description"></td>'+
+      '<td><input type="number" class="line-qty qty" min="0" step="0.01" value="1" oninput="'+prefix+'LinesChanged()"></td>'+
+      '<td><input type="number" class="line-price amt" min="0" step="0.01" value="0.00" oninput="'+prefix+'LinesChanged()"></td>'+
+      '<td><span class="line-subtotal">0.00</span></td>'+
+      '<td><select class="line-vat" onchange="'+prefix+'LinesChanged()">'+_vatOptionsHTML('21')+'</select></td>'+
+      retCell+
+      '<td class="amt"><span class="line-subtotal line-total">0.00</span></td>'+
+      '<td class="del-cell"><button type="button" class="inv-line-del-btn" onclick="removeLineRow(this,\''+prefix+'\')" title="Remove line">✕</button></td>'+
+    '</tr>';
+}
+
+function removeLineRow(btn, prefix){
+  var tr=btn.closest('tr');
+  var tbody=tr.parentNode;
+  if(tbody.children.length<=1){
+    // keep at least one row; just clear it
+    var inputs=tr.querySelectorAll('input,select');
+    inputs.forEach(function(el){
+      if(el.classList.contains('line-qty')) el.value='1';
+      else if(el.classList.contains('line-price')) el.value='0.00';
+      else if(el.tagName==='SELECT'){
+        if(el.classList.contains('line-vat')) el.value='21';
+        else el.value='0';
+      } else el.value='';
+    });
+  } else {
+    tr.remove();
+  }
+  if(prefix==='s') sLinesChanged();
+  else if(prefix==='p') pLinesChanged();
+  else if(prefix==='ie') ieLinesChanged();
+  else if(prefix==='pe') peLinesChanged();
+}
+
+// ─── Read current rows back into JS array (sales) ───
+function _readSaleLines(tbodyId, includeRet){
+  var rows=document.querySelectorAll('#'+tbodyId+' tr');
+  var arr=[];
+  rows.forEach(function(tr){
+    var concept=(tr.querySelector('.line-concept')||{}).value||'';
+    var qty=parseFloat((tr.querySelector('.line-qty')||{}).value)||0;
+    var price=parseFloat((tr.querySelector('.line-price')||{}).value)||0;
+    var vatSel=tr.querySelector('.line-vat');
+    var vatType=vatSel?vatSel.value:'21';
+    var vatRate=(vatType==='exempt'||vatType==='isp')?0:(parseFloat(vatType)||0);
+    var line={concept:concept, qty:qty, price:price, vatRate:vatRate, vatType:vatType};
+    if(includeRet){
+      var retSel=tr.querySelector('.line-ret');
+      var retType=retSel?retSel.value:'0';
+      var retRate=parseFloat(retType)||0; // '19g' parses to 19
+      line.retRate=retRate;
+      line.retType=retType;
+    }
+    arr.push(line);
+  });
+  return arr;
+}
+
+// ─── Refresh row subtotal/line-total spans (sales) ───
+function _refreshLineRowsSale(tbodyId, includeRet){
+  var rows=document.querySelectorAll('#'+tbodyId+' tr');
+  rows.forEach(function(tr){
+    var qty=parseFloat((tr.querySelector('.line-qty')||{}).value)||0;
+    var price=parseFloat((tr.querySelector('.line-price')||{}).value)||0;
+    var sub=qty*price;
+    var subSpan=tr.querySelectorAll('.line-subtotal')[0];
+    if(subSpan) subSpan.textContent=sub.toFixed(2);
+    var vatSel=tr.querySelector('.line-vat');
+    var vatType=vatSel?vatSel.value:'21';
+    var vatRate=(vatType==='exempt'||vatType==='isp')?0:(parseFloat(vatType)||0);
+    var va=sub*vatRate/100;
+    var ra=0;
+    if(includeRet){
+      var retSel=tr.querySelector('.line-ret');
+      var rt=retSel?retSel.value:'0';
+      var rr=parseFloat(rt)||0;
+      ra=sub*rr/100;
+    }
+    var lineTot=sub+va-ra;
+    var totSpan=tr.querySelector('.line-total');
+    if(totSpan) totSpan.textContent=lineTot.toFixed(2);
+  });
+}
+function _refreshLineRowsPurch(tbodyId){
+  var rows=document.querySelectorAll('#'+tbodyId+' tr');
+  rows.forEach(function(tr){
+    var qty=parseFloat((tr.querySelector('.line-qty')||{}).value)||0;
+    var price=parseFloat((tr.querySelector('.line-price')||{}).value)||0;
+    var sub=qty*price;
+    var subSpan=tr.querySelectorAll('.line-subtotal')[0];
+    if(subSpan) subSpan.textContent=sub.toFixed(2);
+    var vatSel=tr.querySelector('.line-vat');
+    var vatType=vatSel?vatSel.value:'21';
+    var vatRate=(parseFloat(vatType)||0);
+    var va=sub*vatRate/100;
+    var lineTot=sub+va;
+    var totSpan=tr.querySelector('.line-total');
+    if(totSpan) totSpan.textContent=lineTot.toFixed(2);
+  });
+}
+
+// ═══ NEW SALE MODAL ═══
+function addSaleLine(data){
+  var body=document.getElementById('s-lines-body');
+  if(!body) return;
+  var idx=body.children.length;
+  body.insertAdjacentHTML('beforeend', _saleLineRowHTML(idx,'s',true));
+  if(data){
+    var tr=body.lastElementChild;
+    if(data.concept) tr.querySelector('.line-concept').value=data.concept;
+    if(data.qty!==undefined) tr.querySelector('.line-qty').value=data.qty;
+    if(data.price!==undefined) tr.querySelector('.line-price').value=Number(data.price).toFixed(2);
+    if(data.vatType!==undefined) tr.querySelector('.line-vat').value=data.vatType;
+    if(data.retType!==undefined) tr.querySelector('.line-ret').value=data.retType;
+  }
+  sLinesChanged();
+}
+function resetSaleLines(){
+  var body=document.getElementById('s-lines-body');
+  if(!body) return;
+  body.innerHTML='';
+  addSaleLine();
+}
+function sLinesChanged(){
+  _refreshLineRowsSale('s-lines-body', true);
+  var lines=_readSaleLines('s-lines-body', true);
+  var t=_computeSaleLinesTotals(lines);
+  var fmt=function(n){return n.toFixed(2)+' €';};
+  document.getElementById('s-sum-net').textContent=fmt(t.net);
+  document.getElementById('s-sum-vat').textContent=fmt(t.vat);
+  document.getElementById('s-sum-ret').textContent=t.ret>0?('-'+fmt(t.ret)):fmt(0);
+  document.getElementById('s-sum-tot').textContent=fmt(t.total);
+  // Sync hidden compatibility fields (first line drives top-level rates)
+  var first=lines[0]||{};
+  var h=function(id,v){var el=document.getElementById(id);if(el)el.value=v;};
+  h('s-net', t.net.toFixed(2));
+  h('s-va',  t.vat.toFixed(2));
+  h('s-ret-amt', t.ret.toFixed(2));
+  h('s-tot2', t.total.toFixed(2));
+  h('s-vat', first.vatType||'21');
+  h('s-ret', first.retType||'0');
+  h('s-desc', first.concept||'');
+}
+
+// ═══ NEW PURCHASE MODAL ═══
+function addPurchLine(data){
+  var body=document.getElementById('p-lines-body');
+  if(!body) return;
+  var idx=body.children.length;
+  body.insertAdjacentHTML('beforeend', _saleLineRowHTML(idx,'p',false));
+  if(data){
+    var tr=body.lastElementChild;
+    if(data.concept) tr.querySelector('.line-concept').value=data.concept;
+    if(data.qty!==undefined) tr.querySelector('.line-qty').value=data.qty;
+    if(data.price!==undefined) tr.querySelector('.line-price').value=Number(data.price).toFixed(2);
+    if(data.vatType!==undefined) tr.querySelector('.line-vat').value=data.vatType;
+  }
+  pLinesChanged();
+}
+function resetPurchLines(){
+  var body=document.getElementById('p-lines-body');
+  if(!body) return;
+  body.innerHTML='';
+  addPurchLine();
+}
+function pLinesChanged(){
+  _refreshLineRowsPurch('p-lines-body');
+  var lines=_readSaleLines('p-lines-body', false);
+  var t=_computePurchLinesTotals(lines);
+  var fmt=function(n){return n.toFixed(2)+' €';};
+  document.getElementById('p-sum-net').textContent=fmt(t.net);
+  document.getElementById('p-sum-vat').textContent=fmt(t.vat);
+  document.getElementById('p-sum-tot').textContent=fmt(t.total);
+  var first=lines[0]||{};
+  var h=function(id,v){var el=document.getElementById(id);if(el)el.value=v;};
+  h('p-net', t.net.toFixed(2));
+  h('p-va',  t.vat.toFixed(2));
+  h('p-tot2', t.total.toFixed(2));
+  h('p-vat', first.vatType||'21');
+  h('p-desc', first.concept||'');
+}
+
+// ═══ EDIT INVOICE MODAL (sale) ═══
+function addEditSaleLine(data){
+  var body=document.getElementById('ie-lines-body');
+  if(!body) return;
+  var idx=body.children.length;
+  body.insertAdjacentHTML('beforeend', _saleLineRowHTML(idx,'ie',true));
+  if(data){
+    var tr=body.lastElementChild;
+    if(data.concept) tr.querySelector('.line-concept').value=data.concept;
+    if(data.qty!==undefined) tr.querySelector('.line-qty').value=data.qty;
+    if(data.price!==undefined) tr.querySelector('.line-price').value=Number(data.price).toFixed(2);
+    if(data.vatType!==undefined) tr.querySelector('.line-vat').value=data.vatType;
+    if(data.retType!==undefined) tr.querySelector('.line-ret').value=data.retType;
+  }
+  ieLinesChanged();
+}
+function ieLinesChanged(){
+  _refreshLineRowsSale('ie-lines-body', true);
+  var lines=_readSaleLines('ie-lines-body', true);
+  var t=_computeSaleLinesTotals(lines);
+  var fmt=function(n){return n.toFixed(2)+' €';};
+  document.getElementById('ie-sum-net').textContent=fmt(t.net);
+  document.getElementById('ie-sum-vat').textContent=fmt(t.vat);
+  document.getElementById('ie-sum-ret').textContent=t.ret>0?('-'+fmt(t.ret)):fmt(0);
+  document.getElementById('ie-sum-tot').textContent=fmt(t.total);
+  var first=lines[0]||{};
+  var h=function(id,v){var el=document.getElementById(id);if(el)el.value=v;};
+  h('ie-net', t.net.toFixed(2));
+  h('ie-vatamt', t.vat.toFixed(2));
+  h('ie-total', t.total.toFixed(2));
+  h('ie-vat', first.vatType||'21');
+  h('ie-desc', first.concept||'');
+}
+
+// ═══ EDIT PURCHASE MODAL ═══
+function addEditPurchLine(data){
+  var body=document.getElementById('pe-lines-body');
+  if(!body) return;
+  var idx=body.children.length;
+  body.insertAdjacentHTML('beforeend', _saleLineRowHTML(idx,'pe',false));
+  if(data){
+    var tr=body.lastElementChild;
+    if(data.concept) tr.querySelector('.line-concept').value=data.concept;
+    if(data.qty!==undefined) tr.querySelector('.line-qty').value=data.qty;
+    if(data.price!==undefined) tr.querySelector('.line-price').value=Number(data.price).toFixed(2);
+    if(data.vatType!==undefined) tr.querySelector('.line-vat').value=data.vatType;
+  }
+  peLinesChanged();
+}
+function peLinesChanged(){
+  _refreshLineRowsPurch('pe-lines-body');
+  var lines=_readSaleLines('pe-lines-body', false);
+  var t=_computePurchLinesTotals(lines);
+  var fmt=function(n){return n.toFixed(2)+' €';};
+  document.getElementById('pe-sum-net').textContent=fmt(t.net);
+  document.getElementById('pe-sum-vat').textContent=fmt(t.vat);
+  document.getElementById('pe-sum-tot').textContent=fmt(t.total);
+  var first=lines[0]||{};
+  var h=function(id,v){var el=document.getElementById(id);if(el)el.value=v;};
+  h('pe-net', t.net.toFixed(2));
+  h('pe-vatamt', t.vat.toFixed(2));
+  h('pe-total', t.total.toFixed(2));
+  h('pe-vat', first.vatType||'21');
+  h('pe-desc', first.concept||'');
+}
+
+// ─── Legacy calcS / calcP / calcIE / calcPE shims (kept for backward compat) ───
+function calcS(){ if(document.getElementById('s-lines-body')) sLinesChanged(); }
+function calcP(){ if(document.getElementById('p-lines-body')) pLinesChanged(); }
 
 // ── SAVE OPERATIONS ────────────────────────────────────────────────────────
 function saveSale(){
-  var net=parseFloat(document.getElementById('s-net').value)||0;if(!net){alert('Enter net amount.');return;}
-  var vSel=document.getElementById('s-vat');
-  var vVal=vSel?vSel.value:'21';
-  var vat=(vVal==='exempt'||vVal==='isp')?0:(parseFloat(vVal)||0);
-  var va=net*vat/100;
-  var rSel=document.getElementById('s-ret');
-  var rVal=rSel?rSel.value:'0';
-  var retRate=parseFloat(rVal)||0;
-  var ra=net*retRate/100;
-  var total=net+va-ra;
+  // Read lines from the new line-table
+  var lines = _readSaleLines('s-lines-body', true);
+  // Filter out completely empty lines
+  lines = lines.filter(function(l){
+    return (l.qty>0 && l.price>0) || (l.concept && l.concept.trim().length>0);
+  });
+  if(!lines.length){ alert('Add at least one invoice line.'); return; }
+  // Validate: at least one line with amount > 0
+  var totals = _computeSaleLinesTotals(lines);
+  if(!(totals.net>0)){ alert('Enter at least one line with a non-zero amount.'); return; }
+  var net    = totals.net;
+  var va     = totals.vat;
+  var ra     = totals.ret;
+  var total  = totals.total;
+  // Top-level vatRate / retRate (from first line, used by reports/JE)
+  var first  = lines[0];
+  var vat    = first.vatRate || 0;
+  var vVal   = first.vatType || String(vat);
+  var retRate= first.retRate || 0;
+  // Description: join concepts of all lines
+  var desc   = lines.map(function(l){return l.concept;}).filter(Boolean).join(' · ');
   var stat=document.getElementById('s-stat').value,meth=document.getElementById('s-meth').value,dt=document.getElementById('s-date').value;
   // Use series numbering if available, fallback to legacy prefix
   var _manualNum = document.getElementById('s-num').value;
@@ -2241,8 +2676,8 @@ function saveSale(){
       num = pfx + String(DB.ids.s).padStart(6,'0');
     }
   }
-  var cust=document.getElementById('s-cust').value||'Unknown',desc=document.getElementById('s-desc').value;
-  var rec={id:DB.ids.s++,date:dt,num:num,customer:cust,desc:desc,vatRate:vat,net:net,vatAmt:va,retRate:retRate,retAmt:ra,total:total,status:stat,method:meth,vatType:vVal};
+  var cust=document.getElementById('s-cust').value||'Unknown';
+  var rec={id:DB.ids.s++,date:dt,num:num,customer:cust,desc:desc,vatRate:vat,net:net,vatAmt:va,retRate:retRate,retAmt:ra,total:total,status:stat,method:meth,vatType:vVal,lines:lines};
   DB.sales.push(rec);
   // Auto JE using active plan accounts
   var _sp = getActivePlan();
@@ -2265,11 +2700,26 @@ function saveSale(){
       lines:[{account:_sp.cash,debit:total,credit:0},{account:_sp.ar,debit:0,credit:total}],
       amount:total,auto:true,sourceType:'collection'});
   }
-  sv();closeOverlay('ov-sale');['s-num','s-cust','s-desc','s-net','s-va','s-ret-amt','s-tot2'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});renderAll();
+  sv();closeOverlay('ov-sale');
+  ['s-num','s-cust'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  resetSaleLines();
+  renderAll();
 }
 function savePurch(){
-  var net=parseFloat(document.getElementById('p-net').value)||0;if(!net){alert('Enter net amount.');return;}
-  var vat=parseFloat(document.getElementById('p-vat').value)||0,va=net*vat/100,stat=document.getElementById('p-stat').value,meth=document.getElementById('p-meth').value,dt=document.getElementById('p-date').value;
+  // Read lines
+  var lines = _readSaleLines('p-lines-body', false);
+  lines = lines.filter(function(l){
+    return (l.qty>0 && l.price>0) || (l.concept && l.concept.trim().length>0);
+  });
+  if(!lines.length){ alert('Add at least one purchase line.'); return; }
+  var totals = _computePurchLinesTotals(lines);
+  if(!(totals.net>0)){ alert('Enter at least one line with a non-zero amount.'); return; }
+  var net = totals.net;
+  var va  = totals.vat;
+  var first = lines[0];
+  var vat = first.vatRate || 0;
+  var desc = lines.map(function(l){return l.concept;}).filter(Boolean).join(' · ');
+  var stat=document.getElementById('p-stat').value,meth=document.getElementById('p-meth').value,dt=document.getElementById('p-date').value;
   var invType = (document.getElementById('p-invtype')||{value:'expense'}).value || 'expense';
   var assetName = invType==='asset' ? (document.getElementById('p-asset-name')||{value:''}).value : '';
   var _manualPNum = document.getElementById('p-num').value;
@@ -2285,8 +2735,8 @@ function savePurch(){
       num = pfx + String(DB.ids.p).padStart(6,'0');
     }
   }
-  var sup=document.getElementById('p-sup').value||'Unknown',desc=document.getElementById('p-desc').value,cat=document.getElementById('p-cat').value;
-  var rec={id:DB.ids.p++,date:dt,num:num,supplier:sup,desc:desc,cat:cat,vatRate:vat,net:net,vatAmt:va,total:net+va,status:stat,method:meth,invType:invType,assetName:assetName};
+  var sup=document.getElementById('p-sup').value||'Unknown',cat=document.getElementById('p-cat').value;
+  var rec={id:DB.ids.p++,date:dt,num:num,supplier:sup,desc:desc,cat:cat,vatRate:vat,net:net,vatAmt:va,total:net+va,status:stat,method:meth,invType:invType,assetName:assetName,lines:lines};
   DB.purch.push(rec);
 
   // ── JE depends on invoice type ────────────────────────────────
@@ -2351,7 +2801,8 @@ function savePurch(){
   }
   sv();
   closeOverlay('ov-purch');
-  ['p-num','p-sup','p-desc','p-net','p-va','p-tot2','p-asset-name'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  ['p-num','p-sup','p-asset-name'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  resetPurchLines();
   // Reset type
   var ptEl = document.getElementById('p-invtype');
   if(ptEl) ptEl.value = 'expense';
@@ -3999,12 +4450,16 @@ function saveContact() {
     if(tgt === 's-cust') {
       var vs = document.getElementById('s-vat');
       if(vs && ct.salesvat) vs.value = ct.salesvat;
-      if(typeof calcS==='function') calcS();
+      var firstSaleVat = document.querySelector('#s-lines-body tr .line-vat');
+      if(firstSaleVat && ct.salesvat){ firstSaleVat.value = String(ct.salesvat); }
+      if(typeof sLinesChanged==='function') sLinesChanged();
     }
     if(tgt === 'p-sup') {
       var vp = document.getElementById('p-vat');
       if(vp && ct.purchvat) vp.value = ct.purchvat;
-      if(typeof calcP==='function') calcP();
+      var firstPurchVat = document.querySelector('#p-lines-body tr .line-vat');
+      if(firstPurchVat && ct.purchvat){ firstPurchVat.value = String(ct.purchvat); }
+      if(typeof pLinesChanged==='function') pLinesChanged();
     }
   }
 }
@@ -4106,11 +4561,18 @@ function acSelect(inputId, listId, name, ctId) {
   if(ct) {
     if(inputId==='s-cust' && ct.salesvat) {
       var vatEl = document.getElementById('s-vat');
-      if(vatEl){ vatEl.value=ct.salesvat; calcS(); }
+      if(vatEl){ vatEl.value=ct.salesvat; }
+      // Also update first line VAT in the line table
+      var firstSaleVat = document.querySelector('#s-lines-body tr .line-vat');
+      if(firstSaleVat){ firstSaleVat.value = String(ct.salesvat); }
+      if(typeof sLinesChanged==='function') sLinesChanged();
     }
     if(inputId==='p-sup' && ct.purchvat) {
       var vatEl2 = document.getElementById('p-vat');
-      if(vatEl2){ vatEl2.value=ct.purchvat; calcP(); }
+      if(vatEl2){ vatEl2.value=ct.purchvat; }
+      var firstPurchVat = document.querySelector('#p-lines-body tr .line-vat');
+      if(firstPurchVat){ firstPurchVat.value = String(ct.purchvat); }
+      if(typeof pLinesChanged==='function') pLinesChanged();
     }
   }
 }
@@ -4193,20 +4655,30 @@ function openInvoicePreview(saleId) {
 
   // Line items
   var tbody = document.getElementById('inv-lines');
-  tbody.innerHTML =
-    '<tr>' +
-    '<td>'+(s.desc || 'Services')+'</td>' +
-    '<td style="text-align:right;">1</td>' +
-    '<td style="text-align:right;">'+f(s.net)+'</td>' +
-    '<td style="text-align:right;">'+s.vatRate+'%</td>' +
-    '<td style="text-align:right;font-weight:700;">'+f(s.net)+'</td>' +
+  var previewLines = (s.lines && s.lines.length) ? s.lines : [_legacyToSaleLine(s)];
+  tbody.innerHTML = previewLines.map(function(ln){
+    var qty = parseFloat(ln.qty)||0;
+    var price = parseFloat(ln.price)||0;
+    var sub = qty*price;
+    var vatRate = (ln.vatType==='exempt'||ln.vatType==='isp') ? 0 : (parseFloat(ln.vatRate)||0);
+    var vatLabel = (ln.vatType==='exempt') ? 'Exento' : (ln.vatType==='isp' ? 'ISP' : (vatRate+'%'));
+    return '<tr>'+
+      '<td>'+(ln.concept||'Services')+'</td>'+
+      '<td style="text-align:right;">'+(qty===Math.floor(qty)?qty.toFixed(0):qty.toFixed(2))+'</td>'+
+      '<td style="text-align:right;">'+f(price)+'</td>'+
+      '<td style="text-align:right;">'+vatLabel+'</td>'+
+      '<td style="text-align:right;font-weight:700;">'+f(sub)+'</td>'+
     '</tr>';
+  }).join('');
 
   // Totals footer
   var tfoot = document.getElementById('inv-tfoot');
+  var retRow = (s.retAmt && s.retAmt > 0) ?
+    '<tr><td colspan="4" style="text-align:right;color:#666;">Retención ('+(s.retRate||0)+'%)</td><td style="text-align:right;font-weight:600;color:#c00;">-'+f(s.retAmt)+'</td></tr>' : '';
   tfoot.innerHTML =
     '<tr><td colspan="4" style="text-align:right;color:#666;">Subtotal</td><td style="text-align:right;font-weight:600;">'+f(s.net)+'</td></tr>' +
     '<tr><td colspan="4" style="text-align:right;color:#666;">VAT ('+s.vatRate+'%)</td><td style="text-align:right;font-weight:600;">'+f(s.vatAmt)+'</td></tr>' +
+    retRow +
     '<tr class="inv-total-row"><td colspan="4" style="text-align:right;">TOTAL</td><td style="text-align:right;">'+f(s.total)+'</td></tr>';
 
   // Notes / footer
@@ -4242,43 +4714,67 @@ function editInvoice() {
   document.getElementById('ie-date').value     = s.date || '';
   document.getElementById('ie-num').value      = s.num  || '';
   document.getElementById('ie-customer').value = s.customer || '';
-  document.getElementById('ie-desc').value     = s.desc || '';
-  document.getElementById('ie-net').value      = s.net || '';
-  document.getElementById('ie-vat').value      = s.vatRate || '21';
-  document.getElementById('ie-vatamt').value   = s.vatAmt ? s.vatAmt.toFixed(2) : '';
-  document.getElementById('ie-total').value    = s.total ? s.total.toFixed(2) : '';
   document.getElementById('ie-status').value   = s.status || 'pending';
   document.getElementById('ie-method').value   = s.method || 'bank';
   document.getElementById('ie-notes').value    = s.notes || '';
-  calcIE();
+  // Populate lines
+  var body = document.getElementById('ie-lines-body');
+  if(body){
+    body.innerHTML='';
+    var lines = (s.lines && s.lines.length) ? s.lines : [_legacyToSaleLine(s)];
+    lines.forEach(function(ln){ addEditSaleLine(ln); });
+    if(!body.children.length) addEditSaleLine();
+  }
+  ieLinesChanged();
   openOverlay('ov-invoice-edit');
 }
 
 function calcIE() {
-  var n = parseFloat(document.getElementById('ie-net').value)||0;
-  var v = parseFloat(document.getElementById('ie-vat').value)||0;
-  var va = n*v/100;
-  document.getElementById('ie-vatamt').value = va.toFixed(2);
-  document.getElementById('ie-total').value  = (n+va).toFixed(2);
+  if(document.getElementById('ie-lines-body')) ieLinesChanged();
 }
 
 function saveEditedInvoice() {
   var s = DB.sales.find(function(x){return x.id===_invSaleId;});
   if(!s) return;
-  var net = parseFloat(document.getElementById('ie-net').value)||0;
-  var vat = parseFloat(document.getElementById('ie-vat').value)||0;
-  var va  = net*vat/100;
+  var lines = _readSaleLines('ie-lines-body', true);
+  lines = lines.filter(function(l){
+    return (l.qty>0 && l.price>0) || (l.concept && l.concept.trim().length>0);
+  });
+  if(!lines.length){ alert('Add at least one invoice line.'); return; }
+  var totals = _computeSaleLinesTotals(lines);
+  if(!(totals.net>0)){ alert('Enter at least one line with a non-zero amount.'); return; }
+  var first = lines[0];
   s.date     = document.getElementById('ie-date').value;
   s.num      = document.getElementById('ie-num').value;
   s.customer = document.getElementById('ie-customer').value;
-  s.desc     = document.getElementById('ie-desc').value;
-  s.net      = net;
-  s.vatRate  = vat;
-  s.vatAmt   = va;
-  s.total    = net + va;
+  s.desc     = lines.map(function(l){return l.concept;}).filter(Boolean).join(' · ');
+  s.net      = totals.net;
+  s.vatRate  = first.vatRate || 0;
+  s.vatType  = first.vatType || String(s.vatRate);
+  s.vatAmt   = totals.vat;
+  s.retRate  = first.retRate || 0;
+  s.retAmt   = totals.ret;
+  s.total    = totals.total;
   s.status   = document.getElementById('ie-status').value;
   s.method   = document.getElementById('ie-method').value;
   s.notes    = document.getElementById('ie-notes').value;
+  s.lines    = lines;
+  // Re-build the auto JE if it exists
+  var jeIdx = DB.je.findIndex(function(j){ return j.sourceType==='sale' && j.sourceId===s.id; });
+  if(jeIdx >= 0){
+    var _sp = getActivePlan();
+    var saleLines = [
+      {account:_sp.ar,      debit:s.total, credit:0},
+      {account:_sp.revenue, debit:0,       credit:s.net}
+    ];
+    if(s.vatAmt > 0) saleLines.push({account:_sp.vatIn, debit:0, credit:s.vatAmt});
+    var retAcc = _sp.id==='pgc' ? '473' : '2210';
+    if(s.retAmt > 0) saleLines.push({account:retAcc, debit:s.retAmt, credit:0});
+    DB.je[jeIdx].lines = saleLines;
+    DB.je[jeIdx].amount = s.total;
+    DB.je[jeIdx].date = s.date;
+    DB.je[jeIdx].desc = 'Sale — '+s.customer+' / '+s.num;
+  }
   sv();
   closeOverlay('ov-invoice-edit');
   openInvoicePreview(_invSaleId); // Refresh preview
@@ -6227,9 +6723,6 @@ function openEditPurch(purchId) {
   document.getElementById('pe-date').value   = p.date   || '';
   document.getElementById('pe-num').value    = p.num    || '';
   document.getElementById('pe-sup').value    = p.supplier || '';
-  document.getElementById('pe-desc').value   = p.desc   || '';
-  document.getElementById('pe-net').value    = p.net    || 0;
-  document.getElementById('pe-vat').value    = String(p.vatRate || 21);
   document.getElementById('pe-stat').value   = p.status || 'pending';
   document.getElementById('pe-meth').value   = p.method || 'bank';
   document.getElementById('pe-invtype').value= p.invType || 'expense';
@@ -6239,38 +6732,74 @@ function openEditPurch(purchId) {
   // Set saved category
   var catSel = document.getElementById('pe-cat');
   if(catSel) catSel.value = p.cat || '';
-  calcPE();
+  // Populate lines
+  var body = document.getElementById('pe-lines-body');
+  if(body){
+    body.innerHTML='';
+    var lines = (p.lines && p.lines.length) ? p.lines : [_legacyToPurchLine(p)];
+    lines.forEach(function(ln){ addEditPurchLine(ln); });
+    if(!body.children.length) addEditPurchLine();
+  }
+  peLinesChanged();
   openOverlay('ov-purch-edit');
 }
 
 function calcPE() {
-  var net = parseFloat(document.getElementById('pe-net').value)||0;
-  var vat = parseFloat(document.getElementById('pe-vat').value)||0;
-  var va  = net*vat/100;
-  document.getElementById('pe-vatamt').value = va.toFixed(2);
-  document.getElementById('pe-total').value  = (net+va).toFixed(2);
+  if(document.getElementById('pe-lines-body')) peLinesChanged();
 }
 
 function saveEditPurch() {
   if(!_peId) return;
   var p = DB.purch.find(function(x){return x.id===_peId;});
   if(!p) return;
-  var net = parseFloat(document.getElementById('pe-net').value)||0;
-  var vat = parseFloat(document.getElementById('pe-vat').value)||0;
-  var va  = net*vat/100;
+  var lines = _readSaleLines('pe-lines-body', false);
+  lines = lines.filter(function(l){
+    return (l.qty>0 && l.price>0) || (l.concept && l.concept.trim().length>0);
+  });
+  if(!lines.length){ alert('Add at least one purchase line.'); return; }
+  var totals = _computePurchLinesTotals(lines);
+  if(!(totals.net>0)){ alert('Enter at least one line with a non-zero amount.'); return; }
+  var first = lines[0];
   p.date      = document.getElementById('pe-date').value;
   p.num       = document.getElementById('pe-num').value;
   p.supplier  = document.getElementById('pe-sup').value;
-  p.desc      = document.getElementById('pe-desc').value;
+  p.desc      = lines.map(function(l){return l.concept;}).filter(Boolean).join(' · ');
   p.cat       = document.getElementById('pe-cat').value;
-  p.net       = net;
-  p.vatRate   = vat;
-  p.vatAmt    = va;
-  p.total     = net+va;
+  p.net       = totals.net;
+  p.vatRate   = first.vatRate || 0;
+  p.vatAmt    = totals.vat;
+  p.total     = totals.total;
   p.status    = document.getElementById('pe-stat').value;
   p.method    = document.getElementById('pe-meth').value;
   p.invType   = document.getElementById('pe-invtype').value;
   p.assetName = document.getElementById('pe-asset-name').value;
+  p.lines     = lines;
+  // Re-build the auto JE if it exists
+  var jeIdx = DB.je.findIndex(function(j){ return j.sourceType==='purchase' && j.sourceId===p.id; });
+  if(jeIdx >= 0){
+    var _pp = getActivePlan();
+    var catAccMap;
+    if(_pp.id === 'pgc') {
+      catAccMap = {'COGS':'600','Cost of Goods Sold':'600','Rent':'621','Salaries':'640','Utilities':'628','Marketing':'627','Professional':'623','Professional Services':'623','Depreciation':'681','Other OpEx':'629'};
+    } else {
+      catAccMap = {'COGS':'5000','Cost of Goods Sold':'5000','Rent':'6100','Salaries':'6000','Utilities':'6200','Marketing':'6300','Professional':'6400','Depreciation':'6500','Other OpEx':'6900'};
+    }
+    var jeLines;
+    if(p.invType === 'asset'){
+      var assetAcc = p.cat || (_pp.id==='pgc'?'213':'1500');
+      jeLines = [{account:assetAcc, debit:p.net, credit:0},{account:_pp.ap, debit:0, credit:p.total}];
+      if(p.vatAmt>0) jeLines.splice(1,0,{account:_pp.vatOut, debit:p.vatAmt, credit:0});
+    } else {
+      var _fb = _pp.id==='pgc'?'629':'6900';
+      var expAcc = (_pp.expCatMap && _pp.expCatMap[p.cat]) || catAccMap[p.cat] || _fb;
+      jeLines = [{account:expAcc, debit:p.net, credit:0},{account:_pp.ap, debit:0, credit:p.total}];
+      if(p.vatAmt>0) jeLines.splice(1,0,{account:_pp.vatOut, debit:p.vatAmt, credit:0});
+    }
+    DB.je[jeIdx].lines = jeLines;
+    DB.je[jeIdx].amount = p.total;
+    DB.je[jeIdx].date = p.date;
+    DB.je[jeIdx].desc = (p.invType==='asset'?'Asset purchase':'Purchase')+' — '+p.supplier+' / '+p.num;
+  }
   sv();
   closeOverlay('ov-purch-edit');
   rPurch();
@@ -10310,23 +10839,49 @@ function showToast(msg) {
 
 <!-- EDIT INVOICE MODAL -->
 <div class="overlay" id="ov-invoice-edit">
-  <div class="modal" style="width:min(640px,95vw)">
+  <div class="modal xxwide">
     <div class="mhdr"><div class="mtitle">Edit Invoice</div><div class="mclose" onclick="closeOverlay('ov-invoice-edit')">✕</div></div>
     <div class="mbody">
       <div class="fgrid">
         <div class="fg"><label>Date</label><input type="date" id="ie-date"></div>
         <div class="fg"><label>Invoice #</label><input type="text" id="ie-num"></div>
         <div class="fg full"><label>Customer</label><input type="text" id="ie-customer"></div>
-        <div class="fg full"><label>Description</label><input type="text" id="ie-desc"></div>
-        <div class="fg"><label>Net Amount (€)</label><input type="number" id="ie-net" step="0.01" oninput="calcIE()"></div>
-        <div class="fg"><label>VAT Rate (%)</label>
-          <select id="ie-vat" onchange="calcIE()">
-            <option value="0">0%</option><option value="4">4%</option>
-            <option value="10">10%</option><option value="21">21%</option>
-          </select>
+      </div>
+
+      <!-- ─── INVOICE LINES (Holded-style) ─── -->
+      <div class="inv-lines-section" style="margin-top:18px;">
+        <div class="inv-lines-header">
+          <div class="inv-lines-title">📋 Invoice Lines</div>
         </div>
-        <div class="fg"><label>VAT Amount</label><input type="text" id="ie-vatamt" readonly style="background:var(--surface3);"></div>
-        <div class="fg"><label>Total</label><input type="text" id="ie-total" readonly style="background:var(--surface3);color:var(--accent);font-family:monospace;font-weight:600;"></div>
+        <div class="inv-lines-tbl-wrap">
+          <table class="inv-lines-tbl">
+            <thead>
+              <tr>
+                <th style="width:30%;">Concept / Description</th>
+                <th class="center" style="width:8%;">Qty</th>
+                <th class="amt" style="width:11%;">Unit Price (€)</th>
+                <th class="amt" style="width:11%;">Subtotal (€)</th>
+                <th style="width:14%;">IVA</th>
+                <th style="width:14%;">Retención</th>
+                <th class="amt" style="width:9%;">Line Total</th>
+                <th class="del-cell"></th>
+              </tr>
+            </thead>
+            <tbody id="ie-lines-body"></tbody>
+          </table>
+        </div>
+        <button type="button" class="inv-add-line-btn" onclick="addEditSaleLine()">+ Add line</button>
+      </div>
+
+      <!-- ─── TOTALS BOX ─── -->
+      <div class="inv-totals-box">
+        <div class="inv-totals-row"><span>Subtotal (Net):</span><span class="inv-totals-val" id="ie-sum-net">0.00 €</span></div>
+        <div class="inv-totals-row"><span>VAT total:</span><span class="inv-totals-val" id="ie-sum-vat">0.00 €</span></div>
+        <div class="inv-totals-row"><span>Retención total:</span><span class="inv-totals-val neg" id="ie-sum-ret">0.00 €</span></div>
+        <div class="inv-totals-row grand"><span>TOTAL</span><span class="inv-totals-val" id="ie-sum-tot">0.00 €</span></div>
+      </div>
+
+      <div class="fgrid" style="margin-top:18px;">
         <div class="fg"><label>Status</label>
           <select id="ie-status"><option value="pending">Pending</option><option value="paid">Paid</option><option value="partial">Partial</option></select>
         </div>
@@ -10335,6 +10890,13 @@ function showToast(msg) {
         </div>
         <div class="fg full"><label>Notes (appears on invoice)</label><textarea id="ie-notes" rows="2"></textarea></div>
       </div>
+
+      <!-- Hidden compatibility fields -->
+      <input type="hidden" id="ie-desc" value="">
+      <input type="hidden" id="ie-net" value="0">
+      <input type="hidden" id="ie-vat" value="21">
+      <input type="hidden" id="ie-vatamt" value="0">
+      <input type="hidden" id="ie-total" value="0">
     </div>
     <div class="mfoot">
       <button class="btn btn-ghost" onclick="closeOverlay('ov-invoice-edit')">Cancel</button>
@@ -10686,7 +11248,7 @@ function showToast(msg) {
 
 <!-- ═══════════════════ EDIT PURCHASE MODAL ═══════════════════ -->
 <div class="overlay" id="ov-purch-edit">
-  <div class="modal" style="width:min(600px,96vw);">
+  <div class="modal xxwide">
     <div class="mhdr">
       <div class="mtitle">✏️ Edit Purchase Invoice</div>
       <div class="mclose" onclick="closeOverlay('ov-purch-edit')">✕</div>
@@ -10696,7 +11258,6 @@ function showToast(msg) {
         <div class="fg"><label>Date</label><input type="date" id="pe-date"></div>
         <div class="fg"><label>Invoice #</label><input type="text" id="pe-num"></div>
         <div class="fg full"><label>Supplier</label><input type="text" id="pe-sup"></div>
-        <div class="fg full"><label>Description</label><input type="text" id="pe-desc"></div>
         <div class="fg full">
           <label>Type of Invoice</label>
           <select id="pe-invtype" onchange="onEditPurchTypeChange(this.value)">
@@ -10708,7 +11269,7 @@ function showToast(msg) {
           <label>Asset Name</label>
           <input type="text" id="pe-asset-name">
         </div>
-        <div class="fg full"><label>Category / Account</label><select id="pe-cat">
+        <div class="fg full"><label>Category / Account (applied to all lines)</label><select id="pe-cat">
           <option value="COGS">Cost of Goods Sold</option>
           <option value="Rent">Rent</option>
           <option value="Salaries">Salaries</option>
@@ -10718,21 +11279,39 @@ function showToast(msg) {
           <option value="Depreciation">Depreciation</option>
           <option value="Other OpEx">Other OpEx</option>
         </select></div>
-        <div class="fg"><label>VAT Rate (%)</label>
-          <select id="pe-vat" onchange="calcPE()">
-            <option value="0">0%</option><option value="4">4%</option>
-            <option value="10">10%</option><option value="21">21%</option>
-          </select>
+      </div>
+
+      <!-- ─── PURCHASE LINES ─── -->
+      <div class="inv-lines-section" style="margin-top:18px;">
+        <div class="inv-lines-header">
+          <div class="inv-lines-title">📋 Purchase Lines</div>
         </div>
-        <div class="fg"><label>Net Amount (€)</label>
-          <input type="number" id="pe-net" step="0.01" oninput="calcPE()">
+        <div class="inv-lines-tbl-wrap">
+          <table class="inv-lines-tbl">
+            <thead>
+              <tr>
+                <th style="width:38%;">Concept / Description</th>
+                <th class="center" style="width:8%;">Qty</th>
+                <th class="amt" style="width:12%;">Unit Price (€)</th>
+                <th class="amt" style="width:12%;">Subtotal (€)</th>
+                <th style="width:14%;">IVA</th>
+                <th class="amt" style="width:12%;">Line Total</th>
+                <th class="del-cell"></th>
+              </tr>
+            </thead>
+            <tbody id="pe-lines-body"></tbody>
+          </table>
         </div>
-        <div class="fg"><label>VAT Amount</label>
-          <input type="text" id="pe-vatamt" readonly style="background:var(--surface3);">
-        </div>
-        <div class="fg"><label>Total</label>
-          <input type="text" id="pe-total" readonly style="background:var(--surface3);color:var(--red);font-weight:700;font-family:monospace;">
-        </div>
+        <button type="button" class="inv-add-line-btn" onclick="addEditPurchLine()">+ Add line</button>
+      </div>
+
+      <div class="inv-totals-box">
+        <div class="inv-totals-row"><span>Subtotal (Net):</span><span class="inv-totals-val" id="pe-sum-net">0.00 €</span></div>
+        <div class="inv-totals-row"><span>VAT total:</span><span class="inv-totals-val" id="pe-sum-vat">0.00 €</span></div>
+        <div class="inv-totals-row grand"><span>TOTAL</span><span class="inv-totals-val" id="pe-sum-tot">0.00 €</span></div>
+      </div>
+
+      <div class="fgrid" style="margin-top:18px;">
         <div class="fg"><label>Status</label>
           <select id="pe-stat">
             <option value="pending">Pending</option>
@@ -10748,6 +11327,13 @@ function showToast(msg) {
           </select>
         </div>
       </div>
+
+      <!-- Hidden compatibility fields -->
+      <input type="hidden" id="pe-desc" value="">
+      <input type="hidden" id="pe-net" value="0">
+      <input type="hidden" id="pe-vat" value="21">
+      <input type="hidden" id="pe-vatamt" value="0">
+      <input type="hidden" id="pe-total" value="0">
     </div>
     <div class="mfoot">
       <button class="btn btn-ghost" onclick="closeOverlay('ov-purch-edit')">Cancel</button>
