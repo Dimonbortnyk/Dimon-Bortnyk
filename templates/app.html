@@ -8371,11 +8371,38 @@ document.addEventListener('click', function(e) {
   if(dd && !dd.contains(e.target)) dd.style.display = 'none';
 });
 
-// Fallback signOut for desktop version (no Supabase)
+// Sign out function - calls Flask API and redirects to auth page
 if(typeof signOut === 'undefined') {
-  function signOut() {
-    if(confirm('Sign out of FinLedger?')) {
-      window.location.reload();
+  async function signOut() {
+    if(confirm('Sign out of Leadger?')) {
+      try {
+        // Call logout API
+        const response = await fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        const data = await response.json();
+        
+        // Clear local storage
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Redirect to auth page
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        } else {
+          window.location.href = '/app';
+        }
+      } catch (error) {
+        console.error('Logout error:', error);
+        // Force redirect even if error
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = '/app';
+      }
     }
   }
 }
