@@ -3,17 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leadger — Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script>
-// Datos del usuario desde Flask
-window.USER_DATA = {{ user|tojson|safe }};
-</script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leadger</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -416,7 +405,7 @@ textarea{resize:vertical;min-height:72px;}
 .inv-summary-label{color:#666;}
 .inv-summary-val{font-weight:600;color:#0f0f11;}
 .inv-footer{border-top:1px solid #e8e8e8;padding-top:20px;margin-top:auto;}
-.inv-footer-notes{font-size:12px;color:#666;line-height:1.6;margin-bottom:12px;}
+.inv-footer-notes{font-size:12px;color:#666;line-height:1.6;margin-bottom:12px;white-space:pre-wrap;}
 .inv-footer-status{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-family:monospace;}
 .inv-footer-status.paid{background:#dcfce7;color:#16a34a;}
 .inv-footer-status.pending{background:#fef9c3;color:#ca8a04;}
@@ -680,6 +669,17 @@ textarea{resize:vertical;min-height:72px;}
     <div class="nav-item" onclick="nav('contacts')"><span class="nav-icon">👥</span>Contacts</div>
     <div class="nav-item" onclick="nav('sales')"><span class="nav-icon">↑</span>Sales</div>
     <div class="nav-item" onclick="nav('purchases')"><span class="nav-icon">↓</span>Purchases</div>
+    <!-- INVENTORY GROUP -->
+    <div class="nav-item nav-group-toggle" id="nav-inventory" onclick="toggleInventoryNav()" style="justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;"><span class="nav-icon">📦</span><span>Inventory</span></div>
+      <span id="nav-inventory-arrow" style="font-size:10px;color:var(--text3);transition:transform .2s;">▶</span>
+    </div>
+    <div id="nav-inventory-sub" style="display:none;padding-left:14px;">
+      <div class="nav-item nav-subitem" onclick="navInventory('products')"><span class="nav-icon" style="font-size:11px;">🏷</span>Products</div>
+      <div class="nav-item nav-subitem" onclick="navInventory('warehouses')"><span class="nav-icon" style="font-size:11px;">🏬</span>Warehouses</div>
+      <div class="nav-item nav-subitem" onclick="navInventory('stock')"><span class="nav-icon" style="font-size:11px;">📊</span>Stock & Valuation</div>
+      <div class="nav-item nav-subitem" onclick="navInventory('movements')"><span class="nav-icon" style="font-size:11px;">↔</span>Movements</div>
+    </div>
     <!-- TESORERÍA GROUP -->
     <div class="nav-item nav-group-toggle" id="nav-tesoreria" onclick="toggleTesoreriaNav()" style="justify-content:space-between;">
       <div style="display:flex;align-items:center;gap:10px;"><span class="nav-icon">🏦</span><span>Treasury</span></div>
@@ -720,7 +720,7 @@ textarea{resize:vertical;min-height:72px;}
           <span style="font-size:15px;">⚙</span> Settings
         </div>
         <div style="height:1px;background:var(--border);margin:0 10px;"></div>
-        <div onclick="closeUserDropdown();signOut()" style="display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;color:var(--red);font-size:13px;font-weight:500;transition:background .12s;" onmouseover="this.style.background='rgba(248,113,113,.08)'" onmouseout="this.style.background=''">
+        <div onclick="signOut()" style="display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;color:var(--red);font-size:13px;font-weight:500;transition:background .12s;" onmouseover="this.style.background='rgba(248,113,113,.08)'" onmouseout="this.style.background=''">
           <span style="font-size:15px;">→</span> Sign Out
         </div>
       </div>
@@ -1013,6 +1013,83 @@ textarea{resize:vertical;min-height:72px;}
       <div class="card"><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Date</th><th>Type</th><th>Supplier</th><th>Description</th><th>Category</th><th>VAT%</th><th>Net</th><th>VAT</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="purchTbl"><tr><td colspan="11" style="text-align:center;color:var(--text3);padding:24px;">No purchase invoices yet.</td></tr></tbody></table></div></div>
     </div>
 
+    <!-- ══ INVENTORY: PRODUCTS ══ -->
+    <div class="page" id="page-products">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Products</div><div class="sec-sub">Catalog of products and services</div></div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="btn btn-primary" onclick="openProductModal()">+ New Product</button>
+        </div>
+      </div>
+      <div class="totbar">
+        <div class="tot-item"><label>Total Products</label><span id="prd-cnt" style="color:var(--text2);">0</span></div>
+        <div class="tot-item"><label>Stockable</label><span id="prd-stk" style="color:var(--accent);">0</span></div>
+        <div class="tot-item"><label>Services</label><span id="prd-svc" style="color:var(--blue);">0</span></div>
+        <div class="tot-item"><label>Stock Value</label><span id="prd-val" style="color:var(--green);">€0.00</span></div>
+      </div>
+      <div class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>SKU / Ref</th><th>Name</th><th>UoM</th><th>Type</th><th>Sales Price</th><th>Stock (all wh.)</th><th>Value</th><th></th></tr></thead>
+        <tbody id="productsTbl"><tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px;">No products yet. Create one to start tracking inventory.</td></tr></tbody>
+      </table></div></div>
+    </div>
+
+    <!-- ══ INVENTORY: WAREHOUSES ══ -->
+    <div class="page" id="page-warehouses">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Warehouses</div><div class="sec-sub">Physical locations where stock is held</div></div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="btn btn-ghost btn-sm" onclick="openCloseInventoryModal()" title="Register variación de existencias for a period">📋 Close Inventory…</button>
+          <button class="btn btn-primary" onclick="openWarehouseModal()">+ New Warehouse</button>
+        </div>
+      </div>
+      <div class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>#</th><th>Name</th><th>Location</th><th>Default</th><th>Products w/ Stock</th><th>Stock Value</th><th></th></tr></thead>
+        <tbody id="warehousesTbl"><tr><td colspan="7" style="text-align:center;color:var(--text3);padding:24px;">No warehouses defined.</td></tr></tbody>
+      </table></div></div>
+
+      <!-- Inventory Closings History -->
+      <div class="sec-hdr" style="margin-top:24px;">
+        <div><div class="sec-title">📋 Inventory Closings (Variación de Existencias)</div><div class="sec-sub">Period closings registered as journal entries</div></div>
+      </div>
+      <div class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>Period</th><th>Date</th><th>Method</th><th>Opening</th><th>Closing</th><th>Variation</th><th>JE #</th><th></th></tr></thead>
+        <tbody id="closingsTbl"><tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px;">No closings registered yet. Click "Close Inventory" above to register one.</td></tr></tbody>
+      </table></div></div>
+    </div>
+
+    <!-- ══ INVENTORY: STOCK & VALUATION ══ -->
+    <div class="page" id="page-stock">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Stock & Valuation</div><div class="sec-sub">Current stock and inventory value by product / warehouse</div></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;">
+          <span>Method:</span><span id="stk-method" style="color:var(--accent);font-weight:700;">FIFO</span>
+        </div>
+      </div>
+      <div class="totbar">
+        <div class="tot-item"><label>Total Items</label><span id="stk-items" style="color:var(--text2);">0</span></div>
+        <div class="tot-item"><label>Total Stock</label><span id="stk-units" style="color:var(--blue);">0</span></div>
+        <div class="tot-item"><label>Total Value</label><span id="stk-value" style="color:var(--green);">€0.00</span></div>
+      </div>
+      <div class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>Product</th><th>SKU</th><th>Warehouse</th><th>Stock</th><th>Avg. Cost</th><th>Value</th></tr></thead>
+        <tbody id="stockTbl"><tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px;">No stock yet.</td></tr></tbody>
+      </table></div></div>
+    </div>
+
+    <!-- ══ INVENTORY: MOVEMENTS ══ -->
+    <div class="page" id="page-movements">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Inventory Movements</div><div class="sec-sub">All stock movements (IN / OUT / ADJUSTMENT)</div></div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="btn btn-ghost btn-sm" onclick="openMovementModal()">+ Manual Adjustment</button>
+        </div>
+      </div>
+      <div class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>Date</th><th>Type</th><th>Product</th><th>Warehouse</th><th>Qty</th><th>Unit Cost</th><th>Total Cost</th><th>Source</th><th></th></tr></thead>
+        <tbody id="movementsTbl"><tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px;">No movements yet.</td></tr></tbody>
+      </table></div></div>
+    </div>
+
     <!-- ══ COLLECTIONS ══ -->
     <div class="page" id="page-collections">
       <div class="sec-hdr">
@@ -1266,7 +1343,7 @@ textarea{resize:vertical;min-height:72px;}
           <table class="inv-lines-tbl">
             <thead>
               <tr>
-                <th style="width:30%;">Concept / Description</th>
+                <th style="width:32%;">Product / Concept</th>
                 <th class="center" style="width:8%;">Qty</th>
                 <th class="amt" style="width:11%;">Unit Price (€)</th>
                 <th class="amt" style="width:11%;">Subtotal (€)</th>
@@ -1338,7 +1415,7 @@ textarea{resize:vertical;min-height:72px;}
             <div class="autocomplete-list" id="p-sup-list"></div>
           </div>
         </div>
-        <div class="fg full"><label>Category (applied to all lines)</label><select id="p-cat"><option value="COGS">Cost of Goods Sold</option><option value="Rent">Rent</option><option value="Salaries">Salaries</option><option value="Utilities">Utilities</option><option value="Marketing">Marketing</option><option value="Professional">Professional Services</option><option value="Depreciation">Depreciation</option><option value="Other OpEx">Other OpEx</option></select></div>
+        <div class="fg full"><label>Category (applied to all lines)</label><select id="p-cat" onchange="toggleLinesProductVisibility('p-lines-body', this.value)"><option value="COGS">Cost of Goods Sold</option><option value="Rent">Rent</option><option value="Salaries">Salaries</option><option value="Utilities">Utilities</option><option value="Marketing">Marketing</option><option value="Professional">Professional Services</option><option value="Depreciation">Depreciation</option><option value="Other OpEx">Other OpEx</option></select></div>
       </div>
 
       <!-- ─── PURCHASE LINES (Holded-style) ─── -->
@@ -1350,12 +1427,13 @@ textarea{resize:vertical;min-height:72px;}
           <table class="inv-lines-tbl">
             <thead>
               <tr>
-                <th style="width:38%;">Concept / Description</th>
-                <th class="center" style="width:8%;">Qty</th>
-                <th class="amt" style="width:12%;">Unit Price (€)</th>
-                <th class="amt" style="width:12%;">Subtotal (€)</th>
-                <th style="width:14%;">IVA</th>
-                <th class="amt" style="width:12%;">Line Total</th>
+                <th style="width:32%;">Product / Concept</th>
+                <th class="center" style="width:7%;">Qty</th>
+                <th class="amt" style="width:11%;">Unit Price (€)</th>
+                <th class="amt" style="width:10%;">Subtotal (€)</th>
+                <th style="width:13%;">IVA</th>
+                <th style="width:13%;">Retención</th>
+                <th class="amt" style="width:10%;">Line Total</th>
                 <th class="del-cell"></th>
               </tr>
             </thead>
@@ -1369,6 +1447,7 @@ textarea{resize:vertical;min-height:72px;}
       <div class="inv-totals-box">
         <div class="inv-totals-row"><span>Subtotal (Net):</span><span class="inv-totals-val" id="p-sum-net">0.00 €</span></div>
         <div class="inv-totals-row"><span>VAT total:</span><span class="inv-totals-val" id="p-sum-vat">0.00 €</span></div>
+        <div class="inv-totals-row"><span>Retención total:</span><span class="inv-totals-val neg" id="p-sum-ret">0.00 €</span></div>
         <div class="inv-totals-row grand"><span>TOTAL</span><span class="inv-totals-val" id="p-sum-tot">0.00 €</span></div>
       </div>
 
@@ -1381,8 +1460,10 @@ textarea{resize:vertical;min-height:72px;}
       <!-- Hidden compatibility fields (populated by calcP) -->
       <input type="hidden" id="p-net" value="0">
       <input type="hidden" id="p-vat" value="21">
+      <input type="hidden" id="p-ret" value="0">
       <input type="hidden" id="p-desc" value="">
       <input type="hidden" id="p-va" value="0">
+      <input type="hidden" id="p-ret-amt" value="0">
       <input type="hidden" id="p-tot2" value="0">
     </div>
     <div class="mfoot"><button class="btn btn-ghost" onclick="closeOverlay('ov-purch')">Cancel</button><button class="btn btn-primary" onclick="savePurch()">Save Purchase</button></div>
@@ -1589,7 +1670,8 @@ textarea{resize:vertical;min-height:72px;}
           <div class="divider"></div>
           <div class="set-section-label">Invoice Footer / Notes</div>
           <div class="fg full">
-            <textarea id="inv-notes" placeholder="e.g. Payment due within 30 days. Thank you for your business." style="width:100%;min-height:80px;"></textarea>
+            <textarea id="set-inv-notes" placeholder="e.g. Payment due within 30 days. Thank you for your business.&#10;&#10;You can include payment details like:&#10;IBAN: ES12 1234 1234 12 1234567890&#10;Bank: Your Bank Name" style="width:100%;min-height:120px;font-family:inherit;"></textarea>
+            <div style="margin-top:6px;font-size:11px;color:var(--text3);line-height:1.5;">This text appears at the bottom of every printed/preview invoice. Useful for IBAN, payment instructions, legal notices, etc.</div>
           </div>
         </div>
 
@@ -1655,6 +1737,35 @@ textarea{resize:vertical;min-height:72px;}
           <div class="fg"><label>Invoice Prefix (legacy)</label><input type="text" id="set-invpfx" placeholder="INV-" maxlength="10"></div>
           <div class="fg"><label>Purchase Prefix (legacy)</label><input type="text" id="set-purpfx" placeholder="PINV-" maxlength="10"></div>
         </div>
+
+        <!-- ── INVENTORY SETTINGS ── -->
+        <div class="set-section-label" style="margin-top:20px;">📦 Inventory</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:12px;">
+          Configure how inventory is valued and which accounts are used for COGS and inventory entries.
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Valuation Method</label>
+            <select id="set-invval">
+              <option value="FIFO">FIFO — First In, First Out</option>
+              <option value="PMP">PMP — Weighted Average Cost</option>
+            </select>
+          </div>
+          <div class="fg"><label>Accounting Framework</label>
+            <input type="text" id="set-invframework" readonly style="background:var(--surface3);" value="(set in Company tab)">
+          </div>
+          <div class="fg"><label>Inventory Account (default)</label>
+            <input type="text" id="set-invacc" placeholder="Auto: 300 (PGC) / 1200 (US GAAP)">
+          </div>
+          <div class="fg"><label>COGS Account (default)</label>
+            <input type="text" id="set-cogsacc" placeholder="Auto: 600 (PGC) / 5000 (US GAAP)">
+          </div>
+        </div>
+        <div style="margin-top:8px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;font-size:11px;color:var(--text3);">
+          <strong>FIFO</strong>: salidas consumen capas en orden cronológico (PGC ✅ / US GAAP ✅).
+          <strong>PMP</strong>: usa el precio medio ponderado actual (PGC ✅ / US GAAP ✅).
+          Cambiar el método solo afecta a movimientos futuros.
+        </div>
+
         <!-- ── INVOICE NUMBERING SERIES ── -->
         <div class="set-section-label" style="margin-top:20px;">📋 Invoice Numbering Series</div>
         <div style="font-size:12px;color:var(--text3);margin-bottom:12px;">
@@ -1773,7 +1884,8 @@ textarea{resize:vertical;min-height:72px;}
 var DB={
   user:{fname:'Previt',lname:'Ketsia',role:'Chief Accountant',email:'',phone:'',avatarColor:'#c8ff00'},
   co:{name:'My Company Ltd.',taxid:'',industry:'',addr:'',fy:'2025',fystart:'Jan',cur:'€',defvat:'21'},
-  prefs:{datefmt:'DD/MM/YYYY',numfmt:'us',lang:'en',accent:'#c8ff00',invnotes:'',invpfx:'INV-',purpfx:'PINV-'},
+  prefs:{datefmt:'DD/MM/YYYY',numfmt:'us',lang:'en',accent:'#c8ff00',invnotes:'',invpfx:'INV-',purpfx:'PINV-',
+         invValMethod:'FIFO', invAccount:'', cogsAccount:''},
   series:[
     {id:1, name:'Sales Invoices',    code:'INV',  format:'INV[YY]-%%%%%', lastNum:0, type:'sale',   active:true},
     {id:2, name:'Credit Notes',      code:'CN',   format:'CN[YY]-%%%%%',  lastNum:0, type:'credit', active:true},
@@ -1782,7 +1894,11 @@ var DB={
   sales:[],purch:[],coll:[],pay:[],je:[],
   contacts:[],recurring:[],
   assets:[], deprPlans:[],
-  ids:{s:1,p:1,c:1,py:1,j:1,ct:1,rc:1,ast:1,dp:1}
+  // ─── INVENTORY MODULE ─────────────────────────────────────────
+  warehouses:[], products:[], invMov:[], invLayers:[], invClosings:[],
+  // ─── TAX MODULE ───────────────────────────────────────────────
+  taxClosings:[], lockedPeriods:[],
+  ids:{s:1,p:1,c:1,py:1,j:1,ct:1,rc:1,ast:1,dp:1, wh:1, prd:1, im:1, il:1, icl:1, tcl:1}
 };
 var plMode='detail';
 var AVATAR_COLORS=['#c8ff00','#00d4ff','#a78bfa','#fb923c','#f472b6','#34d399','#ffd93d','#f87171','#60a5fa'];
@@ -2004,7 +2120,7 @@ function refreshCOA() {
 // ── PERSISTENCE  (saves to disk via Python server) ──────────────────────────
 function sv(){
   try{
-    fetch('/api/data/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(DB)});
+    fetch('/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(DB)});
   }catch(e){}
   // fallback: also keep in localStorage
   try{localStorage.setItem('fl_v4',JSON.stringify(DB));}catch(e){}
@@ -2030,6 +2146,27 @@ function ld(){
   if(!DB.deprPlans) DB.deprPlans = [];
   if(!DB.ids.ast)   DB.ids.ast   = 1;
   if(!DB.ids.dp)    DB.ids.dp    = 1;
+  // ─── INVENTORY MODULE migration ───
+  if(!DB.warehouses) DB.warehouses = [];
+  if(!DB.products)   DB.products   = [];
+  if(!DB.invMov)     DB.invMov     = [];
+  if(!DB.invLayers)  DB.invLayers  = [];
+  if(!DB.invClosings)DB.invClosings= [];
+  if(!DB.taxClosings) DB.taxClosings= [];
+  if(!DB.lockedPeriods) DB.lockedPeriods=[];
+  if(!DB.ids.wh)     DB.ids.wh     = 1;
+  if(!DB.ids.prd)    DB.ids.prd    = 1;
+  if(!DB.ids.im)     DB.ids.im     = 1;
+  if(!DB.ids.il)     DB.ids.il     = 1;
+  if(!DB.ids.icl)    DB.ids.icl    = 1;
+  if(!DB.ids.tcl)    DB.ids.tcl    = 1;
+  if(!DB.prefs.invValMethod) DB.prefs.invValMethod = 'FIFO';
+  if(DB.prefs.invAccount  === undefined) DB.prefs.invAccount  = '';
+  if(DB.prefs.cogsAccount === undefined) DB.prefs.cogsAccount = '';
+  // Auto-create a default warehouse if none exists
+  if(DB.warehouses.length===0){
+    DB.warehouses.push({id:DB.ids.wh++, name:'Main Warehouse', location:'', isDefault:true});
+  }
   // Refresh COA based on saved plan
   refreshCOA();
   if(!DB.series) DB.series = [
@@ -2164,11 +2301,12 @@ function livePreviewUser(){
 }
 
 // ── NAVIGATION ─────────────────────────────────────────────────────────────
-var titles={dashboard:'Dashboard',contacts:'Contacts',sales:'Sales Invoices',purchases:'Purchase Invoices',collections:'Collections',payments:'Payments',journal:'Journal Entries',pl:'P&L Statement',bs:'Balance Sheet',cf:'Cash Flow Statement', cfo:'CFO Intelligence', tesoreria:'Tesorería', bankaccounts:'Bank Accounts', badetail:'Account Detail', employees:'Employees', payrolls:'Payrolls', orgchart:'Organisation Chart', timetracking:'Time Tracking', absences:'Absences & Holidays', taxes:'Taxes'};
+var titles={dashboard:'Dashboard',contacts:'Contacts',sales:'Sales Invoices',purchases:'Purchase Invoices',collections:'Collections',payments:'Payments',journal:'Journal Entries',pl:'P&L Statement',bs:'Balance Sheet',cf:'Cash Flow Statement', cfo:'CFO Intelligence', tesoreria:'Tesorería', bankaccounts:'Bank Accounts', badetail:'Account Detail', employees:'Employees', payrolls:'Payrolls', orgchart:'Organisation Chart', timetracking:'Time Tracking', absences:'Absences & Holidays', taxes:'Taxes', products:'Products', warehouses:'Warehouses', stock:'Stock & Valuation', movements:'Inventory Movements'};
 var crumbs={dashboard:'FinLedger / Overview',contacts:'FinLedger / Operations / Contacts',sales:'FinLedger / Operations / Sales',purchases:'FinLedger / Operations / Purchases',collections:'FinLedger / Tesorería / Collections',payments:'FinLedger / Tesorería / Payments',journal:'FinLedger / Operations / Journal',pl:'FinLedger / Reports / P&L',bs:'FinLedger / Reports / Balance Sheet',cf:'FinLedger / Reports / Cash Flow',
     cfo:'FinLedger / CFO Module', tesoreria:'FinLedger / Tesorería', bankaccounts:'FinLedger / Tesorería / Bank Accounts', badetail:'FinLedger / Tesorería / Bank Accounts / Detail',
     employees:'FinLedger / HR / Employees', payrolls:'FinLedger / HR / Payrolls', orgchart:'FinLedger / HR / Organisation Chart',
-    timetracking:'FinLedger / HR / Time Tracking', absences:'FinLedger / HR / Absences & Holidays'};
+    timetracking:'FinLedger / HR / Time Tracking', absences:'FinLedger / HR / Absences & Holidays',
+    products:'FinLedger / Inventory / Products', warehouses:'FinLedger / Inventory / Warehouses', stock:'FinLedger / Inventory / Stock & Valuation', movements:'FinLedger / Inventory / Movements'};
 function nav(p){
   document.querySelectorAll('.page').forEach(function(e){e.classList.remove('active');});
   document.querySelectorAll('.nav-item').forEach(function(e){e.classList.remove('active');});
@@ -2190,6 +2328,12 @@ function openOverlay(id){
   } else if(id==='ov-purch'){
     var pBody=document.getElementById('p-lines-body');
     if(pBody && pBody.children.length===0){ resetPurchLines(); }
+    // Apply visibility based on currently selected category
+    var pCat=document.getElementById('p-cat');
+    if(pCat) toggleLinesProductVisibility('p-lines-body', pCat.value);
+  } else if(id==='ov-purch-edit'){
+    var peCat=document.getElementById('pe-cat');
+    if(peCat) toggleLinesProductVisibility('pe-lines-body', peCat.value);
   }
 }
 function closeOverlay(id){document.getElementById(id).classList.remove('open');}
@@ -2228,6 +2372,15 @@ function openSettings(tab){
   document.getElementById('set-invnotes').value=DB.prefs.invnotes||'';
   document.getElementById('set-invpfx').value=DB.prefs.invpfx||'INV-';
   document.getElementById('set-purpfx').value=DB.prefs.purpfx||'PINV-';
+  // Inventory prefs
+  var elIVM=document.getElementById('set-invval');     if(elIVM) elIVM.value=DB.prefs.invValMethod||'FIFO';
+  var elIA =document.getElementById('set-invacc');     if(elIA)  elIA.value=DB.prefs.invAccount||'';
+  var elCA =document.getElementById('set-cogsacc');    if(elCA)  elCA.value=DB.prefs.cogsAccount||'';
+  var elIF =document.getElementById('set-invframework');
+  if(elIF){
+    var plan=(DB.co && DB.co.accountPlan)||'usgaap';
+    elIF.value = plan==='pgc' ? 'PGC España (FIFO/PMP)' : 'US GAAP (FIFO/PMP, LIFO future)';
+  }
   // Data stats
   document.getElementById('di-sales').textContent=DB.sales.length;
   document.getElementById('di-purch').textContent=DB.purch.length;
@@ -2271,6 +2424,10 @@ function saveSettings(){
   DB.prefs.invnotes=document.getElementById('set-invnotes').value;
   DB.prefs.invpfx=document.getElementById('set-invpfx').value||'INV-';
   DB.prefs.purpfx=document.getElementById('set-purpfx').value||'PINV-';
+  // Inventory prefs
+  var elIVM=document.getElementById('set-invval');  if(elIVM) DB.prefs.invValMethod = elIVM.value || 'FIFO';
+  var elIA =document.getElementById('set-invacc');  if(elIA)  DB.prefs.invAccount  = elIA.value.trim();
+  var elCA =document.getElementById('set-cogsacc'); if(elCA)  DB.prefs.cogsAccount = elCA.value.trim();
   // 1. Save & close first
   sv();
   closeOverlay('ov-settings');
@@ -2286,17 +2443,1096 @@ function saveSettings(){
 }
 
 function clearAll(){
-  if(!confirm('Delete ALL data?\n\nThis will delete ALL transactions, contacts, journal entries, assets and recurring invoices.\n\nYour company settings and preferences will be preserved.\n\nThis cannot be undone.'))return;
+  if(!confirm('Delete ALL data?\n\nThis will delete ALL transactions, contacts, journal entries, assets, recurring invoices and inventory.\n\nYour company settings and preferences will be preserved.\n\nThis cannot be undone.'))return;
   DB.sales=[];DB.purch=[];DB.coll=[];DB.pay=[];DB.je=[];
   DB.contacts=[];DB.recurring=[];DB.assets=[];DB.deprPlans=[];DB.series=DB.series||[];DB.wires=[];
   DB.bankAccounts=[];DB.bankMovements=[];DB.employees=[];DB.payrolls=[];
+  DB.warehouses=[];DB.products=[];DB.invMov=[];DB.invLayers=[];DB.invClosings=[];
+  DB.taxClosings=[];DB.lockedPeriods=[];
   DB.ids={s:1,p:1,c:1,py:1,j:1,ct:1,rc:1,ast:1,dp:1,wt:1,ba:1,bm:1,em:1,pr:1,
+          wh:1,prd:1,im:1,il:1,icl:1,tcl:1,
           sub_430:1,sub_431:1,sub_400:1,sub_410:1,sub_1100:1,sub_2000:1};
+  // Re-create default warehouse
+  DB.warehouses.push({id:DB.ids.wh++, name:'Main Warehouse', location:'', isDefault:true});
   sv();closeOverlay('ov-settings');renderAll();
   showToast('✅ All data cleared. Settings preserved.');
 }
 
 // ── CALC HELPERS ───────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════
+// INVENTORY MODULE — Domain functions (FIFO / PMP / Stock / Value)
+// ══════════════════════════════════════════════════════════════════
+// Entities (in DB):
+//   warehouses[]: {id, name, location, isDefault}
+//   products[]:   {id, ref, name, uom, isStockable, salesPrice}
+//   invMov[]:     {id, productId, warehouseId, type:'IN'|'OUT'|'ADJ',
+//                  source:'PURCHASE'|'SALE'|'MANUAL', sourceId,
+//                  quantity (signed: + IN / - OUT), unitCost, totalCost, date}
+//   invLayers[]:  {id, productId, warehouseId, remaining, unitCost, createdAt} (FIFO only)
+// ──────────────────────────────────────────────────────────────────
+
+// ── Lookups ──────────────────────────────────────────────────────
+function getDefaultWarehouse(){
+  var def=(DB.warehouses||[]).find(function(w){return w.isDefault;});
+  return def || (DB.warehouses && DB.warehouses[0]) || null;
+}
+function getWarehouseById(id){
+  if(!id) return null;
+  return (DB.warehouses||[]).find(function(w){return String(w.id)===String(id);}) || null;
+}
+function getProductById(id){
+  if(!id) return null;
+  return (DB.products||[]).find(function(p){return String(p.id)===String(id);}) || null;
+}
+
+// ── Stock & Valuation ───────────────────────────────────────────
+// Returns total stock (units) for product[/warehouse]
+function getStock(productId, warehouseId){
+  if(!DB.invMov) return 0;
+  var sum=0;
+  for(var i=0;i<DB.invMov.length;i++){
+    var m=DB.invMov[i];
+    if(String(m.productId)!==String(productId)) continue;
+    if(warehouseId && String(m.warehouseId)!==String(warehouseId)) continue;
+    sum += parseFloat(m.quantity)||0;
+  }
+  return sum;
+}
+
+// Returns inventory value (€) for product[/warehouse]
+function getInventoryValue(productId, warehouseId){
+  var method = DB.prefs.invValMethod || 'FIFO';
+  if(method==='FIFO'){
+    // Sum remaining_qty * unitCost of active layers
+    var v=0;
+    (DB.invLayers||[]).forEach(function(l){
+      if(String(l.productId)!==String(productId)) return;
+      if(warehouseId && String(l.warehouseId)!==String(warehouseId)) return;
+      v += (parseFloat(l.remaining)||0) * (parseFloat(l.unitCost)||0);
+    });
+    return v;
+  } else {
+    // PMP: stock * current PMP
+    var stock = getStock(productId, warehouseId);
+    if(stock<=0) return 0;
+    var pmp = getCurrentPMP(productId, warehouseId);
+    return stock * pmp;
+  }
+}
+
+// Returns total inventory value across all products & warehouses
+function getTotalInventoryValue(){
+  var total=0;
+  (DB.products||[]).forEach(function(p){
+    if(!p.isStockable) return;
+    (DB.warehouses||[]).forEach(function(w){
+      total += getInventoryValue(p.id, w.id);
+    });
+  });
+  return total;
+}
+
+// Current PMP (Precio Medio Ponderado) for a product/warehouse
+// Computed on-the-fly from movements: cumulative IN cost / cumulative IN qty (net of OUT consumption)
+// Returns 0 if no stock.
+function getCurrentPMP(productId, warehouseId){
+  // Walk movements in chronological order (by date+id)
+  var movs=(DB.invMov||[]).filter(function(m){
+    if(String(m.productId)!==String(productId)) return false;
+    if(warehouseId && String(m.warehouseId)!==String(warehouseId)) return false;
+    return true;
+  }).sort(function(a,b){
+    if(a.date===b.date) return (a.id||0)-(b.id||0);
+    return a.date.localeCompare(b.date);
+  });
+  var stock=0, totalCost=0;
+  for(var i=0;i<movs.length;i++){
+    var m=movs[i];
+    var q=parseFloat(m.quantity)||0;
+    if(q>0){
+      // IN — recompute PMP
+      totalCost += (parseFloat(m.unitCost)||0)*q;
+      stock += q;
+    } else if(q<0){
+      // OUT — consume at current PMP, reduce stock and totalCost proportionally
+      var pmp = stock>0 ? totalCost/stock : 0;
+      var qOut=Math.abs(q);
+      var consumed=Math.min(qOut, stock);
+      totalCost -= pmp*consumed;
+      stock -= consumed;
+      if(stock<0) stock=0;
+      if(totalCost<0) totalCost=0;
+    }
+  }
+  return stock>0 ? totalCost/stock : 0;
+}
+
+// ── FIFO consumption: returns unit_cost (weighted) and updates layers ──
+// outQty must be POSITIVE. Returns {unitCost, totalCost, consumed, missing}
+function consumeFIFO(productId, warehouseId, outQty){
+  var qNeed = parseFloat(outQty)||0;
+  if(qNeed<=0) return {unitCost:0, totalCost:0, consumed:0, missing:0};
+  var layers=(DB.invLayers||[]).filter(function(l){
+    return String(l.productId)===String(productId) &&
+           String(l.warehouseId)===String(warehouseId) &&
+           (parseFloat(l.remaining)||0) > 0;
+  }).sort(function(a,b){
+    if(a.createdAt===b.createdAt) return (a.id||0)-(b.id||0);
+    return a.createdAt.localeCompare(b.createdAt);
+  });
+  var consumed=0, totalCost=0;
+  for(var i=0;i<layers.length && qNeed>0;i++){
+    var l=layers[i];
+    var avail=parseFloat(l.remaining)||0;
+    var take=Math.min(avail, qNeed);
+    totalCost += take * (parseFloat(l.unitCost)||0);
+    consumed += take;
+    l.remaining = avail - take;
+    qNeed -= take;
+  }
+  // Clean up exhausted layers (optional - keep them for traceability with remaining=0)
+  return {
+    unitCost: consumed>0 ? totalCost/consumed : 0,
+    totalCost: totalCost,
+    consumed: consumed,
+    missing: qNeed // qty that couldn't be sourced from layers
+  };
+}
+
+// ── Restore FIFO layers when reverting a sale/movement ──
+// This adds back consumed quantities to the most recent layers (best-effort).
+// Used when deleting a sale: we re-credit the layers in LIFO order of consumption.
+// For simplicity we create a new "restore" layer when we can't track exactly.
+function restoreFIFO(productId, warehouseId, qty, unitCost, date){
+  // Add a new layer (we lose perfect FIFO traceability but it's the safest reversal)
+  if(!DB.invLayers) DB.invLayers=[];
+  if(!DB.ids.il) DB.ids.il=1;
+  DB.invLayers.push({
+    id: DB.ids.il++,
+    productId: productId,
+    warehouseId: warehouseId,
+    remaining: qty,
+    unitCost: unitCost,
+    createdAt: date || new Date().toISOString().slice(0,10)
+  });
+}
+
+// ── Create movements at purchase / sale time ────────────────────
+// Returns the created movement record (or null if invalid).
+function createInventoryMovementIN(productId, warehouseId, qty, unitCost, source, sourceId, date){
+  if(!productId || !warehouseId) return null;
+  if(!(qty>0)) return null;
+  if(!DB.invMov) DB.invMov=[];
+  if(!DB.ids.im) DB.ids.im=1;
+  var mov={
+    id: DB.ids.im++,
+    productId: productId,
+    warehouseId: warehouseId,
+    type:'IN',
+    source: source||'MANUAL',
+    sourceId: sourceId||null,
+    quantity: qty,
+    unitCost: unitCost,
+    totalCost: qty * unitCost,
+    date: date || new Date().toISOString().slice(0,10)
+  };
+  DB.invMov.push(mov);
+  // Also create a FIFO layer (regardless of method — keeps both methods consistent)
+  if(!DB.invLayers) DB.invLayers=[];
+  if(!DB.ids.il) DB.ids.il=1;
+  DB.invLayers.push({
+    id: DB.ids.il++,
+    productId: productId,
+    warehouseId: warehouseId,
+    remaining: qty,
+    unitCost: unitCost,
+    createdAt: mov.date
+  });
+  return mov;
+}
+
+// Create OUT movement using configured method (FIFO or PMP).
+// Returns {mov, missing} where missing > 0 means stock was insufficient.
+function createInventoryMovementOUT(productId, warehouseId, qty, source, sourceId, date){
+  if(!productId || !warehouseId) return {mov:null, missing:qty||0};
+  if(!(qty>0)) return {mov:null, missing:0};
+  var method = DB.prefs.invValMethod || 'FIFO';
+  var unitCost=0, totalCost=0, consumed=0, missing=0;
+  if(method==='FIFO'){
+    var r = consumeFIFO(productId, warehouseId, qty);
+    consumed = r.consumed;
+    totalCost = r.totalCost;
+    unitCost = r.unitCost; // weighted across layers consumed
+    missing = r.missing;
+  } else {
+    // PMP — use current PMP
+    var pmp = getCurrentPMP(productId, warehouseId);
+    var stock = getStock(productId, warehouseId);
+    consumed = Math.min(qty, Math.max(stock,0));
+    missing = qty - consumed;
+    unitCost = pmp;
+    totalCost = consumed * pmp;
+  }
+  if(!DB.invMov) DB.invMov=[];
+  if(!DB.ids.im) DB.ids.im=1;
+  var mov={
+    id: DB.ids.im++,
+    productId: productId,
+    warehouseId: warehouseId,
+    type:'OUT',
+    source: source||'MANUAL',
+    sourceId: sourceId||null,
+    quantity: -qty,            // negative, we move full qty out (even if missing)
+    unitCost: unitCost,        // weighted/PMP cost of consumed portion
+    totalCost: -totalCost,     // negative cost (out)
+    date: date || new Date().toISOString().slice(0,10),
+    consumed: consumed,
+    missing: missing
+  };
+  DB.invMov.push(mov);
+  return {mov:mov, missing:missing};
+}
+
+// ── Reverse all inventory movements created by a source document ──
+function reverseInventoryFromSource(source, sourceId){
+  if(!DB.invMov) return;
+  var moved = DB.invMov.filter(function(m){
+    return m.source===source && String(m.sourceId)===String(sourceId);
+  });
+  moved.forEach(function(m){
+    if(m.type==='IN'){
+      // Reduce / remove the layer that was created
+      var layers=(DB.invLayers||[]).filter(function(l){
+        return String(l.productId)===String(m.productId) &&
+               String(l.warehouseId)===String(m.warehouseId) &&
+               l.createdAt===m.date;
+      });
+      // Find the matching layer (best effort: same unit cost, original qty)
+      var found = layers.find(function(l){
+        return Math.abs((parseFloat(l.unitCost)||0)-(parseFloat(m.unitCost)||0))<0.001;
+      });
+      if(found){
+        // Remove what's still remaining from this layer
+        var toRemove = Math.min(m.quantity, found.remaining);
+        found.remaining -= toRemove;
+      }
+      // If layer is empty afterwards, we keep it for audit (remaining=0)
+    } else if(m.type==='OUT'){
+      // Restore stock by creating a new layer with the same unit cost
+      if((m.consumed||0) > 0){
+        restoreFIFO(m.productId, m.warehouseId, m.consumed, m.unitCost, m.date);
+      }
+    }
+  });
+  // Remove the movements themselves
+  DB.invMov = DB.invMov.filter(function(m){
+    return !(m.source===source && String(m.sourceId)===String(sourceId));
+  });
+}
+
+// ── Default inventory / COGS account codes (depends on plan) ────
+function getInventoryAccount(){
+  if(DB.prefs && DB.prefs.invAccount) return DB.prefs.invAccount;
+  var plan = (DB.co && DB.co.accountPlan) || 'usgaap';
+  return plan==='pgc' ? '300' : '1200';
+}
+function getCOGSAccount(){
+  if(DB.prefs && DB.prefs.cogsAccount) return DB.prefs.cogsAccount;
+  var plan = (DB.co && DB.co.accountPlan) || 'usgaap';
+  return plan==='pgc' ? '600' : '5000';
+}
+
+// ══════════════════════════════════════════════════════════════════
+// ── Is this category a "merchandise / inventory" category that should track stock? ──
+// Returns true for: COGS, Cost of Goods Sold, Compras de mercaderías, Materias primas, Raw Materials
+// (i.e. categories that represent goods to be held as inventory until sold)
+function _isInventoryCategory(cat){
+  if(!cat) return false;
+  var s = String(cat).toLowerCase().trim();
+  return s==='cogs' || s==='cost of goods sold' ||
+         s==='compras de mercaderías' || s==='compras de mercaderias' ||
+         s==='materias primas' || s==='raw materials';
+}
+
+// END INVENTORY CORE
+// ══════════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════════
+// INVENTORY UI — Navigation, Renders, Modals
+// ══════════════════════════════════════════════════════════════════
+
+var _invOpen = false;
+function toggleInventoryNav() {
+  _invOpen = !_invOpen;
+  var sub   = document.getElementById('nav-inventory-sub');
+  var arrow = document.getElementById('nav-inventory-arrow');
+  if(sub)   sub.style.display   = _invOpen ? 'block' : 'none';
+  if(arrow) arrow.style.transform = _invOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+}
+function navInventory(sub) {
+  if (!_invOpen) toggleInventoryNav();
+  nav(sub);
+  if(sub==='products')   rProducts();
+  if(sub==='warehouses') rWarehouses();
+  if(sub==='stock')      rStock();
+  if(sub==='movements')  rMovements();
+}
+
+// ── PRODUCTS ─────────────────────────────────────────────────────
+function rProducts(){
+  var body=document.getElementById('productsTbl');
+  if(!body) return;
+  var prods=DB.products||[];
+  var stockable=prods.filter(function(p){return p.isStockable;}).length;
+  var services =prods.filter(function(p){return !p.isStockable;}).length;
+  var totalValue=getTotalInventoryValue();
+  var elCnt=document.getElementById('prd-cnt');     if(elCnt) elCnt.textContent=prods.length;
+  var elStk=document.getElementById('prd-stk');     if(elStk) elStk.textContent=stockable;
+  var elSvc=document.getElementById('prd-svc');     if(elSvc) elSvc.textContent=services;
+  var elVal=document.getElementById('prd-val');     if(elVal) elVal.textContent='€'+totalValue.toFixed(2);
+  if(prods.length===0){
+    body.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px;">No products yet. Create one to start tracking inventory.</td></tr>';
+    return;
+  }
+  body.innerHTML=prods.map(function(p){
+    var stock=0, value=0;
+    if(p.isStockable){
+      (DB.warehouses||[]).forEach(function(w){
+        stock += getStock(p.id, w.id);
+        value += getInventoryValue(p.id, w.id);
+      });
+    }
+    return '<tr>'+
+      '<td><span style="font-family:monospace;font-size:12px;">'+(p.ref||'—')+'</span></td>'+
+      '<td><strong>'+(p.name||'')+'</strong></td>'+
+      '<td>'+(p.uom||'')+'</td>'+
+      '<td>'+(p.isStockable?'<span style="color:var(--accent);">📦 Stockable</span>':'<span style="color:var(--text3);">⚙ Service</span>')+'</td>'+
+      '<td style="text-align:right;font-family:monospace;">'+(p.salesPrice?('€'+Number(p.salesPrice).toFixed(2)):'—')+'</td>'+
+      '<td style="text-align:right;font-family:monospace;">'+(p.isStockable?(stock===Math.floor(stock)?stock:stock.toFixed(2)):'—')+'</td>'+
+      '<td style="text-align:right;font-family:monospace;color:var(--green);">'+(p.isStockable?('€'+value.toFixed(2)):'—')+'</td>'+
+      '<td><button class="btn btn-ghost btn-sm" onclick="openProductModal('+p.id+')">✏️</button> <button class="btn btn-ghost btn-sm" onclick="deleteProduct('+p.id+')">🗑</button></td>'+
+    '</tr>';
+  }).join('');
+}
+
+var _prdEditId=null;
+function openProductModal(id){
+  _prdEditId = id || null;
+  var p = id ? getProductById(id) : null;
+  document.getElementById('prd-ref').value     = p?p.ref:'';
+  document.getElementById('prd-name').value    = p?p.name:'';
+  document.getElementById('prd-uom').value     = p?(p.uom||'units'):'units';
+  document.getElementById('prd-stockable').checked = p ? !!p.isStockable : true;
+  document.getElementById('prd-price').value   = p?(p.salesPrice||''):'';
+  document.getElementById('prd-modal-title').textContent = id ? 'Edit Product' : 'New Product';
+  openOverlay('ov-product');
+}
+function saveProduct(){
+  var ref=document.getElementById('prd-ref').value.trim();
+  var name=document.getElementById('prd-name').value.trim();
+  var uom=document.getElementById('prd-uom').value.trim()||'units';
+  var stockable=document.getElementById('prd-stockable').checked;
+  var price=parseFloat(document.getElementById('prd-price').value)||0;
+  if(!name){ alert('Product name is required.'); return; }
+  if(_prdEditId){
+    var p=getProductById(_prdEditId);
+    if(p){ p.ref=ref; p.name=name; p.uom=uom; p.isStockable=stockable; p.salesPrice=price; }
+  } else {
+    if(!DB.products) DB.products=[];
+    if(!DB.ids.prd) DB.ids.prd=1;
+    DB.products.push({id:DB.ids.prd++, ref:ref, name:name, uom:uom, isStockable:stockable, salesPrice:price});
+  }
+  sv(); closeOverlay('ov-product');
+  _prdEditId=null;
+  rProducts();
+  showToast('✅ Product saved');
+}
+function deleteProduct(id){
+  var p=getProductById(id);
+  if(!p) return;
+  // Block delete if product has movements
+  var hasMov=(DB.invMov||[]).some(function(m){return String(m.productId)===String(id);});
+  if(hasMov){
+    alert('Cannot delete: this product has inventory movements. Archive it instead by editing it.');
+    return;
+  }
+  if(!confirm('Delete product "'+p.name+'"?')) return;
+  DB.products = DB.products.filter(function(x){return String(x.id)!==String(id);});
+  sv(); rProducts();
+  showToast('🗑 Product deleted');
+}
+
+// ── WAREHOUSES ─────────────────────────────────────────────────────
+function rWarehouses(){
+  var body=document.getElementById('warehousesTbl');
+  if(!body) return;
+  var whs=DB.warehouses||[];
+  if(whs.length===0){
+    body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:24px;">No warehouses defined.</td></tr>';
+  } else {
+    body.innerHTML=whs.map(function(w){
+      var prodCount=0, val=0;
+      (DB.products||[]).forEach(function(p){
+        if(!p.isStockable) return;
+        var s=getStock(p.id, w.id);
+        if(s>0){ prodCount++; val+=getInventoryValue(p.id, w.id); }
+      });
+      return '<tr>'+
+        '<td><span style="font-family:monospace;color:var(--text3);">#'+w.id+'</span></td>'+
+        '<td><strong>'+(w.name||'')+'</strong></td>'+
+        '<td>'+(w.location||'—')+'</td>'+
+        '<td>'+(w.isDefault?'<span style="color:var(--accent);">★ Default</span>':'')+'</td>'+
+        '<td style="text-align:right;">'+prodCount+'</td>'+
+        '<td style="text-align:right;font-family:monospace;color:var(--green);">€'+val.toFixed(2)+'</td>'+
+        '<td><button class="btn btn-ghost btn-sm" onclick="openWarehouseModal('+w.id+')">✏️</button>'+
+        (whs.length>1?' <button class="btn btn-ghost btn-sm" onclick="deleteWarehouse('+w.id+')">🗑</button>':'')+
+        '</td>'+
+      '</tr>';
+    }).join('');
+  }
+  // Render closings table
+  var clBody=document.getElementById('closingsTbl');
+  if(clBody){
+    var closings=(DB.invClosings||[]).slice().sort(function(a,b){return b.date.localeCompare(a.date);});
+    if(closings.length===0){
+      clBody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px;">No closings registered yet. Click "Close Inventory" above to register one.</td></tr>';
+    } else {
+      clBody.innerHTML=closings.map(function(c){
+        var varColor = c.variation>=0 ? 'var(--green)' : 'var(--red)';
+        return '<tr>'+
+          '<td><strong>'+c.period+'</strong></td>'+
+          '<td style="font-family:monospace;font-size:12px;">'+c.date+'</td>'+
+          '<td>'+c.method+'</td>'+
+          '<td style="text-align:right;font-family:monospace;">€'+(parseFloat(c.openingValue)||0).toFixed(2)+'</td>'+
+          '<td style="text-align:right;font-family:monospace;">€'+(parseFloat(c.closingValue)||0).toFixed(2)+'</td>'+
+          '<td style="text-align:right;font-family:monospace;color:'+varColor+';">'+(c.variation>=0?'+':'')+'€'+(parseFloat(c.variation)||0).toFixed(2)+'</td>'+
+          '<td>'+(c.jeId?'<span style="font-family:monospace;font-size:11px;color:var(--text3);">JE-'+c.jeId+'</span>':'—')+'</td>'+
+          '<td><button class="btn btn-ghost btn-sm" onclick="deleteInventoryClosing('+c.id+')">🗑</button></td>'+
+        '</tr>';
+      }).join('');
+    }
+  }
+}
+
+var _whEditId=null;
+function openWarehouseModal(id){
+  _whEditId=id||null;
+  var w=id?getWarehouseById(id):null;
+  document.getElementById('wh-name').value=w?w.name:'';
+  document.getElementById('wh-loc').value=w?(w.location||''):'';
+  document.getElementById('wh-default').checked=w?!!w.isDefault:false;
+  document.getElementById('wh-modal-title').textContent=id?'Edit Warehouse':'New Warehouse';
+  openOverlay('ov-warehouse');
+}
+function saveWarehouse(){
+  var name=document.getElementById('wh-name').value.trim();
+  var loc=document.getElementById('wh-loc').value.trim();
+  var isDef=document.getElementById('wh-default').checked;
+  if(!name){ alert('Warehouse name is required.'); return; }
+  if(isDef){
+    // Unset other defaults
+    (DB.warehouses||[]).forEach(function(w){w.isDefault=false;});
+  }
+  if(_whEditId){
+    var w=getWarehouseById(_whEditId);
+    if(w){ w.name=name; w.location=loc; w.isDefault=isDef; }
+  } else {
+    if(!DB.warehouses) DB.warehouses=[];
+    if(!DB.ids.wh) DB.ids.wh=1;
+    // First warehouse is default by default
+    if(DB.warehouses.length===0) isDef=true;
+    DB.warehouses.push({id:DB.ids.wh++, name:name, location:loc, isDefault:isDef});
+  }
+  // Ensure exactly one default
+  if(!(DB.warehouses||[]).some(function(w){return w.isDefault;}) && DB.warehouses.length>0){
+    DB.warehouses[0].isDefault=true;
+  }
+  sv(); closeOverlay('ov-warehouse');
+  _whEditId=null;
+  rWarehouses();
+  showToast('✅ Warehouse saved');
+}
+function deleteWarehouse(id){
+  if((DB.warehouses||[]).length<=1){ alert('At least one warehouse must exist.'); return; }
+  var w=getWarehouseById(id);
+  if(!w) return;
+  var hasMov=(DB.invMov||[]).some(function(m){return String(m.warehouseId)===String(id);});
+  if(hasMov){ alert('Cannot delete: this warehouse has inventory movements.'); return; }
+  if(!confirm('Delete warehouse "'+w.name+'"?')) return;
+  var wasDef=w.isDefault;
+  DB.warehouses = DB.warehouses.filter(function(x){return String(x.id)!==String(id);});
+  if(wasDef && DB.warehouses.length>0) DB.warehouses[0].isDefault=true;
+  sv(); rWarehouses();
+  showToast('🗑 Warehouse deleted');
+}
+
+// ── STOCK & VALUATION ──────────────────────────────────────────
+function rStock(){
+  var body=document.getElementById('stockTbl');
+  if(!body) return;
+  var elM=document.getElementById('stk-method'); if(elM) elM.textContent = DB.prefs.invValMethod||'FIFO';
+  var rows=[];
+  var totalUnits=0, totalValue=0, items=0;
+  (DB.products||[]).forEach(function(p){
+    if(!p.isStockable) return;
+    (DB.warehouses||[]).forEach(function(w){
+      var stock=getStock(p.id, w.id);
+      var value=getInventoryValue(p.id, w.id);
+      if(stock===0 && value===0) return; // skip empty pairs
+      var avgCost = stock>0 ? (value/stock) : 0;
+      rows.push({p:p, w:w, stock:stock, value:value, avgCost:avgCost});
+      totalUnits += stock;
+      totalValue += value;
+      items++;
+    });
+  });
+  var elI=document.getElementById('stk-items'); if(elI) elI.textContent=items;
+  var elU=document.getElementById('stk-units'); if(elU) elU.textContent=(totalUnits===Math.floor(totalUnits))?totalUnits:totalUnits.toFixed(2);
+  var elV=document.getElementById('stk-value'); if(elV) elV.textContent='€'+totalValue.toFixed(2);
+  if(rows.length===0){
+    body.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px;">No stock yet.</td></tr>';
+    return;
+  }
+  body.innerHTML=rows.map(function(r){
+    var stockColor = r.stock<0 ? 'var(--red)' : (r.stock===0 ? 'var(--text3)' : 'var(--text)');
+    return '<tr>'+
+      '<td><strong>'+(r.p.name||'')+'</strong></td>'+
+      '<td><span style="font-family:monospace;font-size:12px;">'+(r.p.ref||'—')+'</span></td>'+
+      '<td>'+r.w.name+'</td>'+
+      '<td style="text-align:right;font-family:monospace;color:'+stockColor+';">'+(r.stock===Math.floor(r.stock)?r.stock:r.stock.toFixed(2))+' '+(r.p.uom||'')+'</td>'+
+      '<td style="text-align:right;font-family:monospace;">€'+r.avgCost.toFixed(2)+'</td>'+
+      '<td style="text-align:right;font-family:monospace;color:var(--green);font-weight:600;">€'+r.value.toFixed(2)+'</td>'+
+    '</tr>';
+  }).join('');
+}
+
+// ── MOVEMENTS ────────────────────────────────────────────────────
+function rMovements(){
+  var body=document.getElementById('movementsTbl');
+  if(!body) return;
+  var movs=(DB.invMov||[]).slice().sort(function(a,b){
+    if(a.date===b.date) return (b.id||0)-(a.id||0);
+    return b.date.localeCompare(a.date);
+  });
+  if(movs.length===0){
+    body.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px;">No movements yet.</td></tr>';
+    return;
+  }
+  body.innerHTML=movs.map(function(m){
+    var p=getProductById(m.productId);
+    var w=getWarehouseById(m.warehouseId);
+    var typeClass = m.type==='IN' ? 'color:var(--green);' : (m.type==='OUT' ? 'color:var(--red);' : 'color:var(--blue);');
+    var typeIcon  = m.type==='IN' ? '↑ IN' : (m.type==='OUT' ? '↓ OUT' : '⚙ ADJ');
+    var srcLabel  = m.source==='PURCHASE' ? '🛒 Purchase #'+m.sourceId :
+                    m.source==='SALE'     ? '💰 Sale #'+m.sourceId :
+                    m.source==='MANUAL'   ? '✋ Manual' : (m.source||'');
+    return '<tr>'+
+      '<td style="font-family:monospace;font-size:12px;">'+(m.date||'')+'</td>'+
+      '<td><strong style="'+typeClass+'">'+typeIcon+'</strong></td>'+
+      '<td>'+(p?(p.ref?(p.ref+' · '):'')+(p.name||''):'(deleted product)')+'</td>'+
+      '<td>'+(w?w.name:'')+'</td>'+
+      '<td style="text-align:right;font-family:monospace;'+typeClass+'">'+(m.quantity>0?'+':'')+m.quantity+'</td>'+
+      '<td style="text-align:right;font-family:monospace;">€'+(parseFloat(m.unitCost)||0).toFixed(2)+'</td>'+
+      '<td style="text-align:right;font-family:monospace;'+typeClass+'">€'+Math.abs(parseFloat(m.totalCost)||0).toFixed(2)+'</td>'+
+      '<td style="font-size:11px;color:var(--text3);">'+srcLabel+'</td>'+
+      '<td>'+(m.source==='MANUAL'?'<button class="btn btn-ghost btn-sm" onclick="deleteMovement('+m.id+')">🗑</button>':'')+'</td>'+
+    '</tr>';
+  }).join('');
+}
+
+// ── MANUAL ADJUSTMENT ─────────────────────────────────────────
+function openMovementModal(){
+  if((DB.products||[]).filter(function(p){return p.isStockable;}).length===0){
+    alert('Create at least one stockable product first.');
+    return;
+  }
+  // Populate selects
+  var pSel=document.getElementById('mov-product');
+  pSel.innerHTML=(DB.products||[]).filter(function(p){return p.isStockable;})
+    .map(function(p){return '<option value="'+p.id+'">'+(p.ref?(p.ref+' · '):'')+(p.name||'')+'</option>';}).join('');
+  var wSel=document.getElementById('mov-warehouse');
+  wSel.innerHTML=(DB.warehouses||[]).map(function(w){return '<option value="'+w.id+'"'+(w.isDefault?' selected':'')+'>'+w.name+'</option>';}).join('');
+  document.getElementById('mov-type').value='IN';
+  document.getElementById('mov-qty').value='';
+  document.getElementById('mov-cost').value='';
+  document.getElementById('mov-notes').value='';
+  openOverlay('ov-movement');
+}
+function saveMovement(){
+  var pid=document.getElementById('mov-product').value;
+  var wid=document.getElementById('mov-warehouse').value;
+  var type=document.getElementById('mov-type').value;
+  var qty=parseFloat(document.getElementById('mov-qty').value)||0;
+  var cost=parseFloat(document.getElementById('mov-cost').value)||0;
+  var notes=document.getElementById('mov-notes').value.trim();
+  var dt=document.getElementById('mov-date').value || new Date().toISOString().slice(0,10);
+  if(!pid){ alert('Pick a product.'); return; }
+  if(!wid){ alert('Pick a warehouse.'); return; }
+  if(qty<=0){ alert('Quantity must be > 0.'); return; }
+  if(type==='IN' && cost<0){ alert('Unit cost must be >= 0.'); return; }
+  if(type==='IN'){
+    createInventoryMovementIN(pid, wid, qty, cost, 'MANUAL', null, dt);
+  } else if(type==='OUT'){
+    var r = createInventoryMovementOUT(pid, wid, qty, 'MANUAL', null, dt);
+    if(r.missing>0){
+      var p=getProductById(pid);
+      alert('⚠️ Insufficient stock: '+r.missing+' '+(p?p.uom:'units')+' missing. Movement registered with stock going negative.');
+    }
+  } else {
+    // ADJUSTMENT: signed quantity - cost is the unit cost
+    if(!DB.invMov) DB.invMov=[];
+    if(!DB.ids.im) DB.ids.im=1;
+    DB.invMov.push({
+      id:DB.ids.im++,
+      productId:pid, warehouseId:wid, type:'ADJ', source:'MANUAL', sourceId:null,
+      quantity:qty, unitCost:cost, totalCost:qty*cost, date:dt, notes:notes
+    });
+    if(qty>0){
+      // Add a layer for FIFO
+      if(!DB.invLayers) DB.invLayers=[];
+      if(!DB.ids.il) DB.ids.il=1;
+      DB.invLayers.push({id:DB.ids.il++, productId:pid, warehouseId:wid, remaining:qty, unitCost:cost, createdAt:dt});
+    } else if(qty<0){
+      // Reduce layers FIFO
+      consumeFIFO(pid, wid, Math.abs(qty));
+    }
+  }
+  if(notes){
+    // Store note on last movement
+    var last = DB.invMov[DB.invMov.length-1];
+    if(last) last.notes=notes;
+  }
+  sv(); closeOverlay('ov-movement');
+  rMovements(); rStock(); rProducts(); rWarehouses();
+  showToast('✅ Movement registered');
+}
+function deleteMovement(id){
+  var m=(DB.invMov||[]).find(function(x){return String(x.id)===String(id);});
+  if(!m) return;
+  if(m.source!=='MANUAL'){ alert('Only manual movements can be deleted from here. To remove a purchase/sale movement, delete the source document.'); return; }
+  if(!confirm('Delete this manual movement? Stock will be re-adjusted.')) return;
+  // Reverse the effect
+  if(m.type==='IN' || (m.type==='ADJ' && m.quantity>0)){
+    // Try to remove the layer it created
+    consumeFIFO(m.productId, m.warehouseId, m.quantity);
+  } else if(m.type==='OUT' || (m.type==='ADJ' && m.quantity<0)){
+    // Restore stock
+    restoreFIFO(m.productId, m.warehouseId, Math.abs(m.quantity), m.unitCost||0, m.date);
+  }
+  DB.invMov = DB.invMov.filter(function(x){return String(x.id)!==String(id);});
+  sv(); rMovements(); rStock(); rProducts(); rWarehouses();
+  showToast('🗑 Movement deleted');
+}
+
+// ══════════════════════════════════════════════════════════════════
+// INVENTORY CLOSING — Variación de Existencias
+// ══════════════════════════════════════════════════════════════════
+// PGC España (purchases of merchandise model — accounts 300/610):
+//   1. Reverse opening inventory:  Dr 610  Cr 300  (for prior closing balance)
+//   2. Register closing inventory: Dr 300  Cr 610  (for current physical count)
+//   Net effect: 300 (asset) reflects current value; 610 (variation) hits P&L.
+// US GAAP (periodic inventory system, simplified):
+//   1. Reverse opening inventory:  Dr 5000 Cr 1200
+//   2. Register closing inventory: Dr 1200 Cr 5000
+//   Net effect: 1200 (asset) reflects current value; 5000 (COGS) absorbs variation.
+//
+// Closings are stored in DB.invClosings[] for audit and so the next closing
+// knows what the previous "closing balance" (= next "opening") was.
+
+function getLastClosing(){
+  var arr=DB.invClosings||[];
+  if(arr.length===0) return null;
+  // Most recent by date
+  return arr.slice().sort(function(a,b){return b.date.localeCompare(a.date);})[0];
+}
+
+function snapshotInventoryValue(){
+  // Sum of all stockable products in all warehouses at current valuation method
+  return getTotalInventoryValue();
+}
+
+function closeInventory(periodLabel, closingDate){
+  if(!closingDate){ closingDate = new Date().toISOString().slice(0,10); }
+  // Block duplicate closing for same period
+  if((DB.invClosings||[]).some(function(c){return c.period===periodLabel;})){
+    alert('A closing already exists for "'+periodLabel+'". Delete it first if you want to redo it.');
+    return false;
+  }
+  var prev = getLastClosing();
+  var openingValue = prev ? (parseFloat(prev.closingValue)||0) : 0;
+  var closingValue = snapshotInventoryValue();
+
+  var _plan = getActivePlan();
+  var isPGC = _plan.id==='pgc';
+  // Account codes
+  var invAcc  = isPGC ? '300'  : '1200';   // Inventory (asset)
+  var varAcc  = isPGC ? '610'  : '5000';   // Variación de existencias (PGC) / COGS (USGAAP)
+  // Allow user override from prefs
+  if(DB.prefs && DB.prefs.invAccount) invAcc = DB.prefs.invAccount;
+
+  // Build JE lines: reverse opening + register closing
+  var lines=[];
+  if(openingValue > 0){
+    // Dr varAcc (P&L expense) / Cr invAcc (asset)
+    lines.push({account:varAcc, debit:openingValue, credit:0});
+    lines.push({account:invAcc, debit:0,            credit:openingValue});
+  }
+  if(closingValue > 0){
+    lines.push({account:invAcc, debit:closingValue, credit:0});
+    lines.push({account:varAcc, debit:0,            credit:closingValue});
+  }
+  if(lines.length===0){
+    if(!confirm('No inventory to register (opening=0, closing=0). Register an empty closing anyway?')) return false;
+  }
+
+  // Snapshot per product/warehouse for historical reference
+  var snapshot=[];
+  (DB.products||[]).forEach(function(p){
+    if(!p.isStockable) return;
+    (DB.warehouses||[]).forEach(function(w){
+      var stk=getStock(p.id, w.id);
+      var val=getInventoryValue(p.id, w.id);
+      if(stk!==0 || val!==0){
+        snapshot.push({productId:p.id, productName:p.name, productRef:p.ref, warehouseId:w.id, warehouseName:w.name, stock:stk, value:val});
+      }
+    });
+  });
+
+  // Create the JE
+  var amount = Math.max(openingValue, closingValue);
+  var jeId=null;
+  if(lines.length>0){
+    if(!DB.ids.j) DB.ids.j=1;
+    jeId = DB.ids.j++;
+    DB.je.push({
+      id: jeId, date: closingDate,
+      desc: 'Inventory Closing — '+periodLabel+(isPGC?' (Variación de existencias)':' (Inventory adjustment)'),
+      lines: lines, amount: amount,
+      auto: true, sourceType: 'invclose', sourceId: jeId
+    });
+  }
+
+  // Save the closing record
+  if(!DB.invClosings) DB.invClosings=[];
+  if(!DB.ids.icl) DB.ids.icl=1;
+  DB.invClosings.push({
+    id: DB.ids.icl++,
+    period: periodLabel,
+    date: closingDate,
+    openingValue: openingValue,
+    closingValue: closingValue,
+    variation: closingValue - openingValue,
+    method: DB.prefs.invValMethod||'FIFO',
+    plan: _plan.id,
+    jeId: jeId,
+    snapshot: snapshot
+  });
+
+  sv();
+  rWarehouses(); rStock(); rMovements(); rBS(); rPL();
+  showToast('✅ Inventory closing registered: '+periodLabel);
+  return true;
+}
+
+function deleteInventoryClosing(id){
+  var c=(DB.invClosings||[]).find(function(x){return String(x.id)===String(id);});
+  if(!c) return;
+  if(!confirm('Delete inventory closing for "'+c.period+'"?\n\nThe associated journal entry will also be deleted.')) return;
+  // Remove the JE
+  if(c.jeId){
+    DB.je = DB.je.filter(function(j){return !(j.sourceType==='invclose' && j.id===c.jeId);});
+  }
+  DB.invClosings = DB.invClosings.filter(function(x){return String(x.id)!==String(id);});
+  sv();
+  rWarehouses(); rStock(); rBS(); rPL();
+  showToast('🗑 Inventory closing deleted');
+}
+
+// ── UI: Modal for inventory closing ─────────────────────────────
+function openCloseInventoryModal(){
+  if((DB.products||[]).filter(function(p){return p.isStockable;}).length===0){
+    alert('You need at least one stockable product to close inventory.');
+    return;
+  }
+  // Populate period select
+  var sel=document.getElementById('icl-period');
+  var year = (DB.co && DB.co.fy) ? DB.co.fy : new Date().getFullYear();
+  var opts = [
+    {v:'FY'+year+'-Q1',  l:'Q1 '+year+' (Jan – Mar)'},
+    {v:'FY'+year+'-Q2',  l:'Q2 '+year+' (Apr – Jun)'},
+    {v:'FY'+year+'-Q3',  l:'Q3 '+year+' (Jul – Sep)'},
+    {v:'FY'+year+'-Q4',  l:'Q4 '+year+' (Oct – Dec)'},
+    {v:'FY'+year+'-H1',  l:'H1 '+year+' (Jan – Jun)'},
+    {v:'FY'+year+'-H2',  l:'H2 '+year+' (Jul – Dec)'},
+    {v:'FY'+year+'-FULL',l:'Full Year '+year+' (Jan – Dec)'}
+  ];
+  sel.innerHTML = opts.map(function(o){return '<option value="'+o.v+'">'+o.l+'</option>';}).join('');
+  // Default closing date — last day of current month
+  var today=new Date();
+  var lastDay=new Date(today.getFullYear(), today.getMonth()+1, 0);
+  document.getElementById('icl-date').value = lastDay.toISOString().slice(0,10);
+  // Show preview
+  refreshClosingPreview();
+  openOverlay('ov-close-inventory');
+}
+
+function refreshClosingPreview(){
+  var prev = getLastClosing();
+  var openingValue = prev ? (parseFloat(prev.closingValue)||0) : 0;
+  var closingValue = snapshotInventoryValue();
+  var variation    = closingValue - openingValue;
+  var _plan = getActivePlan();
+  var isPGC = _plan.id==='pgc';
+  document.getElementById('icl-prev-period').textContent  = prev ? prev.period : '— (first closing)';
+  document.getElementById('icl-opening').textContent      = '€'+openingValue.toFixed(2);
+  document.getElementById('icl-closing').textContent      = '€'+closingValue.toFixed(2);
+  document.getElementById('icl-variation').textContent    = (variation>=0?'+':'')+'€'+variation.toFixed(2);
+  document.getElementById('icl-variation').style.color    = variation>=0 ? 'var(--green)' : 'var(--red)';
+  document.getElementById('icl-method').textContent       = DB.prefs.invValMethod||'FIFO';
+  var elM2=document.getElementById('icl-method-2'); if(elM2) elM2.textContent = DB.prefs.invValMethod||'FIFO';
+  // Build JE preview
+  var invAcc = isPGC ? '300'  : '1200';
+  if(DB.prefs && DB.prefs.invAccount) invAcc = DB.prefs.invAccount;
+  var varAcc = isPGC ? '610'  : '5000';
+  var jeRows=[];
+  if(openingValue>0){
+    jeRows.push({a:varAcc, n:isPGC?'Variación de existencias (610)':'COGS ('+varAcc+')', dr:openingValue, cr:0});
+    jeRows.push({a:invAcc, n:isPGC?'Mercaderías (300)':'Inventory ('+invAcc+')', dr:0, cr:openingValue});
+  }
+  if(closingValue>0){
+    jeRows.push({a:invAcc, n:isPGC?'Mercaderías (300)':'Inventory ('+invAcc+')', dr:closingValue, cr:0});
+    jeRows.push({a:varAcc, n:isPGC?'Variación de existencias (610)':'COGS ('+varAcc+')', dr:0, cr:closingValue});
+  }
+  var jeBody = document.getElementById('icl-je-body');
+  if(jeRows.length===0){
+    jeBody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--text3);padding:14px;">No JE will be generated (opening and closing are both zero).</td></tr>';
+  } else {
+    jeBody.innerHTML = jeRows.map(function(r){
+      return '<tr><td>'+r.a+' · '+r.n+'</td>'+
+             '<td style="text-align:right;font-family:monospace;">'+(r.dr>0?'€'+r.dr.toFixed(2):'')+'</td>'+
+             '<td style="text-align:right;font-family:monospace;color:var(--red);">'+(r.cr>0?'€'+r.cr.toFixed(2):'')+'</td></tr>';
+    }).join('');
+  }
+}
+
+function confirmCloseInventory(){
+  var period = document.getElementById('icl-period').value;
+  var date   = document.getElementById('icl-date').value;
+  if(!period){ alert('Pick a period.'); return; }
+  if(!confirm('Are you sure that you want to close the inventory for "'+period+'"?\n\nThis will create a journal entry for the variación de existencias and cannot be easily undone.')) return;
+  if(closeInventory(period, date)){
+    closeOverlay('ov-close-inventory');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+// END INVENTORY UI
+
+// ══════════════════════════════════════════════════════════════════
+// TAX CLOSINGS & PERIOD LOCKS
+// ══════════════════════════════════════════════════════════════════
+// Each quarter can be:
+//   - Open       → operations allowed, no JE
+//   - Closed     → JE generated (regularización IVA), still editable
+//   - Locked     → no operations allowed in that period
+//
+// Storage:
+//   DB.taxClosings[]:  {id, year, quarter, date, jeId, ivaSoportado, ivaRepercutido, result, kind:'TO_PAY'|'TO_REFUND', plan}
+//   DB.lockedPeriods[]: {year, quarter}  (closing alone does NOT lock automatically — user clicks Lock)
+
+function _quarterDateRange(year, q){
+  // q: 1..4
+  var startMonth = (q-1)*3;       // 0,3,6,9
+  var endMonth   = startMonth+2;  // 2,5,8,11
+  var start = new Date(year, startMonth, 1);
+  var end   = new Date(year, endMonth+1, 0); // last day of end month
+  return {
+    from: start.toISOString().slice(0,10),
+    to:   end.toISOString().slice(0,10)
+  };
+}
+
+function getTaxClosing(year, quarter){
+  return (DB.taxClosings||[]).find(function(c){
+    return c.year===year && c.quarter===quarter;
+  });
+}
+function isPeriodClosed(year, quarter){
+  return !!getTaxClosing(year, quarter);
+}
+function isPeriodLocked(dateStr){
+  if(!dateStr) return false;
+  var d = new Date(dateStr);
+  if(isNaN(d.getTime())) return false;
+  var y = d.getFullYear();
+  var q = Math.floor(d.getMonth()/3)+1;
+  return (DB.lockedPeriods||[]).some(function(l){return l.year===y && l.quarter===q;});
+}
+function isQuarterLocked(year, quarter){
+  return (DB.lockedPeriods||[]).some(function(l){return l.year===year && l.quarter===quarter;});
+}
+
+// Compute IVA balances for a quarter from JEs
+function computeQuarterVAT(year, quarter){
+  var range = _quarterDateRange(year, quarter);
+  var _plan = getActivePlan();
+  // Account codes
+  var vatRepAcc = _plan.id==='pgc' ? '477' : '2100'; // IVA Repercutido (output, sales)
+  var vatSopAcc = _plan.id==='pgc' ? '472' : '2100'; // IVA Soportado (input, purchases)
+  var ivaRep=0, ivaSop=0;
+  DB.je.forEach(function(je){
+    if(je.date < range.from || je.date > range.to) return;
+    // Skip JEs that are themselves tax-closing entries (avoid double counting after re-close)
+    if(je.sourceType==='taxclose') return;
+    je.lines.forEach(function(l){
+      if(_plan.id==='pgc'){
+        if(l.account==='477') ivaRep += (l.credit||0) - (l.debit||0); // Cr increases payable
+        if(l.account==='472') ivaSop += (l.debit||0) - (l.credit||0); // Dr increases receivable
+      } else {
+        // US GAAP: same account 2100, sales generate Cr, purchases Dr
+        if(l.account==='2100'){
+          // Heuristic: from sourceType
+          if(je.sourceType==='sale')      ivaRep += (l.credit||0) - (l.debit||0);
+          else if(je.sourceType==='purchase' || je.sourceType==='asset') ivaSop += (l.debit||0) - (l.credit||0);
+          else {
+            // Generic JE: assume Cr→repercutido, Dr→soportado
+            ivaRep += (l.credit||0);
+            ivaSop += (l.debit||0);
+          }
+        }
+      }
+    });
+  });
+  if(ivaRep<0) ivaRep=0;
+  if(ivaSop<0) ivaSop=0;
+  var result = ivaRep - ivaSop;
+  return {ivaRep:ivaRep, ivaSop:ivaSop, result:result, range:range};
+}
+
+// Close VAT for a quarter: generates JE for "regularización IVA"
+//   PGC:
+//     Dr 477 (close repercutido)  Cr 472 (close soportado)
+//     If result > 0 → Cr 4750 (HP acreedora por IVA — to pay)
+//     If result < 0 → Dr 4700 (HP deudora por IVA — to refund)
+//   USGAAP:
+//     Same idea but on a single combined VAT account 2100, plus settlement to AP/AR-style account
+function closeTaxQuarter(year, quarter){
+  if(getTaxClosing(year, quarter)){
+    alert('Quarter Q'+quarter+' '+year+' is already closed. Delete the existing closing first if you want to redo it.');
+    return false;
+  }
+  var v = computeQuarterVAT(year, quarter);
+  var _plan = getActivePlan();
+  var range = v.range;
+  var lines = [];
+  var kind = v.result>=0 ? 'TO_PAY' : 'TO_REFUND';
+
+  if(_plan.id==='pgc'){
+    // Close 477 (Cr balance) and 472 (Dr balance)
+    if(v.ivaRep > 0) lines.push({account:'477', debit:v.ivaRep, credit:0});
+    if(v.ivaSop > 0) lines.push({account:'472', debit:0,         credit:v.ivaSop});
+    if(v.result > 0){
+      // To pay: Cr 4750
+      lines.push({account:'4750', debit:0, credit:v.result});
+    } else if(v.result < 0){
+      // To refund: Dr 4700
+      lines.push({account:'4700', debit:Math.abs(v.result), credit:0});
+    }
+  } else {
+    // US GAAP: simplified — settle 2100 to a "VAT settlement" account
+    // We'll use 2150 (VAT to pay) / 1250 (VAT to refund) as proxies
+    if(v.ivaRep > 0) lines.push({account:'2100', debit:v.ivaRep, credit:0});
+    if(v.ivaSop > 0) lines.push({account:'2100', debit:0,         credit:v.ivaSop});
+    if(v.result > 0){
+      lines.push({account:'2150', debit:0, credit:v.result});
+    } else if(v.result < 0){
+      lines.push({account:'1250', debit:Math.abs(v.result), credit:0});
+    }
+  }
+
+  // No movement → no JE
+  var jeId = null;
+  if(lines.length>0){
+    if(!DB.ids.j) DB.ids.j=1;
+    jeId = DB.ids.j++;
+    DB.je.push({
+      id: jeId, date: range.to,
+      desc: 'VAT Closing — Q'+quarter+' '+year+' ('+(kind==='TO_PAY'?'to pay':'to refund')+')',
+      lines: lines,
+      amount: Math.abs(v.result),
+      auto: true, sourceType: 'taxclose', sourceId: jeId
+    });
+  }
+
+  if(!DB.taxClosings) DB.taxClosings=[];
+  if(!DB.ids.tcl) DB.ids.tcl=1;
+  DB.taxClosings.push({
+    id: DB.ids.tcl++,
+    year: year, quarter: quarter, date: range.to,
+    ivaSoportado: v.ivaSop, ivaRepercutido: v.ivaRep,
+    result: v.result, kind: kind,
+    plan: _plan.id, jeId: jeId
+  });
+  sv();
+  rTaxes(); rBS(); rPL();
+  showToast('✅ Tax closing registered: Q'+quarter+' '+year);
+  return true;
+}
+
+function reopenTaxQuarter(year, quarter){
+  var c = getTaxClosing(year, quarter);
+  if(!c) return false;
+  if(isQuarterLocked(year, quarter)){
+    alert('Quarter is locked. Unlock it first.');
+    return false;
+  }
+  if(!confirm('Reopen Q'+quarter+' '+year+'?\n\nThe associated journal entry will be deleted.')) return false;
+  // Remove the JE
+  if(c.jeId){
+    DB.je = DB.je.filter(function(j){return !(j.sourceType==='taxclose' && j.id===c.jeId);});
+  }
+  DB.taxClosings = DB.taxClosings.filter(function(x){return !(x.year===year && x.quarter===quarter);});
+  sv();
+  rTaxes(); rBS(); rPL();
+  showToast('🔓 Tax closing reopened: Q'+quarter+' '+year);
+  return true;
+}
+
+function lockQuarter(year, quarter){
+  if(!isPeriodClosed(year, quarter)){
+    alert('You must close this quarter before locking it.');
+    return false;
+  }
+  if(isQuarterLocked(year, quarter)){
+    showToast('Quarter Q'+quarter+' '+year+' is already locked.');
+    return false;
+  }
+  if(!confirm('Lock Q'+quarter+' '+year+'?\n\nWhile locked, no operations can be created or modified in this period.')) return false;
+  if(!DB.lockedPeriods) DB.lockedPeriods=[];
+  DB.lockedPeriods.push({year:year, quarter:quarter, lockedAt:new Date().toISOString()});
+  sv();
+  rTaxes();
+  showToast('🔒 Quarter locked: Q'+quarter+' '+year);
+  return true;
+}
+
+function unlockQuarter(year, quarter){
+  if(!isQuarterLocked(year, quarter)){
+    showToast('Quarter Q'+quarter+' '+year+' is not locked.');
+    return false;
+  }
+  if(!confirm('Unlock Q'+quarter+' '+year+'?\n\nOperations will be allowed again in this period.')) return false;
+  DB.lockedPeriods = (DB.lockedPeriods||[]).filter(function(l){return !(l.year===year && l.quarter===quarter);});
+  sv();
+  rTaxes();
+  showToast('🔓 Quarter unlocked: Q'+quarter+' '+year);
+  return true;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// END TAX CLOSINGS & PERIOD LOCKS
+// ══════════════════════════════════════════════════════════════════
+
 // ══════════════════════════════════════════════════════════════════
 // INVOICE LINES MANAGEMENT (Holded-style line-by-line)
 // ══════════════════════════════════════════════════════════════════
@@ -2368,25 +3604,68 @@ function _computeSaleLinesTotals(lines){
   return {net:net, vat:vat, ret:ret, total:net+vat-ret};
 }
 function _computePurchLinesTotals(lines){
-  var net=0, vat=0;
+  var net=0, vat=0, ret=0;
   for(var i=0;i<lines.length;i++){
     var ln=lines[i];
     var sub=(parseFloat(ln.qty)||0)*(parseFloat(ln.price)||0);
     var vrate=(parseFloat(ln.vatRate)||0);
+    var rrate=(parseFloat(ln.retRate)||0);
     net+=sub;
     vat+=sub*vrate/100;
+    ret+=sub*rrate/100;
   }
-  return {net:net, vat:vat, total:net+vat};
+  return {net:net, vat:vat, ret:ret, total:net+vat-ret};
 }
 
 // ─── Build a sale line <tr> ───
+function _productOptionsHTML(selVal){
+  var sv=String(selVal||'');
+  var opts='<option value="">— None / free text —</option>';
+  (DB.products||[]).filter(function(p){return p.isStockable;}).forEach(function(p){
+    opts+='<option value="'+p.id+'"'+(String(p.id)===sv?' selected':'')+'>'+
+          (p.ref?(p.ref+' · '):'')+ (p.name||'') +'</option>';
+  });
+  return opts;
+}
+function _warehouseOptionsHTML(selVal){
+  var sv=String(selVal||'');
+  // Default to the default warehouse if no value passed
+  if(!sv){
+    var def=getDefaultWarehouse();
+    if(def) sv=String(def.id);
+  }
+  var opts='';
+  (DB.warehouses||[]).forEach(function(w){
+    opts+='<option value="'+w.id+'"'+(String(w.id)===sv?' selected':'')+'>'+w.name+(w.isDefault?' ★':'')+'</option>';
+  });
+  return opts;
+}
+
 function _saleLineRowHTML(idx, prefix, includeRet){
   // prefix is 's' for new sale, 'ie' for edit
   var retCell = includeRet ?
     '<td><select class="line-ret" onchange="'+prefix+'LinesChanged()">'+_retOptionsHTML('0')+'</select></td>' : '';
+  // Product + warehouse always rendered (in a wrapper) so we can show/hide based on category for purchases
+  var hasProds = (DB.products||[]).some(function(p){return p.isStockable;});
+  var hasWh    = (DB.warehouses||[]).length>0;
+  // Default visibility:
+  //   - Sales modals (s, ie):  visible if there are stockable products
+  //   - Purchase modals (p, pe): hidden by default; updated by toggleLinesProductVisibility() based on category
+  var isSale = (prefix==='s' || prefix==='ie');
+  var defaultDisplay = (hasProds && isSale) ? 'flex' : 'none';
+  var prodWhRow = '';
+  if(hasProds && hasWh){
+    prodWhRow =
+      '<div class="line-prodwh-wrap" style="display:'+defaultDisplay+';gap:6px;margin-bottom:4px;">'+
+        '<select class="line-product" onchange="onLineProductChange(this,\''+prefix+'\')" style="flex:1;font-size:11px;padding:5px 7px;">'+_productOptionsHTML('')+'</select>'+
+        '<select class="line-warehouse" style="flex:1;font-size:11px;padding:5px 7px;">'+_warehouseOptionsHTML('')+'</select>'+
+      '</div>';
+  } else if(hasProds && !hasWh){
+    prodWhRow = '<input type="hidden" class="line-product" value="">';
+  }
   return ''+
     '<tr data-line-idx="'+idx+'">'+
-      '<td><input type="text" class="line-concept" placeholder="Concept / description"></td>'+
+      '<td>'+prodWhRow+'<input type="text" class="line-concept" placeholder="Concept / description"></td>'+
       '<td><input type="number" class="line-qty qty" min="0" step="0.01" value="1" oninput="'+prefix+'LinesChanged()"></td>'+
       '<td><input type="number" class="line-price amt" min="0" step="0.01" value="0.00" oninput="'+prefix+'LinesChanged()"></td>'+
       '<td><span class="line-subtotal">0.00</span></td>'+
@@ -2395,6 +3674,45 @@ function _saleLineRowHTML(idx, prefix, includeRet){
       '<td class="amt"><span class="line-subtotal line-total">0.00</span></td>'+
       '<td class="del-cell"><button type="button" class="inv-line-del-btn" onclick="removeLineRow(this,\''+prefix+'\')" title="Remove line">✕</button></td>'+
     '</tr>';
+}
+
+// Show/hide the product+warehouse row in all line rows of a tbody, based on the purchase category.
+// Called when category dropdown changes in purchase modals.
+function toggleLinesProductVisibility(tbodyId, cat){
+  var show = _isInventoryCategory(cat);
+  document.querySelectorAll('#'+tbodyId+' .line-prodwh-wrap').forEach(function(el){
+    el.style.display = show ? 'flex' : 'none';
+    if(!show){
+      // Reset selections so saveSale/savePurch see no productId
+      var p=el.querySelector('.line-product');     if(p) p.value='';
+      // warehouse is left selected (default) but ignored when product is empty
+    }
+  });
+}
+
+// When user picks a product from the line dropdown — autofill concept and price
+function onLineProductChange(sel, prefix){
+  var tr=sel.closest('tr');
+  if(!tr) return;
+  var pid=sel.value;
+  if(!pid) return;
+  var prod=getProductById(pid);
+  if(!prod) return;
+  var conceptEl=tr.querySelector('.line-concept');
+  if(conceptEl && !conceptEl.value){
+    conceptEl.value=prod.name||'';
+  }
+  // Autofill sales price for sale-style modals (s, ie)
+  if((prefix==='s'||prefix==='ie') && prod.salesPrice){
+    var priceEl=tr.querySelector('.line-price');
+    if(priceEl && (parseFloat(priceEl.value)||0)===0){
+      priceEl.value=Number(prod.salesPrice).toFixed(2);
+    }
+  }
+  if(prefix==='s') sLinesChanged();
+  else if(prefix==='p') pLinesChanged();
+  else if(prefix==='ie') ieLinesChanged();
+  else if(prefix==='pe') peLinesChanged();
 }
 
 function removeLineRow(btn, prefix){
@@ -2408,6 +3726,11 @@ function removeLineRow(btn, prefix){
       else if(el.classList.contains('line-price')) el.value='0.00';
       else if(el.tagName==='SELECT'){
         if(el.classList.contains('line-vat')) el.value='21';
+        else if(el.classList.contains('line-product')) el.value='';
+        else if(el.classList.contains('line-warehouse')){
+          var def=getDefaultWarehouse();
+          el.value=def?def.id:'';
+        }
         else el.value='0';
       } else el.value='';
     });
@@ -2431,7 +3754,13 @@ function _readSaleLines(tbodyId, includeRet){
     var vatSel=tr.querySelector('.line-vat');
     var vatType=vatSel?vatSel.value:'21';
     var vatRate=(vatType==='exempt'||vatType==='isp')?0:(parseFloat(vatType)||0);
-    var line={concept:concept, qty:qty, price:price, vatRate:vatRate, vatType:vatType};
+    // Inventory bindings
+    var prodEl=tr.querySelector('.line-product');
+    var whEl=tr.querySelector('.line-warehouse');
+    var productId=prodEl?prodEl.value:'';
+    var warehouseId=whEl?whEl.value:'';
+    var line={concept:concept, qty:qty, price:price, vatRate:vatRate, vatType:vatType,
+              productId:productId||null, warehouseId:warehouseId||null};
     if(includeRet){
       var retSel=tr.querySelector('.line-ret');
       var retType=retSel?retSel.value:'0';
@@ -2479,28 +3808,45 @@ function _refreshLineRowsPurch(tbodyId){
     if(subSpan) subSpan.textContent=sub.toFixed(2);
     var vatSel=tr.querySelector('.line-vat');
     var vatType=vatSel?vatSel.value:'21';
-    var vatRate=(parseFloat(vatType)||0);
+    var vatRate=(vatType==='exempt'||vatType==='isp')?0:(parseFloat(vatType)||0);
     var va=sub*vatRate/100;
-    var lineTot=sub+va;
+    // Retention (if column exists)
+    var retSel=tr.querySelector('.line-ret');
+    var rt=retSel?retSel.value:'0';
+    var rr=parseFloat(rt)||0;
+    var ra=sub*rr/100;
+    var lineTot=sub+va-ra;
     var totSpan=tr.querySelector('.line-total');
     if(totSpan) totSpan.textContent=lineTot.toFixed(2);
   });
 }
 
 // ═══ NEW SALE MODAL ═══
+function _populateLineData(tr, data){
+  if(!data || !tr) return;
+  if(data.concept!==undefined) tr.querySelector('.line-concept').value=data.concept||'';
+  if(data.qty!==undefined) tr.querySelector('.line-qty').value=data.qty;
+  if(data.price!==undefined) tr.querySelector('.line-price').value=Number(data.price).toFixed(2);
+  if(data.vatType!==undefined){
+    var vsel=tr.querySelector('.line-vat'); if(vsel) vsel.value=data.vatType;
+  }
+  if(data.retType!==undefined){
+    var rsel=tr.querySelector('.line-ret'); if(rsel) rsel.value=data.retType;
+  }
+  if(data.productId){
+    var psel=tr.querySelector('.line-product'); if(psel) psel.value=String(data.productId);
+  }
+  if(data.warehouseId){
+    var wsel=tr.querySelector('.line-warehouse'); if(wsel) wsel.value=String(data.warehouseId);
+  }
+}
+
 function addSaleLine(data){
   var body=document.getElementById('s-lines-body');
   if(!body) return;
   var idx=body.children.length;
   body.insertAdjacentHTML('beforeend', _saleLineRowHTML(idx,'s',true));
-  if(data){
-    var tr=body.lastElementChild;
-    if(data.concept) tr.querySelector('.line-concept').value=data.concept;
-    if(data.qty!==undefined) tr.querySelector('.line-qty').value=data.qty;
-    if(data.price!==undefined) tr.querySelector('.line-price').value=Number(data.price).toFixed(2);
-    if(data.vatType!==undefined) tr.querySelector('.line-vat').value=data.vatType;
-    if(data.retType!==undefined) tr.querySelector('.line-ret').value=data.retType;
-  }
+  _populateLineData(body.lastElementChild, data);
   sLinesChanged();
 }
 function resetSaleLines(){
@@ -2535,14 +3881,8 @@ function addPurchLine(data){
   var body=document.getElementById('p-lines-body');
   if(!body) return;
   var idx=body.children.length;
-  body.insertAdjacentHTML('beforeend', _saleLineRowHTML(idx,'p',false));
-  if(data){
-    var tr=body.lastElementChild;
-    if(data.concept) tr.querySelector('.line-concept').value=data.concept;
-    if(data.qty!==undefined) tr.querySelector('.line-qty').value=data.qty;
-    if(data.price!==undefined) tr.querySelector('.line-price').value=Number(data.price).toFixed(2);
-    if(data.vatType!==undefined) tr.querySelector('.line-vat').value=data.vatType;
-  }
+  body.insertAdjacentHTML('beforeend', _saleLineRowHTML(idx,'p',true));
+  _populateLineData(body.lastElementChild, data);
   pLinesChanged();
 }
 function resetPurchLines(){
@@ -2553,18 +3893,21 @@ function resetPurchLines(){
 }
 function pLinesChanged(){
   _refreshLineRowsPurch('p-lines-body');
-  var lines=_readSaleLines('p-lines-body', false);
+  var lines=_readSaleLines('p-lines-body', true);
   var t=_computePurchLinesTotals(lines);
   var fmt=function(n){return n.toFixed(2)+' €';};
   document.getElementById('p-sum-net').textContent=fmt(t.net);
   document.getElementById('p-sum-vat').textContent=fmt(t.vat);
+  var elPSR=document.getElementById('p-sum-ret'); if(elPSR) elPSR.textContent=t.ret>0?('-'+fmt(t.ret)):fmt(0);
   document.getElementById('p-sum-tot').textContent=fmt(t.total);
   var first=lines[0]||{};
   var h=function(id,v){var el=document.getElementById(id);if(el)el.value=v;};
   h('p-net', t.net.toFixed(2));
   h('p-va',  t.vat.toFixed(2));
+  h('p-ret-amt', (t.ret||0).toFixed(2));
   h('p-tot2', t.total.toFixed(2));
   h('p-vat', first.vatType||'21');
+  h('p-ret', first.retType||'0');
   h('p-desc', first.concept||'');
 }
 
@@ -2574,14 +3917,7 @@ function addEditSaleLine(data){
   if(!body) return;
   var idx=body.children.length;
   body.insertAdjacentHTML('beforeend', _saleLineRowHTML(idx,'ie',true));
-  if(data){
-    var tr=body.lastElementChild;
-    if(data.concept) tr.querySelector('.line-concept').value=data.concept;
-    if(data.qty!==undefined) tr.querySelector('.line-qty').value=data.qty;
-    if(data.price!==undefined) tr.querySelector('.line-price').value=Number(data.price).toFixed(2);
-    if(data.vatType!==undefined) tr.querySelector('.line-vat').value=data.vatType;
-    if(data.retType!==undefined) tr.querySelector('.line-ret').value=data.retType;
-  }
+  _populateLineData(body.lastElementChild, data);
   ieLinesChanged();
 }
 function ieLinesChanged(){
@@ -2607,30 +3943,27 @@ function addEditPurchLine(data){
   var body=document.getElementById('pe-lines-body');
   if(!body) return;
   var idx=body.children.length;
-  body.insertAdjacentHTML('beforeend', _saleLineRowHTML(idx,'pe',false));
-  if(data){
-    var tr=body.lastElementChild;
-    if(data.concept) tr.querySelector('.line-concept').value=data.concept;
-    if(data.qty!==undefined) tr.querySelector('.line-qty').value=data.qty;
-    if(data.price!==undefined) tr.querySelector('.line-price').value=Number(data.price).toFixed(2);
-    if(data.vatType!==undefined) tr.querySelector('.line-vat').value=data.vatType;
-  }
+  body.insertAdjacentHTML('beforeend', _saleLineRowHTML(idx,'pe',true));
+  _populateLineData(body.lastElementChild, data);
   peLinesChanged();
 }
 function peLinesChanged(){
   _refreshLineRowsPurch('pe-lines-body');
-  var lines=_readSaleLines('pe-lines-body', false);
+  var lines=_readSaleLines('pe-lines-body', true);
   var t=_computePurchLinesTotals(lines);
   var fmt=function(n){return n.toFixed(2)+' €';};
   document.getElementById('pe-sum-net').textContent=fmt(t.net);
   document.getElementById('pe-sum-vat').textContent=fmt(t.vat);
+  var elPESR=document.getElementById('pe-sum-ret'); if(elPESR) elPESR.textContent=t.ret>0?('-'+fmt(t.ret)):fmt(0);
   document.getElementById('pe-sum-tot').textContent=fmt(t.total);
   var first=lines[0]||{};
   var h=function(id,v){var el=document.getElementById(id);if(el)el.value=v;};
   h('pe-net', t.net.toFixed(2));
   h('pe-vatamt', t.vat.toFixed(2));
+  h('pe-ret-amt', (t.ret||0).toFixed(2));
   h('pe-total', t.total.toFixed(2));
   h('pe-vat', first.vatType||'21');
+  h('pe-ret', first.retType||'0');
   h('pe-desc', first.concept||'');
 }
 
@@ -2677,8 +4010,32 @@ function saveSale(){
     }
   }
   var cust=document.getElementById('s-cust').value||'Unknown';
+  // Block creation if the date falls in a locked period
+  if(typeof isPeriodLocked==='function' && isPeriodLocked(dt)){
+    alert('⛔ This period is locked. Unlock it from Taxes module to register operations.');
+    return;
+  }
   var rec={id:DB.ids.s++,date:dt,num:num,customer:cust,desc:desc,vatRate:vat,net:net,vatAmt:va,retRate:retRate,retAmt:ra,total:total,status:stat,method:meth,vatType:vVal,lines:lines};
   DB.sales.push(rec);
+
+  // ── INVENTORY: create OUT movements for stockable lines (module-level only — no JE) ──
+  // Per Spanish PGC accounting: cost of goods sold is recorded via "variación de existencias"
+  // at period-end closing (see closeInventory()). During the period, sales only post revenue.
+  // The module tracks units & cost flow for FIFO/PMP visibility but does not change the GL.
+  var totalMissing = 0;
+  var missingDetails = [];
+  lines.forEach(function(ln){
+    var prod = ln.productId ? getProductById(ln.productId) : null;
+    if(prod && prod.isStockable && ln.warehouseId && ln.qty>0){
+      var r = createInventoryMovementOUT(prod.id, ln.warehouseId, ln.qty, 'SALE', rec.id, dt);
+      if(r.missing>0){
+        totalMissing += r.missing;
+        var wh=getWarehouseById(ln.warehouseId);
+        missingDetails.push('• '+(prod.ref?(prod.ref+' '):'')+(prod.name||'')+': '+r.missing+' '+(prod.uom||'units')+' missing in '+(wh?wh.name:'warehouse'));
+      }
+    }
+  });
+
   // Auto JE using active plan accounts
   var _sp = getActivePlan();
   var saleLines = [
@@ -2694,6 +4051,7 @@ function saveSale(){
     saleLines[0].debit = total; // AR = net + vat - ret
   }
   DB.je.push({id:DB.ids.j++,date:dt,desc:'Sale — '+cust+' / '+num,lines:saleLines,amount:total,auto:true,sourceType:'sale',sourceId:rec.id});
+
   if(stat==='paid'){
     DB.coll.push({id:DB.ids.c++,date:dt,customer:cust,ref:num,method:meth,amount:total,notes:'Auto from invoice'});
     DB.je.push({id:DB.ids.j++,date:dt,desc:'Collection — '+cust+' / '+num,
@@ -2704,10 +4062,16 @@ function saveSale(){
   ['s-num','s-cust'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   resetSaleLines();
   renderAll();
+  // Warn user about insufficient stock
+  if(totalMissing > 0){
+    setTimeout(function(){
+      alert('⚠️ Stock warning\n\nThe following items had insufficient stock (sale was registered but stock is now negative for these):\n\n'+missingDetails.join('\n')+'\n\nYou may want to register a purchase or stock adjustment.');
+    }, 100);
+  }
 }
 function savePurch(){
-  // Read lines
-  var lines = _readSaleLines('p-lines-body', false);
+  // Read lines (with retention)
+  var lines = _readSaleLines('p-lines-body', true);
   lines = lines.filter(function(l){
     return (l.qty>0 && l.price>0) || (l.concept && l.concept.trim().length>0);
   });
@@ -2716,8 +4080,10 @@ function savePurch(){
   if(!(totals.net>0)){ alert('Enter at least one line with a non-zero amount.'); return; }
   var net = totals.net;
   var va  = totals.vat;
+  var ra  = totals.ret || 0;
   var first = lines[0];
   var vat = first.vatRate || 0;
+  var retRate = first.retRate || 0;
   var desc = lines.map(function(l){return l.concept;}).filter(Boolean).join(' · ');
   var stat=document.getElementById('p-stat').value,meth=document.getElementById('p-meth').value,dt=document.getElementById('p-date').value;
   var invType = (document.getElementById('p-invtype')||{value:'expense'}).value || 'expense';
@@ -2736,12 +4102,27 @@ function savePurch(){
     }
   }
   var sup=document.getElementById('p-sup').value||'Unknown',cat=document.getElementById('p-cat').value;
-  var rec={id:DB.ids.p++,date:dt,num:num,supplier:sup,desc:desc,cat:cat,vatRate:vat,net:net,vatAmt:va,total:net+va,status:stat,method:meth,invType:invType,assetName:assetName,lines:lines};
+  // Block creation if the date falls in a locked period
+  if(typeof isPeriodLocked==='function' && isPeriodLocked(dt)){
+    alert('⛔ This period is locked. Unlock it from Taxes module to register operations.');
+    return;
+  }
+  var totalAmount = net + va - ra;
+  var rec={id:DB.ids.p++,date:dt,num:num,supplier:sup,desc:desc,cat:cat,vatRate:vat,net:net,vatAmt:va,retRate:retRate,retAmt:ra,total:totalAmount,status:stat,method:meth,invType:invType,assetName:assetName,lines:lines};
   DB.purch.push(rec);
+
+  // ── INVENTORY: create IN movements ONLY for stockable lines whose category is "Cost of Goods Sold" (or PGC equivalents) ──
+  if(invType !== 'asset' && _isInventoryCategory(cat)){
+    lines.forEach(function(ln){
+      var prod = ln.productId ? getProductById(ln.productId) : null;
+      if(prod && prod.isStockable && ln.warehouseId && ln.qty>0 && ln.price>=0){
+        createInventoryMovementIN(prod.id, ln.warehouseId, ln.qty, ln.price, 'PURCHASE', rec.id, dt);
+      }
+    });
+  }
 
   // ── JE depends on invoice type ────────────────────────────────
   var _pp = getActivePlan();
-  // catAccMap covers BOTH plans: English keys (form values) mapped per plan
   var catAccMap;
   if(_pp.id === 'pgc') {
     catAccMap = {
@@ -2763,17 +4144,20 @@ function savePurch(){
       'Depreciation':'6500','Other OpEx':'6900'};
   }
 
+  // Retention account for purchases: PGC 4751 (HP acreedora ret. practicadas), USGAAP 2210 (Withholdings payable)
+  var retPurchAcc = _pp.id==='pgc' ? '4751' : '2210';
+
   var purchLines;
   if(invType === 'asset') {
-    // ASSET: Dr Fixed Asset account / Dr VAT / Cr AP
+    // ASSET: Dr Fixed Asset account / Dr VAT / Cr Retention / Cr AP
     var planId   = (DB.co && DB.co.accountPlan) || 'usgaap';
-    // Use category value as the asset account code (selected from asset dropdown)
     var assetAcc = cat || (planId === 'pgc' ? '213' : '1500');
     purchLines = [
-      {account:assetAcc, debit:net, credit:0},
-      {account:_pp.ap,   debit:0,   credit:rec.total}
+      {account:assetAcc, debit:net, credit:0}
     ];
-    if(va > 0) purchLines.splice(1, 0, {account:_pp.vatOut, debit:va, credit:0});
+    if(va > 0) purchLines.push({account:_pp.vatOut, debit:va, credit:0});
+    if(ra > 0) purchLines.push({account:retPurchAcc, debit:0, credit:ra});
+    purchLines.push({account:_pp.ap, debit:0, credit:totalAmount});
     // Register in assets[]
     if(!DB.assets) DB.assets = [];
     if(!DB.ids.ast) DB.ids.ast = 1;
@@ -2783,21 +4167,22 @@ function savePurch(){
       cost:net, bookValue:net, accumulated:0, status:'active'
     });
   } else {
-    // EXPENSE: normal flow
+    // EXPENSE: Dr [expense account] / Dr VAT / Cr Retention / Cr AP
     var _fallbackExp = _pp.id === 'pgc' ? '629' : '6900';
     var expAcc = (_pp.expCatMap && _pp.expCatMap[cat]) || catAccMap[cat] || _fallbackExp;
     purchLines = [
-      {account:expAcc, debit:net,  credit:0},
-      {account:_pp.ap, debit:0,    credit:rec.total}
+      {account:expAcc, debit:net, credit:0}
     ];
-    if(va > 0) purchLines.splice(1, 0, {account:_pp.vatOut, debit:va, credit:0});
+    if(va > 0) purchLines.push({account:_pp.vatOut, debit:va, credit:0});
+    if(ra > 0) purchLines.push({account:retPurchAcc, debit:0, credit:ra});
+    purchLines.push({account:_pp.ap, debit:0, credit:totalAmount});
   }
-  DB.je.push({id:DB.ids.j++,date:dt,desc:(invType==='asset'?'Asset purchase':'Purchase')+' — '+sup+' / '+num,lines:purchLines,amount:rec.total,auto:true,sourceType:'purchase',sourceId:rec.id});
+  DB.je.push({id:DB.ids.j++,date:dt,desc:(invType==='asset'?'Asset purchase':'Purchase')+' — '+sup+' / '+num,lines:purchLines,amount:totalAmount,auto:true,sourceType:'purchase',sourceId:rec.id});
   // If paid immediately
   if(stat==='paid'){
-    DB.pay.push({id:DB.ids.py++,date:dt,supplier:sup,ref:num,method:meth,amount:rec.total,notes:'Auto from invoice'});
+    DB.pay.push({id:DB.ids.py++,date:dt,supplier:sup,ref:num,method:meth,amount:totalAmount,notes:'Auto from invoice'});
     var _ppaid = getActivePlan();
-    DB.je.push({id:DB.ids.j++,date:dt,desc:'Payment — '+sup+' / '+num,lines:[{account:_ppaid.ap,debit:rec.total,credit:0},{account:_ppaid.cash,debit:0,credit:rec.total}],amount:rec.total,auto:true,sourceType:'payment'});
+    DB.je.push({id:DB.ids.j++,date:dt,desc:'Payment — '+sup+' / '+num,lines:[{account:_ppaid.ap,debit:totalAmount,credit:0},{account:_ppaid.cash,debit:0,credit:totalAmount}],amount:totalAmount,auto:true,sourceType:'payment'});
   }
   sv();
   closeOverlay('ov-purch');
@@ -3235,10 +4620,16 @@ function cF(){
   var bsAP   = _cfPlan.apAccts.reduce(function(a,acc){return a+jeBal(acc);}, 0);
   // VAT payable (output VAT collected)
   var vatP   = _cfPlan.vatAccts.reduce(function(a,acc){return a+jeBal(acc);}, 0);
-  // VAT receivable (input VAT paid on purchases — 472 PGC / same 2100 USGAAP)
+  // VAT receivable (input VAT paid on purchases — 472 PGC / 2100 USGAAP if Dr balance)
   var vatRec = 0;
   if(_cfPlan.id === 'pgc') {
     vatRec = jeBal('472'); // HP IVA soportado
+  } else {
+    // US GAAP: account 2100 can have either Dr (recoverable) or Cr (payable) balance.
+    // jeBal returns Cr - Dr (because vatAccts are liability-class).
+    // If it's negative, it means the account has Dr balance → recoverable (asset).
+    var v2100 = jeBal('2100');
+    if(v2100 < 0){ vatRec = -v2100; }
   }
 
   return{
@@ -3919,7 +5310,20 @@ function rBS(){
   var cash    = F.bsCash;
   var ar      = F.bsAR;
   var vatRec  = F.vatRec || 0;
-  var tca     = cash + ar + vatRec;
+  // Inventory — read from JE balance of inventory accounts (300 PGC / 1200 USGAAP).
+  // The inventory module tracks units & cost flow but does NOT post automatic JEs.
+  // The Inventory account is moved only via "closeInventory()" (variación de existencias).
+  var invAccCode = (typeof getInventoryAccount==='function') ? getInventoryAccount() : ((DB.co && DB.co.accountPlan)==='pgc' ? '300' : '1200');
+  var inventory = 0;
+  DB.je.forEach(function(je){
+    je.lines.forEach(function(l){
+      if(String(l.account)===String(invAccCode)){
+        inventory += (l.debit||0) - (l.credit||0);
+      }
+    });
+  });
+  if(inventory < 0) inventory = 0;
+  var tca     = cash + ar + vatRec + inventory;
   // Non-current assets — gross fixed + accumulated depreciation from ALL JEs
   var _bsp2 = getActivePlan();
   var grossFixed = 0, accumDepr = 0;
@@ -3984,6 +5388,11 @@ function rBS(){
     aRows += '<tr class="rd"><td class="ind drilldown-link" data-drill="'+(
       _bsp.id==='pgc'?'472':'2100'
     )+'" data-label="'+vatRecLabel+'" onclick="drillToJE(this.dataset.drill,this.dataset.label)" title="Click for detail">'+vatRecLabel+' ↗</td><td class="num pos">'+f(vatRec)+'</td></tr>';
+  }
+  if(inventory > 0){
+    var invAcc   = (typeof getInventoryAccount==='function') ? getInventoryAccount() : (_bsp.id==='pgc'?'300':'1200');
+    var invLabel = _bsp.id==='pgc' ? 'Inventario / Existencias ('+invAcc+')' : 'Inventory ('+invAcc+')';
+    aRows += '<tr class="rd"><td class="ind drilldown-link" data-drill="'+invAcc+'" data-label="'+invLabel+'" onclick="drillToJE(this.dataset.drill,this.dataset.label)" title="Click for detail">📦 '+invLabel+' ↗</td><td class="num pos">'+f(inventory)+'</td></tr>';
   }
   aRows += '<tr class="rs"><td>Total Current Assets</td><td class="num">'+f(tca)+'</td></tr>';
   aRows += '<tr class="rh"><td colspan="2">Non-Current Assets</td></tr>';
@@ -4744,7 +6153,15 @@ function saveEditedInvoice() {
   var totals = _computeSaleLinesTotals(lines);
   if(!(totals.net>0)){ alert('Enter at least one line with a non-zero amount.'); return; }
   var first = lines[0];
-  s.date     = document.getElementById('ie-date').value;
+  var newDate = document.getElementById('ie-date').value;
+  // Block edit if either the original or new date falls in a locked period
+  if(typeof isPeriodLocked==='function'){
+    if(isPeriodLocked(s.date) || isPeriodLocked(newDate)){
+      alert('⛔ Cannot edit: original or new date falls in a locked period.');
+      return;
+    }
+  }
+  s.date     = newDate;
   s.num      = document.getElementById('ie-num').value;
   s.customer = document.getElementById('ie-customer').value;
   s.desc     = lines.map(function(l){return l.concept;}).filter(Boolean).join(' · ');
@@ -6752,7 +8169,7 @@ function saveEditPurch() {
   if(!_peId) return;
   var p = DB.purch.find(function(x){return x.id===_peId;});
   if(!p) return;
-  var lines = _readSaleLines('pe-lines-body', false);
+  var lines = _readSaleLines('pe-lines-body', true);
   lines = lines.filter(function(l){
     return (l.qty>0 && l.price>0) || (l.concept && l.concept.trim().length>0);
   });
@@ -6760,7 +8177,15 @@ function saveEditPurch() {
   var totals = _computePurchLinesTotals(lines);
   if(!(totals.net>0)){ alert('Enter at least one line with a non-zero amount.'); return; }
   var first = lines[0];
-  p.date      = document.getElementById('pe-date').value;
+  var newDate = document.getElementById('pe-date').value;
+  // Block edit if either the original date OR the new date are in a locked period
+  if(typeof isPeriodLocked==='function'){
+    if(isPeriodLocked(p.date) || isPeriodLocked(newDate)){
+      alert('⛔ Cannot edit: original or new date falls in a locked period.');
+      return;
+    }
+  }
+  p.date      = newDate;
   p.num       = document.getElementById('pe-num').value;
   p.supplier  = document.getElementById('pe-sup').value;
   p.desc      = lines.map(function(l){return l.concept;}).filter(Boolean).join(' · ');
@@ -6768,6 +8193,8 @@ function saveEditPurch() {
   p.net       = totals.net;
   p.vatRate   = first.vatRate || 0;
   p.vatAmt    = totals.vat;
+  p.retRate   = first.retRate || 0;
+  p.retAmt    = totals.ret || 0;
   p.total     = totals.total;
   p.status    = document.getElementById('pe-stat').value;
   p.method    = document.getElementById('pe-meth').value;
@@ -6784,16 +8211,21 @@ function saveEditPurch() {
     } else {
       catAccMap = {'COGS':'5000','Cost of Goods Sold':'5000','Rent':'6100','Salaries':'6000','Utilities':'6200','Marketing':'6300','Professional':'6400','Depreciation':'6500','Other OpEx':'6900'};
     }
+    var retPurchAcc = _pp.id==='pgc' ? '4751' : '2210';
     var jeLines;
     if(p.invType === 'asset'){
       var assetAcc = p.cat || (_pp.id==='pgc'?'213':'1500');
-      jeLines = [{account:assetAcc, debit:p.net, credit:0},{account:_pp.ap, debit:0, credit:p.total}];
-      if(p.vatAmt>0) jeLines.splice(1,0,{account:_pp.vatOut, debit:p.vatAmt, credit:0});
+      jeLines = [{account:assetAcc, debit:p.net, credit:0}];
+      if(p.vatAmt>0) jeLines.push({account:_pp.vatOut, debit:p.vatAmt, credit:0});
+      if(p.retAmt>0) jeLines.push({account:retPurchAcc, debit:0, credit:p.retAmt});
+      jeLines.push({account:_pp.ap, debit:0, credit:p.total});
     } else {
       var _fb = _pp.id==='pgc'?'629':'6900';
       var expAcc = (_pp.expCatMap && _pp.expCatMap[p.cat]) || catAccMap[p.cat] || _fb;
-      jeLines = [{account:expAcc, debit:p.net, credit:0},{account:_pp.ap, debit:0, credit:p.total}];
-      if(p.vatAmt>0) jeLines.splice(1,0,{account:_pp.vatOut, debit:p.vatAmt, credit:0});
+      jeLines = [{account:expAcc, debit:p.net, credit:0}];
+      if(p.vatAmt>0) jeLines.push({account:_pp.vatOut, debit:p.vatAmt, credit:0});
+      if(p.retAmt>0) jeLines.push({account:retPurchAcc, debit:0, credit:p.retAmt});
+      jeLines.push({account:_pp.ap, debit:0, credit:p.total});
     }
     DB.je[jeIdx].lines = jeLines;
     DB.je[jeIdx].amount = p.total;
@@ -8900,38 +10332,11 @@ document.addEventListener('click', function(e) {
   if(dd && !dd.contains(e.target)) dd.style.display = 'none';
 });
 
-// Sign out function - calls Flask API and redirects to auth page
+// Fallback signOut for desktop version (no Supabase)
 if(typeof signOut === 'undefined') {
-  async function signOut() {
-    if(confirm('Sign out of Leadger?')) {
-      try {
-        // Call logout API
-        const response = await fetch('/api/auth/logout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        const data = await response.json();
-        
-        // Clear local storage
-        localStorage.clear();
-        sessionStorage.clear();
-        
-        // Redirect to auth page
-        if (data.redirect) {
-          window.location.href = data.redirect;
-        } else {
-          window.location.href = '/app';
-        }
-      } catch (error) {
-        console.error('Logout error:', error);
-        // Force redirect even if error
-        localStorage.clear();
-        sessionStorage.clear();
-        window.location.href = '/app';
-      }
+  function signOut() {
+    if(confirm('Sign out of FinLedger?')) {
+      window.location.reload();
     }
   }
 }
@@ -10172,19 +11577,69 @@ function rTaxes() {
       : '<div style="color:var(--text3);padding:20px;text-align:center;font-size:12px;">No retenciones in this period.</div>';
   }
 
-  // Quarterly table
+  // Quarterly table — uses JE-driven VAT computation (matches Tax Closing JE)
   var qtbl=document.getElementById('taxes-quarterly-tbl'); if(!qtbl) return;
-  var quarters=['Q1','Q2','Q3','Q4'];
-  var qMonths={Q1:[1,2,3],Q2:[4,5,6],Q3:[7,8,9],Q4:[10,11,12]};
-  qtbl.innerHTML=quarters.map(function(q){
-    var ms=qMonths[q];
-    var sF=DB.sales.filter(function(s){ return s.date&&s.date.startsWith(year)&&ms.indexOf(parseInt(s.date.slice(5,7)))!==-1; });
-    var pF=DB.purch.filter(function(p){ return p.date&&p.date.startsWith(year)&&ms.indexOf(parseInt(p.date.slice(5,7)))!==-1; });
-    var qOut=sF.reduce(function(a,s){return a+(s.vatAmt||0);},0);
-    var qIn =pF.reduce(function(a,p){return a+(p.vatAmt||0);},0);
-    var qRes=qOut-qIn;
-    var state=qOut===0&&qIn===0?'<span style="color:var(--text3);font-size:11px;">—</span>':'<span style="color:var(--yellow);font-size:11px;font-weight:700;font-family:monospace;">PENDIENTE</span>';
-    return '<tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;font-weight:600;color:var(--text);">'+q+' '+year+'</td><td style="padding:10px 12px;text-align:right;color:var(--red);">'+f(qIn)+'</td><td style="padding:10px 12px;text-align:right;color:var(--green);">'+f(qOut)+'</td><td style="padding:10px 12px;text-align:right;font-weight:700;color:'+(qRes>=0?'var(--accent)':'var(--red)')+';">'+f(qRes)+'</td><td style="padding:10px 12px;text-align:center;">'+state+'</td></tr>';
+  var quarters=[1,2,3,4];
+  var yearInt = parseInt(year);
+  qtbl.innerHTML=quarters.map(function(qNum){
+    var q='Q'+qNum;
+    // Use JE-driven computation if function available, else fallback to DB.sales/purch
+    var qOut, qIn, qRes;
+    if(typeof computeQuarterVAT==='function'){
+      var qv = computeQuarterVAT(yearInt, qNum);
+      qOut = qv.ivaRep;
+      qIn  = qv.ivaSop;
+      qRes = qv.result;
+    } else {
+      var qMonths={1:[1,2,3],2:[4,5,6],3:[7,8,9],4:[10,11,12]};
+      var ms=qMonths[qNum];
+      var sF=DB.sales.filter(function(s){ return s.date&&s.date.startsWith(year)&&ms.indexOf(parseInt(s.date.slice(5,7)))!==-1; });
+      var pF=DB.purch.filter(function(p){ return p.date&&p.date.startsWith(year)&&ms.indexOf(parseInt(p.date.slice(5,7)))!==-1; });
+      qOut=sF.reduce(function(a,s){return a+(s.vatAmt||0);},0);
+      qIn =pF.reduce(function(a,p){return a+(p.vatAmt||0);},0);
+      qRes=qOut-qIn;
+    }
+    // Status / Closing / Lock state
+    var closed = (typeof isPeriodClosed==='function') && isPeriodClosed(yearInt, qNum);
+    var locked = (typeof isQuarterLocked==='function') && isQuarterLocked(yearInt, qNum);
+    var hasActivity = qOut!==0 || qIn!==0;
+    var stateHtml;
+    if(locked){
+      stateHtml = '<span style="color:var(--red);font-size:11px;font-weight:700;font-family:monospace;">🔒 LOCKED</span>';
+    } else if(closed){
+      stateHtml = '<span style="color:var(--green);font-size:11px;font-weight:700;font-family:monospace;">✓ CLOSED</span>';
+    } else if(!hasActivity){
+      stateHtml = '<span style="color:var(--text3);font-size:11px;">—</span>';
+    } else {
+      stateHtml = '<span style="color:var(--yellow);font-size:11px;font-weight:700;font-family:monospace;">PENDING</span>';
+    }
+    // Tax Closing button
+    var closingBtn;
+    if(closed){
+      closingBtn = '<button class="btn btn-ghost btn-sm" '+(locked?'disabled':'')+' onclick="reopenTaxQuarter('+yearInt+','+qNum+')" title="Reopen and delete the closing JE" style="font-size:11px;'+(locked?'opacity:0.4;cursor:not-allowed;':'')+'">↩ Reopen</button>';
+    } else if(hasActivity){
+      closingBtn = '<button class="btn btn-primary btn-sm" onclick="closeTaxQuarter('+yearInt+','+qNum+')" style="font-size:11px;">Close</button>';
+    } else {
+      closingBtn = '<span style="color:var(--text3);font-size:11px;">—</span>';
+    }
+    // Lock button
+    var lockBtn;
+    if(locked){
+      lockBtn = '<button class="btn btn-ghost btn-sm" onclick="unlockQuarter('+yearInt+','+qNum+')" style="font-size:11px;color:var(--green);">🔓 Unlock</button>';
+    } else if(closed){
+      lockBtn = '<button class="btn btn-ghost btn-sm" onclick="lockQuarter('+yearInt+','+qNum+')" style="font-size:11px;">🔒 Lock</button>';
+    } else {
+      lockBtn = '<span style="color:var(--text3);font-size:11px;" title="Close the quarter first">—</span>';
+    }
+    return '<tr style="border-bottom:1px solid var(--border);">'+
+      '<td style="padding:10px 12px;font-weight:600;color:var(--text);">'+q+' '+year+'</td>'+
+      '<td style="padding:10px 12px;text-align:right;color:var(--red);">'+f(qIn)+'</td>'+
+      '<td style="padding:10px 12px;text-align:right;color:var(--green);">'+f(qOut)+'</td>'+
+      '<td style="padding:10px 12px;text-align:right;font-weight:700;color:'+(qRes>=0?'var(--accent)':'var(--red)')+';">'+f(qRes)+'</td>'+
+      '<td style="padding:10px 12px;text-align:center;">'+stateHtml+'</td>'+
+      '<td style="padding:10px 12px;text-align:center;">'+closingBtn+'</td>'+
+      '<td style="padding:10px 12px;text-align:center;">'+lockBtn+'</td>'+
+      '</tr>';
   }).join('');
 }
 
@@ -10327,7 +11782,7 @@ openSettings = function(tab) {
   var ipd=document.getElementById('inv-purch-vat'); if(ipd) ipd.value=(DB.prefs&&DB.prefs.invPurchVat)||'21';
   var idd=document.getElementById('inv-due-days');  if(idd) idd.value=(DB.prefs&&DB.prefs.invDueDays)||'30';
   var idp=document.getElementById('inv-def-payment'); if(idp) idp.value=(DB.prefs&&DB.prefs.invDefPayment)||'bank';
-  var int=document.getElementById('inv-notes'); if(int) int.value=(DB.prefs&&DB.prefs.invnotes)||'';
+  var int=document.getElementById('set-inv-notes'); if(int) int.value=(DB.prefs&&DB.prefs.invnotes)||'';
 };
 
 var _origSaveSettings2 = saveSettings;
@@ -10340,12 +11795,12 @@ saveSettings = function() {
     var pv=document.getElementById('inv-purch-vat'); if(pv) DB.prefs.invPurchVat=pv.value;
     var dd=document.getElementById('inv-due-days');  if(dd) DB.prefs.invDueDays=dd.value;
     var dp=document.getElementById('inv-def-payment'); if(dp) DB.prefs.invDefPayment=dp.value;
-    var nt=document.getElementById('inv-notes'); if(nt) DB.prefs.invnotes=nt.value;
+    var nt=document.getElementById('set-inv-notes'); if(nt) DB.prefs.invnotes=nt.value;
   }
   _origSaveSettings2();
 };
 
-function renderAll(){rDash();rContacts();rSales();rRecurring();rPurch();rColl();rPay();rJE();rPL();rBS();rCF();rCFO();rBankAccounts();rEmployees();rPayrolls();rTimeTracking();rAbsences();rTaxes();}
+function renderAll(){rDash();rContacts();rSales();rRecurring();rPurch();rColl();rPay();rJE();rPL();rBS();rCF();rCFO();rBankAccounts();rEmployees();rPayrolls();rTimeTracking();rAbsences();rTaxes();rProducts();rWarehouses();rStock();rMovements();}
 var _origSetTab2 = setTab;
 setTab = function(t) {
   _origSetTab2(t);
@@ -10468,7 +11923,7 @@ function downloadImportTemplate() {
     }).join(',');
   }).join('\r\n');
   var fname = 'FinLedger_Import_Template.csv';
-  fetch('/api/export', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({filename:fname,content:csv})})
+  fetch('/export', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({filename:fname,content:csv})})
     .then(function(r){return r.blob();})
     .then(function(blob){
       var url=URL.createObjectURL(blob);
@@ -10515,7 +11970,7 @@ function exportExcel(type) {
     setTimeout(function(){
       // If we are inside pywebview, the download won't have worked
       // so we also send to Python server as backup
-      fetch('/api/export', {
+      fetch('/export', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({filename: fname, content: csv})
@@ -10857,7 +12312,7 @@ function showToast(msg) {
           <table class="inv-lines-tbl">
             <thead>
               <tr>
-                <th style="width:30%;">Concept / Description</th>
+                <th style="width:32%;">Product / Concept</th>
                 <th class="center" style="width:8%;">Qty</th>
                 <th class="amt" style="width:11%;">Unit Price (€)</th>
                 <th class="amt" style="width:11%;">Subtotal (€)</th>
@@ -11269,7 +12724,7 @@ function showToast(msg) {
           <label>Asset Name</label>
           <input type="text" id="pe-asset-name">
         </div>
-        <div class="fg full"><label>Category / Account (applied to all lines)</label><select id="pe-cat">
+        <div class="fg full"><label>Category / Account (applied to all lines)</label><select id="pe-cat" onchange="toggleLinesProductVisibility('pe-lines-body', this.value)">
           <option value="COGS">Cost of Goods Sold</option>
           <option value="Rent">Rent</option>
           <option value="Salaries">Salaries</option>
@@ -11290,12 +12745,13 @@ function showToast(msg) {
           <table class="inv-lines-tbl">
             <thead>
               <tr>
-                <th style="width:38%;">Concept / Description</th>
-                <th class="center" style="width:8%;">Qty</th>
-                <th class="amt" style="width:12%;">Unit Price (€)</th>
-                <th class="amt" style="width:12%;">Subtotal (€)</th>
-                <th style="width:14%;">IVA</th>
-                <th class="amt" style="width:12%;">Line Total</th>
+                <th style="width:32%;">Product / Concept</th>
+                <th class="center" style="width:7%;">Qty</th>
+                <th class="amt" style="width:11%;">Unit Price (€)</th>
+                <th class="amt" style="width:10%;">Subtotal (€)</th>
+                <th style="width:13%;">IVA</th>
+                <th style="width:13%;">Retención</th>
+                <th class="amt" style="width:10%;">Line Total</th>
                 <th class="del-cell"></th>
               </tr>
             </thead>
@@ -11308,6 +12764,7 @@ function showToast(msg) {
       <div class="inv-totals-box">
         <div class="inv-totals-row"><span>Subtotal (Net):</span><span class="inv-totals-val" id="pe-sum-net">0.00 €</span></div>
         <div class="inv-totals-row"><span>VAT total:</span><span class="inv-totals-val" id="pe-sum-vat">0.00 €</span></div>
+        <div class="inv-totals-row"><span>Retención total:</span><span class="inv-totals-val neg" id="pe-sum-ret">0.00 €</span></div>
         <div class="inv-totals-row grand"><span>TOTAL</span><span class="inv-totals-val" id="pe-sum-tot">0.00 €</span></div>
       </div>
 
@@ -11332,12 +12789,184 @@ function showToast(msg) {
       <input type="hidden" id="pe-desc" value="">
       <input type="hidden" id="pe-net" value="0">
       <input type="hidden" id="pe-vat" value="21">
+      <input type="hidden" id="pe-ret" value="0">
       <input type="hidden" id="pe-vatamt" value="0">
+      <input type="hidden" id="pe-ret-amt" value="0">
       <input type="hidden" id="pe-total" value="0">
     </div>
     <div class="mfoot">
       <button class="btn btn-ghost" onclick="closeOverlay('ov-purch-edit')">Cancel</button>
       <button class="btn btn-primary" onclick="saveEditPurch()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ INVENTORY: PRODUCT MODAL ═══ -->
+<div class="overlay" id="ov-product">
+  <div class="modal">
+    <div class="mhdr"><div class="mtitle" id="prd-modal-title">New Product</div><div class="mclose" onclick="closeOverlay('ov-product')">✕</div></div>
+    <div class="mbody">
+      <div class="fgrid">
+        <div class="fg"><label>SKU / Reference</label><input type="text" id="prd-ref" placeholder="e.g. WIDGET-001"></div>
+        <div class="fg"><label>Unit of Measure</label>
+          <select id="prd-uom">
+            <option value="units">units</option>
+            <option value="kg">kg</option>
+            <option value="g">g</option>
+            <option value="l">L</option>
+            <option value="ml">ml</option>
+            <option value="m">m</option>
+            <option value="m²">m²</option>
+            <option value="m³">m³</option>
+            <option value="hours">hours</option>
+            <option value="days">days</option>
+            <option value="box">box</option>
+            <option value="pack">pack</option>
+          </select>
+        </div>
+        <div class="fg full"><label>Product Name</label><input type="text" id="prd-name" placeholder="e.g. Standard Widget"></div>
+        <div class="fg"><label>Default Sales Price (€)</label><input type="number" id="prd-price" step="0.01" placeholder="0.00"></div>
+        <div class="fg" style="justify-content:flex-end;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-top:18px;">
+            <input type="checkbox" id="prd-stockable" checked style="width:18px;height:18px;">
+            <span>📦 Stockable (track inventory)</span>
+          </label>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;font-size:11px;color:var(--text3);">
+        <strong>Stockable</strong> products generate inventory movements when bought/sold. Uncheck for services or non-physical items.
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn btn-ghost" onclick="closeOverlay('ov-product')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ INVENTORY: WAREHOUSE MODAL ═══ -->
+<div class="overlay" id="ov-warehouse">
+  <div class="modal">
+    <div class="mhdr"><div class="mtitle" id="wh-modal-title">New Warehouse</div><div class="mclose" onclick="closeOverlay('ov-warehouse')">✕</div></div>
+    <div class="mbody">
+      <div class="fgrid">
+        <div class="fg full"><label>Warehouse Name</label><input type="text" id="wh-name" placeholder="e.g. Main Warehouse, Madrid Branch"></div>
+        <div class="fg full"><label>Location (optional)</label><input type="text" id="wh-loc" placeholder="e.g. C/ Mayor 12, 28001 Madrid"></div>
+        <div class="fg full">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <input type="checkbox" id="wh-default" style="width:18px;height:18px;">
+            <span>★ Set as default warehouse</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn btn-ghost" onclick="closeOverlay('ov-warehouse')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveWarehouse()">Save Warehouse</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ INVENTORY: MANUAL MOVEMENT MODAL ═══ -->
+<div class="overlay" id="ov-movement">
+  <div class="modal">
+    <div class="mhdr"><div class="mtitle">Manual Inventory Movement</div><div class="mclose" onclick="closeOverlay('ov-movement')">✕</div></div>
+    <div class="mbody">
+      <div class="fgrid">
+        <div class="fg"><label>Date</label><input type="date" id="mov-date"></div>
+        <div class="fg"><label>Type</label>
+          <select id="mov-type">
+            <option value="IN">↑ IN (stock entry)</option>
+            <option value="OUT">↓ OUT (stock removal)</option>
+            <option value="ADJ">⚙ ADJUSTMENT (signed qty)</option>
+          </select>
+        </div>
+        <div class="fg full"><label>Product</label><select id="mov-product"></select></div>
+        <div class="fg full"><label>Warehouse</label><select id="mov-warehouse"></select></div>
+        <div class="fg"><label>Quantity</label><input type="number" id="mov-qty" step="0.01" placeholder="0.00"></div>
+        <div class="fg"><label>Unit Cost (€)</label><input type="number" id="mov-cost" step="0.01" placeholder="0.00"></div>
+        <div class="fg full"><label>Notes (optional)</label><textarea id="mov-notes" rows="2" placeholder="Reason for adjustment..."></textarea></div>
+      </div>
+      <div style="margin-top:10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;font-size:11px;color:var(--text3);">
+        <strong>Note:</strong> Manual movements do not generate journal entries. Use them for stock adjustments, opening balances or corrections.
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn btn-ghost" onclick="closeOverlay('ov-movement')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMovement()">Save Movement</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ INVENTORY CLOSING MODAL ═══ -->
+<div class="overlay" id="ov-close-inventory">
+  <div class="modal wide">
+    <div class="mhdr"><div class="mtitle">📋 Close Inventory — Variación de Existencias</div><div class="mclose" onclick="closeOverlay('ov-close-inventory')">✕</div></div>
+    <div class="mbody">
+      <div style="margin-bottom:14px;padding:12px 14px;background:var(--surface2);border-left:3px solid var(--accent);border-radius:4px;font-size:12px;color:var(--text2);line-height:1.6;">
+        <strong>What is this?</strong><br>
+        Closing inventory generates a journal entry for the <em>variación de existencias</em>:
+        reverses the previous closing balance and registers the current physical count.
+        This is the standard PGC (Spain) and US GAAP periodic-inventory accounting practice.
+        <br><br>
+        <strong>Current method:</strong> <span id="icl-method" style="color:var(--accent);font-weight:700;">FIFO</span>
+      </div>
+
+      <div class="fgrid">
+        <div class="fg"><label>Period</label>
+          <select id="icl-period"></select>
+        </div>
+        <div class="fg"><label>Closing Date</label>
+          <input type="date" id="icl-date" onchange="refreshClosingPreview()">
+        </div>
+      </div>
+
+      <!-- Summary box -->
+      <div style="margin-top:14px;padding:14px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div>
+            <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Previous closing</div>
+            <div id="icl-prev-period" style="font-size:13px;color:var(--text);">—</div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Method</div>
+            <div id="icl-method-2" style="font-size:13px;color:var(--accent);font-weight:700;">FIFO</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+          <div>
+            <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Opening Inv.</div>
+            <div id="icl-opening" style="font-size:18px;font-family:'DM Mono',monospace;color:var(--text);">€0.00</div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Closing Inv.</div>
+            <div id="icl-closing" style="font-size:18px;font-family:'DM Mono',monospace;color:var(--accent);font-weight:700;">€0.00</div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Variation</div>
+            <div id="icl-variation" style="font-size:18px;font-family:'DM Mono',monospace;font-weight:700;">€0.00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JE Preview -->
+      <div style="margin-top:14px;">
+        <div style="font-size:11px;color:var(--text3);font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">📄 Journal Entry preview</div>
+        <div style="border:1px solid var(--border);border-radius:7px;overflow:hidden;">
+          <table style="width:100%;font-size:12px;">
+            <thead style="background:var(--surface3);">
+              <tr><th style="padding:8px 10px;text-align:left;font-weight:500;color:var(--text3);font-size:10px;font-family:monospace;text-transform:uppercase;">Account</th>
+                  <th style="padding:8px 10px;text-align:right;font-weight:500;color:var(--text3);font-size:10px;font-family:monospace;text-transform:uppercase;">Debit</th>
+                  <th style="padding:8px 10px;text-align:right;font-weight:500;color:var(--text3);font-size:10px;font-family:monospace;text-transform:uppercase;">Credit</th></tr>
+            </thead>
+            <tbody id="icl-je-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn btn-ghost" onclick="closeOverlay('ov-close-inventory')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmCloseInventory()">Yes, close inventory</button>
     </div>
   </div>
 </div>
@@ -12075,9 +13704,9 @@ function showToast(msg) {
     </div>
 
     <!-- ══ TAXES ══ -->
-    <div class="page" id="page-taxes" style="overflow-y:auto;max-height:calc(100vh - 60px);">
+    <div class="page" id="page-taxes" style="overflow-y:auto;max-height:calc(100vh - 60px);max-width:100%;">
       <div class="sec-hdr">
-        <div><div class="sec-title">Taxes</div><div class="sec-sub">IVA repercutido · IVA soportado · Retenciones · Informativo</div></div>
+        <div><div class="sec-title">Taxes</div><div class="sec-sub">IVA repercutido · IVA soportado · Retenciones · Tax Closings · Period Locks</div></div>
         <div style="display:flex;gap:8px;">
           <select id="taxes-year" onchange="rTaxes()" class="period-select" style="min-width:90px;"></select>
           <select id="taxes-period" onchange="rTaxes()" class="period-select">
@@ -12116,19 +13745,27 @@ function showToast(msg) {
         <div id="taxes-ret-breakdown"></div>
       </div>
 
-      <!-- Quarterly summary table (like Holded) -->
+      <!-- Quarterly summary table — Tax Closing & Period Lock controls -->
       <div class="chart-area">
-        <div class="sec-title" style="font-size:14px;margin-bottom:12px;">📋 Quarterly Summary · <span style="font-size:11px;color:var(--text3);">Modelo 303 basis</span></div>
-        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <div class="sec-title" style="font-size:14px;margin-bottom:12px;">📋 Quarterly Summary · <span style="font-size:11px;color:var(--text3);">Modelo 303 basis · Tax Closing · Period Lock</span></div>
+        <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:1000px;">
           <thead><tr style="border-bottom:2px solid var(--border);">
             <th style="text-align:left;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;text-transform:uppercase;">Period</th>
             <th style="text-align:right;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;">IVA Soportado</th>
             <th style="text-align:right;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;">IVA Repercutido</th>
             <th style="text-align:right;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;">Resultado</th>
             <th style="text-align:center;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;">Estado</th>
+            <th style="text-align:center;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;">Tax Closing</th>
+            <th style="text-align:center;padding:8px 12px;color:var(--text3);font-family:monospace;font-size:11px;">Lock Period</th>
           </tr></thead>
           <tbody id="taxes-quarterly-tbl"></tbody>
         </table>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;background:var(--surface2);border-radius:7px;font-size:11px;color:var(--text3);line-height:1.6;">
+          <strong>Tax Closing</strong>: Generates the journal entry for VAT settlement at quarter-end (PGC: <code>Dr 477 / Cr 472</code> + <code>4750</code> if to pay or <code>4700</code> if to refund · USGAAP: settle <code>2100</code> against <code>2150</code>/<code>1250</code>).<br>
+          <strong>Lock Period</strong>: Once locked, no operations can be created or modified within that quarter. Useful for safeguarding closed periods.
+        </div>
       </div>
     </div>
 
