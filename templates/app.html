@@ -2324,16 +2324,24 @@ function openOverlay(id){
   // Initialize line tables when opening invoice/purchase modals
   if(id==='ov-sale'){
     var sBody=document.getElementById('s-lines-body');
-    if(sBody && sBody.children.length===0){ resetSaleLines(); }
+    if(sBody && sBody.children.length===0){
+      resetSaleLines();
+    } else {
+      // Refresh selectors with current products/warehouses (sales always show them)
+      toggleLinesProductVisibility('s-lines-body', 'COGS');
+    }
   } else if(id==='ov-purch'){
     var pBody=document.getElementById('p-lines-body');
     if(pBody && pBody.children.length===0){ resetPurchLines(); }
-    // Apply visibility based on currently selected category
+    // Apply visibility based on currently selected category (also refreshes options)
     var pCat=document.getElementById('p-cat');
     if(pCat) toggleLinesProductVisibility('p-lines-body', pCat.value);
   } else if(id==='ov-purch-edit'){
     var peCat=document.getElementById('pe-cat');
     if(peCat) toggleLinesProductVisibility('pe-lines-body', peCat.value);
+  } else if(id==='ov-invoice-edit'){
+    // Refresh sales selectors
+    toggleLinesProductVisibility('ie-lines-body', 'COGS');
   }
 }
 function closeOverlay(id){document.getElementById(id).classList.remove('open');}
@@ -3645,23 +3653,25 @@ function _saleLineRowHTML(idx, prefix, includeRet){
   // prefix is 's' for new sale, 'ie' for edit
   var retCell = includeRet ?
     '<td><select class="line-ret" onchange="'+prefix+'LinesChanged()">'+_retOptionsHTML('0')+'</select></td>' : '';
-  // Product + warehouse always rendered (in a wrapper) so we can show/hide based on category for purchases
-  var hasProds = (DB.products||[]).some(function(p){return p.isStockable;});
-  var hasWh    = (DB.warehouses||[]).length>0;
+  // Product + warehouse always rendered (in a wrapper) so we can show/hide based on category for purchases.
+  // We render even if no products exist yet — the dropdown will only show "— None / free text —"
+  // but the user can still pick a warehouse and add products later from Inventory module.
+  var hasWh = (DB.warehouses||[]).length>0;
   // Default visibility:
-  //   - Sales modals (s, ie):  visible if there are stockable products
+  //   - Sales modals (s, ie):  visible always (sales can sell stockables)
   //   - Purchase modals (p, pe): hidden by default; updated by toggleLinesProductVisibility() based on category
   var isSale = (prefix==='s' || prefix==='ie');
-  var defaultDisplay = (hasProds && isSale) ? 'flex' : 'none';
+  var defaultDisplay = isSale ? 'flex' : 'none';
   var prodWhRow = '';
-  if(hasProds && hasWh){
+  if(hasWh){
+    var prodHelp = (DB.products||[]).some(function(p){return p.isStockable;}) ? '' :
+      ' <span style="font-size:10px;color:var(--text3);align-self:center;margin-left:6px;" title="No products yet — go to Inventory → Products to create one">⚠ No products yet</span>';
     prodWhRow =
-      '<div class="line-prodwh-wrap" style="display:'+defaultDisplay+';gap:6px;margin-bottom:4px;">'+
-        '<select class="line-product" onchange="onLineProductChange(this,\''+prefix+'\')" style="flex:1;font-size:11px;padding:5px 7px;">'+_productOptionsHTML('')+'</select>'+
-        '<select class="line-warehouse" style="flex:1;font-size:11px;padding:5px 7px;">'+_warehouseOptionsHTML('')+'</select>'+
+      '<div class="line-prodwh-wrap" style="display:'+defaultDisplay+';gap:6px;margin-bottom:4px;align-items:center;">'+
+        '<select class="line-product" onchange="onLineProductChange(this,\''+prefix+'\')" style="flex:1;font-size:11px;padding:5px 7px;" title="Pick a stockable product to track inventory">'+_productOptionsHTML('')+'</select>'+
+        '<select class="line-warehouse" style="flex:1;font-size:11px;padding:5px 7px;" title="Warehouse for this stock movement">'+_warehouseOptionsHTML('')+'</select>'+
+        prodHelp+
       '</div>';
-  } else if(hasProds && !hasWh){
-    prodWhRow = '<input type="hidden" class="line-product" value="">';
   }
   return ''+
     '<tr data-line-idx="'+idx+'">'+
@@ -3678,14 +3688,53 @@ function _saleLineRowHTML(idx, prefix, includeRet){
 
 // Show/hide the product+warehouse row in all line rows of a tbody, based on the purchase category.
 // Called when category dropdown changes in purchase modals.
+// Also refreshes the product/warehouse options in case new ones were created since the modal opened.
 function toggleLinesProductVisibility(tbodyId, cat){
   var show = _isInventoryCategory(cat);
-  document.querySelectorAll('#'+tbodyId+' .line-prodwh-wrap').forEach(function(el){
-    el.style.display = show ? 'flex' : 'none';
+  document.querySelectorAll('#'+tbodyId+' tr').forEach(function(tr){
+    var wrap = tr.querySelector('.line-prodwh-wrap');
+    if(!wrap){
+      // Wrapper doesn't exist (e.g., no warehouses at row creation time). Try to inject it now.
+      var hasWh = (DB.warehouses||[]).length>0;
+      if(hasWh){
+        var conceptInput = tr.querySelector('.line-concept');
+        if(conceptInput){
+          var prefix = tbodyId.startsWith('p-') ? 'p' : (tbodyId.startsWith('pe-') ? 'pe' : (tbodyId.startsWith('ie-') ? 'ie' : 's'));
+          var prodHelp = (DB.products||[]).some(function(p){return p.isStockable;}) ? '' :
+            ' <span style="font-size:10px;color:var(--text3);align-self:center;margin-left:6px;" title="No products yet">⚠ No products yet</span>';
+          var div = document.createElement('div');
+          div.className = 'line-prodwh-wrap';
+          div.style.cssText = 'display:'+(show?'flex':'none')+';gap:6px;margin-bottom:4px;align-items:center;';
+          div.innerHTML =
+            '<select class="line-product" onchange="onLineProductChange(this,\''+prefix+'\')" style="flex:1;font-size:11px;padding:5px 7px;">'+_productOptionsHTML('')+'</select>'+
+            '<select class="line-warehouse" style="flex:1;font-size:11px;padding:5px 7px;">'+_warehouseOptionsHTML('')+'</select>'+
+            prodHelp;
+          conceptInput.parentNode.insertBefore(div, conceptInput);
+        }
+      }
+      return;
+    }
+    // Wrapper exists. Refresh dropdowns (in case products were added since modal opened) and toggle visibility.
+    var prodSel = wrap.querySelector('.line-product');
+    var whSel   = wrap.querySelector('.line-warehouse');
+    var prevProd = prodSel ? prodSel.value : '';
+    var prevWh   = whSel ? whSel.value : '';
+    if(prodSel) prodSel.innerHTML = _productOptionsHTML(prevProd);
+    if(whSel)   whSel.innerHTML   = _warehouseOptionsHTML(prevWh);
+    // Update help text presence
+    var oldHelp = wrap.querySelector('span[title*="No products yet" i]');
+    if(oldHelp) oldHelp.remove();
+    if(!(DB.products||[]).some(function(p){return p.isStockable;})){
+      var help = document.createElement('span');
+      help.style.cssText = 'font-size:10px;color:var(--text3);align-self:center;margin-left:6px;';
+      help.title = 'No products yet — go to Inventory → Products to create one';
+      help.textContent = '⚠ No products yet';
+      wrap.appendChild(help);
+    }
+    wrap.style.display = show ? 'flex' : 'none';
     if(!show){
       // Reset selections so saveSale/savePurch see no productId
-      var p=el.querySelector('.line-product');     if(p) p.value='';
-      // warehouse is left selected (default) but ignored when product is empty
+      if(prodSel) prodSel.value='';
     }
   });
 }
